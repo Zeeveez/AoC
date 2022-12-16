@@ -75,10 +75,10 @@ int main()
     //auto D14P2 = AoC2022::Day14::B(AoC::Helpers::ReadLines("./Day14.txt"));
     //std::cout << "Day 14 - B (" << std::format("{:10.4f}", D14P2.second.count()) << "ms): " << D14P2.first << "\n";
 
-    auto D15P1 = AoC2022::Day15::A(AoC::Helpers::ReadLines("./Day15.txt"));
-    std::cout << "Day 15 - A (" << std::format("{:10.4f}", D15P1.second.count()) << "ms): " << D15P1.first << "\n";
-    auto D15P2 = AoC2022::Day15::B(AoC::Helpers::ReadLines("./Day15.txt"));
-    std::cout << "Day 15 - B (" << std::format("{:10.4f}", D15P2.second.count()) << "ms): " << D15P2.first << "\n";
+    //auto D15P1 = AoC2022::Day15::A(AoC::Helpers::ReadLines("./Day15.txt"));
+    //std::cout << "Day 15 - A (" << std::format("{:10.4f}", D15P1.second.count()) << "ms): " << D15P1.first << "\n";
+    //auto D15P2 = AoC2022::Day15::B(AoC::Helpers::ReadLines("./Day15.txt"));
+    //std::cout << "Day 15 - B (" << std::format("{:10.4f}", D15P2.second.count()) << "ms): " << D15P2.first << "\n";
 
     auto D16P1 = AoC2022::Day16::A(AoC::Helpers::ReadLines("./Day16.txt"));
     std::cout << "Day 16 - A (" << std::format("{:10.4f}", D16P1.second.count()) << "ms): " << D16P1.first << "\n";
