@@ -2,13 +2,14 @@
 
 #include <regex>
 #include <queue>
-
-#include <iostream>
+#include <set>
 
 namespace AoC2022 {
     namespace Day16 {
-        std::pair<std::unordered_map<int, int>, std::unordered_map<int, std::vector<int>>> PreProcessInput(const std::vector<std::string>& input) {
-            std::unordered_map<int, int> flowRates = {};
+        std::pair<std::vector<int>, std::unordered_map<int, std::vector<int>>> PreProcessInput(const std::vector<std::string>& input) {
+            std::vector<int> flowRates = { };
+            flowRates.resize(input.size());
+            std::unordered_map<int, int> valveMappings = { { 0, 0 } };
             std::unordered_map<int, std::vector<int>> corridors = {};
 
             for (auto& line : input) {
@@ -17,36 +18,31 @@ namespace AoC2022 {
                 const std::regex flowRe("(\\d+)");
                 std::smatch sm;
 
-                int flowRate = 0;
                 std::regex_search(line, sm, flowRe);
-                flowRate = std::stoi(sm[1]);
+                int flowRate = std::stoi(sm[1]);
 
                 int firstValve = -1;
                 while (std::regex_search(searchStart, line.cend(), sm, valveRe)) {
                     int valve = (sm[1].str()[0] - 'A') * 26 + (sm[1].str()[1] - 'A');
+                    if (!valveMappings.contains(valve)) {
+                        valveMappings[valve] = valveMappings.size();
+                    }
+
+                    int valveIdx = valveMappings[valve];
+
                     if (firstValve == -1) {
-                        firstValve = valve;
-                        flowRates[firstValve] = flowRate;
-                        corridors[firstValve] = {};
+                        firstValve = valveIdx;
+                        corridors[valveIdx] = {};
+                        flowRates[valveIdx] = flowRate;
                     }
                     else {
-                        corridors[firstValve].push_back(valve);
+                        corridors[firstValve].push_back(valveIdx);
                     }
                     searchStart = sm.suffix().first;
                 }
             }
 
             return { flowRates, corridors };
-        }
-
-        std::unordered_map<int, int> GetUsefulFlowRates(const std::unordered_map<int, int>& flowRates) {
-            std::unordered_map<int, int> usefulFlowRates = {};
-            for (auto& flowRate : flowRates) {
-                if (flowRate.second != 0 || flowRate.first == 0) {
-                    usefulFlowRates.insert(flowRate);
-                }
-            }
-            return usefulFlowRates;
         }
 
         int GetDistance(const std::unordered_map<int, std::vector<int>>& corridors, int from, int to) {
@@ -70,69 +66,60 @@ namespace AoC2022 {
             }
         }
 
-        std::unordered_map<int, std::unordered_map<int, int>> GetValveRoutes(const std::unordered_map<int, int>& usefulFlowRates, const std::unordered_map<int, std::vector<int>>& corridors) {
-            std::unordered_map<int, std::unordered_map<int, int>> weightedCorridors = {};
-            for (auto& from : usefulFlowRates) {
-                weightedCorridors[from.first] = {};
-                for (auto& to : usefulFlowRates) {
-                    if (from != to) {
-                        weightedCorridors[from.first][to.first] = GetDistance(corridors, from.first, to.first);
+        std::vector<std::unordered_map<int, int>> GetValveRoutes(const std::vector<int>& flowRates, const std::unordered_map<int, std::vector<int>>& corridors) {
+            std::vector<std::unordered_map<int, int>> weightedCorridors = {};
+            weightedCorridors.resize(flowRates.size());
+            for (int from = 0; from < flowRates.size(); from++) {
+                if (from == 0 || flowRates[from] != 0) {
+                    for (int to = 0; to < flowRates.size(); to++) {
+                        if (from != to && flowRates[to] != 0) {
+                            weightedCorridors[from][to] = GetDistance(corridors, from, to);
+                        }
                     }
                 }
             }
             return weightedCorridors;
         }
 
-        int RunSimulations(const std::unordered_map<int, int>& flowRates, const std::unordered_map<int, std::unordered_map<int, int>>& corridors, std::set<int>& visited, int location, int timeLeft) {
-            if (timeLeft <= 0) {
-                return 0;
-            }
+        int RunSimulations(const std::vector<int>& flowRates, const std::vector<std::unordered_map<int, int>>& corridors, uint64_t visited, int location, int timeLeft) {
+            if (timeLeft <= 1) { return 0; }
+            if (location && (visited & ((uint64_t)1 << location))) { return 0; }
 
             int score = (timeLeft - 1) * flowRates.at(location);
 
             int maxPath = 0;
             for (auto& corridor : corridors.at(location)) {
                 auto& [dest, cost] = corridor;
-
-                if (!visited.contains(dest)) {
-                    visited.insert(dest);
-                    maxPath = std::max(maxPath, RunSimulations(flowRates, corridors, visited, dest, timeLeft - cost - (location == 0 ? 0 : 1)));
-                    visited.erase(dest);
-                }
+                maxPath = std::max(maxPath, RunSimulations(flowRates, corridors, visited | ((uint64_t)1 << location), dest, timeLeft - cost - 1));
             }
 
             return score + maxPath;
         }
 
-        int RunSimulations(const std::unordered_map<int, int>& flowRates, const std::unordered_map<int, std::unordered_map<int, int>>& corridors, int location, int timeLeft) {
-            std::set<int> visited = { location };
-            return RunSimulations(flowRates, corridors, visited, location, timeLeft);
-            visited.erase(location);
-        }
+        void RunSimulationsAsPair(const std::vector<int>& flowRates, const std::vector<std::unordered_map<int, int>>& corridors, std::unordered_map<uint64_t, int>& visitedScores, uint64_t visited, int location, int timeLeft, int runningScore, int& maxScore) {
+            if (timeLeft <= 0) { return; }
+            if (visited & ((uint64_t)1 << location)) { return; }
+            uint64_t newVisited = visited | ((uint64_t)1 << location);
 
-        void RunSimulationsAsPair(const std::unordered_map<int, int>& flowRates, const std::unordered_map<int, std::unordered_map<int, int>>& corridors, std::set<int>& visited, int location1, int location2, int timeLeft1, int timeLeft2, int runningScore, int& maxScore) {
-            if (timeLeft1 <= 0) {
-                return;
+            runningScore += (timeLeft - 1) * flowRates.at(location);
+            if (!visitedScores.contains(newVisited)) {
+                // Increased time by 1 to account for method which opens valve AA (which has 0 flowrate)
+                visitedScores[newVisited] = RunSimulations(flowRates, corridors, newVisited, 0, 26 + 1);
             }
-            runningScore += (timeLeft1 - 1) * flowRates.at(location1);
-            maxScore = std::max(maxScore, runningScore + RunSimulations(flowRates, corridors, visited, location2, timeLeft2));
+            maxScore = std::max(maxScore, runningScore + visitedScores[newVisited]);
 
-            for (auto& corridor : corridors.at(location1)) {
+            for (auto& corridor : corridors.at(location)) {
                 int dest = corridor.first;
-                if (!visited.contains(corridor.first)) {
-                    visited.insert(corridor.first);
-                    int cost = corridor.second;
-                    RunSimulationsAsPair(flowRates, corridors, visited, dest, location2, timeLeft1 - cost - (location1 == 0 ? 0 : 1), timeLeft2, runningScore, maxScore);
-
-                    visited.erase(corridor.first);
-                }
+                int cost = corridor.second;
+                RunSimulationsAsPair(flowRates, corridors, visitedScores, newVisited, dest, timeLeft - cost - 1, runningScore, maxScore);
             }
         }
 
-        int RunSimulationsAsPair(const std::unordered_map<int, int>& flowRates, const std::unordered_map<int, std::unordered_map<int, int>>& corridors, int location1, int location2, int timeLeft1, int timeLeft2) {
-            std::set<int> visited = { location1 };
+        int RunSimulationsAsPair(const std::vector<int>& flowRates, const std::vector<std::unordered_map<int, int>>& corridors, int location, int timeLeft) {
+            std::unordered_map<uint64_t, int> visitedScores = {};
+            uint64_t visited = 0;
             int maxScore = 0;
-            RunSimulationsAsPair(flowRates, corridors, visited, location1, location2, timeLeft1, timeLeft2, 0, maxScore);
+            RunSimulationsAsPair(flowRates, corridors, visitedScores, visited, location, timeLeft + 1, 0, maxScore);
             return maxScore;
         }
 
@@ -140,10 +127,10 @@ namespace AoC2022 {
             auto starttime = std::chrono::high_resolution_clock::now();
 
             auto [flowRates, corridors] = PreProcessInput(input);
-            auto usefulFlowRates = GetUsefulFlowRates(flowRates);
-            auto weightedCorridors = GetValveRoutes(usefulFlowRates, corridors);
+            auto weightedCorridors = GetValveRoutes(flowRates, corridors);
 
-            int res = RunSimulations(usefulFlowRates, weightedCorridors, 0, 30);
+            // Increased time by 1 to account for method which opens valve AA (which has 0 flowrate)
+            int res = RunSimulations(flowRates, weightedCorridors, 0, 0, 30 + 1);
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
@@ -153,10 +140,10 @@ namespace AoC2022 {
             auto starttime = std::chrono::high_resolution_clock::now();
 
             auto [flowRates, corridors] = PreProcessInput(input);
-            auto usefulFlowRates = GetUsefulFlowRates(flowRates);
-            auto weightedCorridors = GetValveRoutes(usefulFlowRates, corridors);
+            auto weightedCorridors = GetValveRoutes(flowRates, corridors);
 
-            int res = RunSimulationsAsPair(usefulFlowRates, weightedCorridors, 0, 0, 26, 26);
+            // Increased time by 1 to account for method which opens valve AA (which has 0 flowrate)
+            int res = RunSimulationsAsPair(flowRates, weightedCorridors, 0, 26);
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
