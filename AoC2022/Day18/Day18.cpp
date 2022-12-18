@@ -4,7 +4,6 @@
 #include <queue>
 #include <tuple>
 #include <set>
-#include <unordered_map>
 
 namespace AoC2022 {
     namespace Day18 {
@@ -46,37 +45,6 @@ namespace AoC2022 {
             return droplet;
         }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-            auto starttime = std::chrono::high_resolution_clock::now();
-
-            auto droplet = PreProcessInput(input);
-
-            int surfaceArea = 0;
-            std::queue<std::tuple<int, int, int>> toCheck = {};
-            for (int x = 0; x < 25; x++) {
-                for (int y = 0; y < 25; y++) {
-                    for (int z = 0; z < 25; z++) {
-                        if (droplet[x][y][z] == State::POPULATED) {
-                            toCheck.push({ x, y, z });
-                        }
-                    }
-                }
-            }
-
-            while (!toCheck.empty()) {
-                auto& [x, y, z] = toCheck.front(); toCheck.pop();
-                for (auto& neighour : neighbours) {
-                    auto& [dx, dy, dz] = neighour;
-                    if (droplet[x + dx][y + dy][z + dz] == State::EMPTY) {
-                        surfaceArea++;
-                    }
-                }
-            }
-
-            auto endtime = std::chrono::high_resolution_clock::now();
-            return { surfaceArea, endtime - starttime };
-        }
-
         bool IsInternalPocket(std::vector<std::vector<std::vector<State>>>& droplet, std::unordered_map<int, bool>& checkedPockets, int x, int y, int z) {
             if (checkedPockets.contains(x * 10000 + y * 100 + z)) { return checkedPockets[x * 10000 + y * 100 + z]; }
 
@@ -108,9 +76,7 @@ namespace AoC2022 {
             return true;
         }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-            auto starttime = std::chrono::high_resolution_clock::now();
-
+        int Run(const std::vector<std::string>& input, bool ignorePockets) {
             auto droplet = PreProcessInput(input);
 
             int surfaceArea = 0;
@@ -130,11 +96,28 @@ namespace AoC2022 {
                 auto& [x, y, z] = toCheck.front(); toCheck.pop();
                 for (auto& neighour : neighbours) {
                     auto& [dx, dy, dz] = neighour;
-                    if (droplet[x + dx][y + dy][z + dz] == State::EMPTY && !IsInternalPocket(droplet, checkedPockets, x + dx, y + dy, z + dz)) {
+                    if (droplet[x + dx][y + dy][z + dz] == State::EMPTY && (ignorePockets || !IsInternalPocket(droplet, checkedPockets, x + dx, y + dy, z + dz))) {
                         surfaceArea++;
                     }
                 }
             }
+
+            return surfaceArea;
+        }
+
+        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+            auto starttime = std::chrono::high_resolution_clock::now();
+
+            int surfaceArea = Run(input, true);
+
+            auto endtime = std::chrono::high_resolution_clock::now();
+            return { surfaceArea, endtime - starttime };
+        }
+
+        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+            auto starttime = std::chrono::high_resolution_clock::now();
+
+            int surfaceArea = Run(input, false);
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { surfaceArea, endtime - starttime };
