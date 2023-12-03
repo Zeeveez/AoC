@@ -32,7 +32,7 @@ namespace AoC2022 {
                         std::stoi(sm[4])
                     }
                 };
-        }
+            }
 #endif
         }
 
