@@ -76,6 +76,7 @@ namespace AoC2023 {
             for (size_t i = 0; i < cards.size(); i++) {
                 cardCounts.push_back(1);
             }
+
             for (size_t i = 0; i < cards.size(); i++) {
                 auto winnerCount = GetWins(cards[i]);
                 for (size_t j = 0; j < winnerCount; j++) {
