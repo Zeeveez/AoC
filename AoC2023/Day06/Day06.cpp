@@ -7,7 +7,7 @@ namespace AoC2023 {
         std::vector<uint64_t> ParseLine(const std::string& input, bool partB) {
             std::istringstream iss(input);
             std::string temp;
-            iss >> temp; // Discard "seeds:"
+            iss >> temp; // Discard label
 
             std::vector<uint64_t> values = {};
             if (!partB) {
@@ -73,11 +73,7 @@ namespace AoC2023 {
             auto startTime = std::chrono::high_resolution_clock::now();
 
             auto races = ParseInput(input, true);
-
-            size_t score = 1;
-            for (auto& race : races) {
-                score *= CountWins(race.first, race.second);
-            }
+            size_t score = CountWins(races[0].first, races[0].second);
 
             auto endTime = std::chrono::high_resolution_clock::now();
             return { score, endTime - startTime };

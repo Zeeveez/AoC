@@ -32,6 +32,7 @@ namespace AoC2023 {
             SourceMap(const std::vector<std::string>& input, size_t& i);
 
             size_t Map(size_t v);
+            void MergeIn(const SourceMap& other);
         };
 
         class Almanac {
@@ -40,6 +41,7 @@ namespace AoC2023 {
 
             Almanac(const std::vector<std::string>& input);
             size_t Traverse(std::string source, std::string destination, size_t value);
+            void Flatten(const std::string& start);
         };
 
         std::pair<std::vector<size_t>, Almanac> ParseInput(const std::vector<std::string>& input);

@@ -38,6 +38,10 @@ namespace AoC2023 {
             return v;
         }
 
+        void SourceMap::MergeIn(const SourceMap& other) {
+            this->destination = other.destination;
+        }
+
         Almanac::Almanac(const std::vector<std::string>& input) {
             size_t i = 1;
             while (++i < input.size()) {
@@ -54,6 +58,15 @@ namespace AoC2023 {
                 value = sourceMaps[source].Map(value);
                 source = sourceMaps[source].destination;
             } while (true);
+        }
+
+        void Almanac::Flatten(const std::string& start) {
+            SourceMap& combinedMap = sourceMaps[start];
+            while (sourceMaps.size() != 1) {
+                auto oldDestination = combinedMap.destination;
+                combinedMap.MergeIn(sourceMaps[oldDestination]);
+                sourceMaps.erase(oldDestination);
+            }
         }
 
 
@@ -92,13 +105,9 @@ namespace AoC2023 {
             auto startTime = std::chrono::high_resolution_clock::now();
 
             auto [seeds, almanac] = ParseInput(input);
+            almanac.Flatten("seed");
 
             size_t score = std::numeric_limits<size_t>::max();
-            for (size_t i = 0; i < seeds.size(); i += 2) {
-                for (size_t j = 0; j <= seeds[i + 1] - 1; j++) {
-                    score = std::min(score, almanac.Traverse("seed", "location", seeds[i] + j));
-                }
-            }
 
             auto endTime = std::chrono::high_resolution_clock::now();
             return { score, endTime - startTime };
