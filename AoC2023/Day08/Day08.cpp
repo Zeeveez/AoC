@@ -1,6 +1,7 @@
 #include "Day08.h"
 
 #include <iostream>
+#include <numeric>
 
 namespace AoC2023 {
     namespace Day08 {
@@ -53,7 +54,7 @@ namespace AoC2023 {
                         pos = paths.at(pos).second;
                     }
                 }
-                score = std::_Lcm(score, distance);
+                score = std::lcm(score, distance);
             }
 
             auto endTime = std::chrono::high_resolution_clock::now();
