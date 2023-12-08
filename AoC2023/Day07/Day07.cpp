@@ -4,20 +4,7 @@
 
 namespace AoC2023 {
     namespace Day07 {
-        Hand::Hand(const std::string& input, bool partB) {
-            std::istringstream iss(input);
-            std::string cardsString;
-            iss >> cardsString;
-            cards = std::vector<char>(cardsString.begin(), cardsString.end());
-            iss >> bid;
-            LoadValue(partB);
-            LoadUniqueCards(partB);
-            LoadCardCounts(partB);
-            LoadType(partB);
-        }
-
-        void Hand::LoadValue(bool partB) {
-            std::unordered_map<char, int> cardToValueMap = {
+        std::unordered_map<char, int> cardToValueMap = {
                 { 'A', 14 },
                 { 'K', 13 },
                 { 'Q', 12 },
@@ -31,7 +18,21 @@ namespace AoC2023 {
                 { '4', 4 },
                 { '3', 3 },
                 { '2', 2 }
-            };
+        };
+
+        Hand::Hand(const std::string& input, bool partB) {
+            std::istringstream iss(input);
+            std::string cardsString;
+            iss >> cardsString;
+            cards = std::vector<char>(cardsString.begin(), cardsString.end());
+            iss >> bid;
+            LoadValue(partB);
+            LoadUniqueCards(partB);
+            LoadCardCounts(partB);
+            LoadType(partB);
+        }
+
+        void Hand::LoadValue(bool partB) {
             value = 0;
             for (auto& c : cards) {
                 value = value * 128 + cardToValueMap[c] + (partB && c == 'J' ? -10 : 0);
