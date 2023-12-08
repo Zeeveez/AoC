@@ -5,7 +5,7 @@
 #include <vector>
 #include <chrono>
 #include <string>
-#include <unordered_map>1
+#include <unordered_map>
 
 namespace AoC2023 {
     namespace Day08 {

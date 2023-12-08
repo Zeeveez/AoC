@@ -24,12 +24,7 @@ namespace AoC2023 {
 
             size_t pos = 0;         // AAA = 0
             while (pos != 17575) {  // ZZZ = 17575
-                if (input[0][score++ % input[0].length()] == 'L') {
-                    pos = paths.at(pos).first;
-                }
-                else {
-                    pos = paths.at(pos).second;
-                }
+                pos = input[0][score++ % input[0].length()] == 'L' ? paths.at(pos).first : paths.at(pos).second;
             }
 
             auto endtime = std::chrono::high_resolution_clock::now();
@@ -47,12 +42,7 @@ namespace AoC2023 {
                 size_t pos = start;
                 size_t distance = 0;
                 while (pos % 26 != 25) {
-                    if (input[0][distance++ % input[0].length()] == 'L') {
-                        pos = paths.at(pos).first;
-                    }
-                    else {
-                        pos = paths.at(pos).second;
-                    }
+                    pos = input[0][score++ % input[0].length()] == 'L' ? paths.at(pos).first : paths.at(pos).second;
                 }
                 score = std::lcm(score, distance);
             }
