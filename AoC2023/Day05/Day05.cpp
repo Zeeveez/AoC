@@ -39,9 +39,7 @@ namespace AoC2023 {
                 return { { }, { }, { } };
             }
 
-
             std::vector<RangeMap> unmappable = {};
-            std::vector<RangeMap> remapped = {};
             std::vector<RangeMap> leftOvers = {};
 
             // Cut off excess A at start
@@ -84,7 +82,7 @@ namespace AoC2023 {
                 leftOvers.push_back(b);
             }
 
-            return { unmappable, remapped, leftOvers };
+            return { unmappable, { }, leftOvers };
         }
 
         SourceMap::SourceMap(const std::vector<std::string>& input, size_t& i) {
