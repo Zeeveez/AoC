@@ -6,6 +6,7 @@
 #include <chrono>
 #include <string>
 #include <map>
+#include <optional>
 
 namespace AoC2023 {
     namespace Day05 {
@@ -17,10 +18,14 @@ namespace AoC2023 {
 
             RangeMap() = default;
             RangeMap(const std::string& input);
+            RangeMap(size_t destinationStart, size_t sourceStart, size_t size);
 
             bool Contains(size_t v);
             size_t Map(size_t v);
         };
+
+        std::tuple<std::vector<RangeMap>, std::vector<RangeMap>, std::vector<RangeMap>> ReMap(RangeMap a, RangeMap b);
+
 
         class SourceMap {
         public:

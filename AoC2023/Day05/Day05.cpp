@@ -11,6 +11,12 @@ namespace AoC2023 {
             iss >> size;
         }
 
+        RangeMap::RangeMap(size_t destinationStart, size_t sourceStart, size_t size) {
+            this->destinationStart = destinationStart;
+            this->sourceStart = sourceStart;
+            this->size = size;
+        }
+
         bool RangeMap::Contains(size_t v) {
             return v >= sourceStart
                 && v < sourceStart + size;
@@ -18,6 +24,67 @@ namespace AoC2023 {
 
         size_t RangeMap::Map(size_t v) {
             return destinationStart + v - sourceStart;
+        }
+
+        std::tuple<std::vector<RangeMap>, std::vector<RangeMap>, std::vector<RangeMap>> ReMap(RangeMap a, RangeMap b) {
+            if (a.destinationStart == b.sourceStart && a.size == b.size) {
+                a.destinationStart = b.destinationStart;
+                return { { }, { a }, { } };
+            }
+            // No overlap
+            if (a.destinationStart + a.size <= b.sourceStart) {
+                return { { }, { }, { } };
+            }
+            if (a.destinationStart >= b.sourceStart + b.size) {
+                return { { }, { }, { } };
+            }
+
+
+            std::vector<RangeMap> unmappable = {};
+            std::vector<RangeMap> remapped = {};
+            std::vector<RangeMap> leftOvers = {};
+
+            // Cut off excess A at start
+            if (a.destinationStart < b.sourceStart) {
+                auto missedSize = b.sourceStart - a.destinationStart;
+                unmappable.push_back(RangeMap(a.destinationStart, a.sourceStart, missedSize));
+                a.sourceStart += missedSize;
+                a.destinationStart += missedSize;
+                a.size -= missedSize;
+                unmappable.push_back(a);
+                leftOvers.push_back(b);
+            }
+
+            // Cut off excess B at start
+            else if (b.sourceStart < a.destinationStart) {
+                auto missedSize = a.destinationStart - b.sourceStart;
+                leftOvers.push_back(RangeMap(b.destinationStart, b.sourceStart, missedSize));
+                b.sourceStart += missedSize;
+                b.destinationStart += missedSize;
+                b.size -= missedSize;
+                unmappable.push_back(a);
+                leftOvers.push_back(b);
+            }
+
+            // Cut off excess A at end
+            else if (b.sourceStart + b.size > a.destinationStart) {
+                auto missedSize = a.destinationStart + a.size - b.sourceStart - b.size;
+                unmappable.push_back(RangeMap(a.destinationStart + a.size - missedSize, a.sourceStart + a.size - missedSize, missedSize));
+                a.size -= missedSize;
+                unmappable.push_back(a);
+                leftOvers.push_back(b);
+            }
+
+            // Cut off excess B at start
+            else if (a.destinationStart + b.size > b.sourceStart) {
+                auto missedSize = a.destinationStart - b.sourceStart;
+                leftOvers.push_back(RangeMap(b.destinationStart + b.size - + missedSize, b.sourceStart + b.size - missedSize, missedSize));
+                b.size -= missedSize;
+                unmappable.push_back(a);
+                leftOvers.push_back(b);
+            }
+
+            return { unmappable, remapped, leftOvers };
         }
 
         SourceMap::SourceMap(const std::vector<std::string>& input, size_t& i) {
@@ -39,6 +106,36 @@ namespace AoC2023 {
         }
 
         void SourceMap::MergeIn(const SourceMap& other) {
+            std::vector<RangeMap> newMaps = {};
+            std::vector<RangeMap> mapsToProcess = maps;
+            std::vector<RangeMap> otherMapsToProcess = other.maps;
+
+            while (mapsToProcess.size() && otherMapsToProcess.size()) {
+                auto map = mapsToProcess[mapsToProcess.size() - 1]; mapsToProcess.pop_back();
+
+                std::vector<RangeMap> newOtherMapsToProcess = {};
+                for (size_t i = 0; i < otherMapsToProcess.size(); i++) {
+                    auto otherMap = otherMapsToProcess[i];
+
+                    auto [unmappable, remapped, leftOvers] = ReMap(map, otherMap);
+                    if (unmappable.size() || remapped.size() || leftOvers.size()) {
+                        mapsToProcess.insert(mapsToProcess.begin(), unmappable.begin(), unmappable.end());
+                        newMaps.insert(newMaps.begin(), remapped.begin(), remapped.end());
+                        otherMapsToProcess.erase(otherMapsToProcess.begin() + i);
+                        otherMapsToProcess.insert(otherMapsToProcess.begin(), leftOvers.begin(), leftOvers.end());
+                        goto mapProcessed;
+                    }
+                }
+
+                // No overlap
+                newMaps.push_back(map);
+
+            mapProcessed:;
+            }
+
+            newMaps.insert(newMaps.begin(), mapsToProcess.begin(), mapsToProcess.end());
+            newMaps.insert(newMaps.begin(), otherMapsToProcess.begin(), otherMapsToProcess.end());
+            this->maps = newMaps;
             this->destination = other.destination;
         }
 
@@ -91,7 +188,7 @@ namespace AoC2023 {
             auto starttime = std::chrono::high_resolution_clock::now();
 
             auto [seeds, almanac] = ParseInput(input);
-
+            
             size_t score = std::numeric_limits<size_t>::max();
             for (auto& seed : seeds) {
                 score = std::min(score, almanac.Traverse("seed", "location", seed));
@@ -108,6 +205,16 @@ namespace AoC2023 {
             almanac.Flatten("seed");
 
             size_t score = std::numeric_limits<size_t>::max();
+            for (size_t i = 0; i < seeds.size(); i += 2) {
+                size_t minSeed = seeds[i];
+                size_t range = seeds[i + 1];
+                for (auto& map : almanac.sourceMaps["seed"].maps) {
+                    if (map.sourceStart < minSeed + range && minSeed < map.sourceStart + map.size) {
+                        size_t seed = std::max(std::min(map.sourceStart, minSeed + range - 1), std::min(minSeed, map.sourceStart + map.size - 1));
+                        score = std::min(score, almanac.Traverse("seed", "location", seed));
+                    }
+                }
+            }
 
             auto endTime = std::chrono::high_resolution_clock::now();
             return { score, endTime - startTime };

@@ -29,7 +29,6 @@ int main()
     std::cout << "Day 05 - A (" << std::format("{:10.4f}", D05P1.second.count()) << "ms): " << D05P1.first << "\n";
     auto D05P2 = AoC2023::Day05::B(AoC::Helpers::ReadLines("./Day05.txt"));
     std::cout << "Day 05 - B (" << std::format("{:10.4f}", D05P2.second.count()) << "ms): " << D05P2.first << "\n";
-    std::cout << "^^^^^^^^^^^^^^^^^^^^TODO^^^^^^^^^^^^^^^^^^^^^^^\n";
 
     auto D06P1 = AoC2023::Day06::A(AoC::Helpers::ReadLines("./Day06.txt"));
     std::cout << "Day 06 - A (" << std::format("{:10.4f}", D06P1.second.count()) << "ms): " << D06P1.first << "\n";
