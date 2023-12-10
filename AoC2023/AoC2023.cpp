@@ -50,6 +50,11 @@ int main()
     auto D09P2 = AoC2023::Day09::B(AoC::Helpers::ReadLines("./Day09.txt"));
     std::cout << "Day 09 - B (" << std::format("{:10.4f}", D09P2.second.count()) << "ms): " << D09P2.first << "\n";
 
+    auto D10P1 = AoC2023::Day10::A(AoC::Helpers::ReadLines("./Day10.txt"));
+    std::cout << "Day 10 - A (" << std::format("{:10.4f}", D10P1.second.count()) << "ms): " << D10P1.first << "\n";
+    auto D10P2 = AoC2023::Day10::B(AoC::Helpers::ReadLines("./Day10.txt"));
+    std::cout << "Day 10 - B (" << std::format("{:10.4f}", D10P2.second.count()) << "ms): " << D10P2.first << "\n";
+
     auto total = D01P1.second + D01P2.second
         + D02P1.second + D02P2.second
         + D03P1.second + D03P2.second
@@ -58,7 +63,8 @@ int main()
         + D06P1.second + D06P2.second
         + D07P1.second + D07P2.second
         + D08P1.second + D08P2.second
-        + D09P1.second + D09P2.second;
+        + D09P1.second + D09P2.second
+        + D10P1.second + D10P2.second;
 
     std::cout << "\nTotal Time: " << std::format("{:10.4f}", total.count()) << "ms\n";
 }

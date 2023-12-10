@@ -1,5 +1,5 @@
-#ifndef DAY09_H
-#define DAY09_H
+#ifndef DAY10_H
+#define DAY10_H
 
 #include <cstdint>
 #include <vector>
@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <functional>
 
-namespace AoC2023::Day09 {
+namespace AoC2023::Day10 {
     typedef std::function<int64_t(const std::vector<int64_t>& data, const std::vector<int64_t>& newData, bool all0s)> ExtrapolationFunction;
 
     std::vector<int64_t> ParseLine(const std::string& input);

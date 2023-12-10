@@ -1,9 +1,9 @@
-#include "Day09.h"
+#include "Day10.h"
 
 #include <iostream>
 #include <numeric>
 
-namespace AoC2023::Day09 {
+namespace AoC2023::Day10 {
     std::vector<int64_t> ParseLine(const std::string& input) {
         std::vector<int64_t> data = {};
 
