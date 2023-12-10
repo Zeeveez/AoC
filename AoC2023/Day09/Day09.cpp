@@ -17,7 +17,7 @@ namespace AoC2023 {
             return data;
         }
 
-        int64_t ProcessA(const std::vector<int64_t>& data) {
+        int64_t Process(const std::vector<int64_t>& data, const ExtrapolationFunction& extrapFunc) {
             bool all0s = true;
 
             std::vector<int64_t> newData = {};
@@ -27,60 +27,48 @@ namespace AoC2023 {
                     all0s = false;
                 }
             }
-            
+
+            return extrapFunc(data, newData, all0s);
+        }
+
+        int64_t ExtrapolateA(const std::vector<int64_t>& data, const std::vector<int64_t>& newData, bool all0s) {
             if (all0s) {
                 return data[data.size() - 1];
             }
             else {
-                return data[data.size() - 1] + ProcessA(newData);
+                return data[data.size() - 1] + Process(newData, ExtrapolateA);
             }
         }
 
-        int64_t ProcessB(const std::vector<int64_t>& data) {
-            bool all0s = true;
-
-            std::vector<int64_t> newData = {};
-            for (size_t i = 0; i < data.size() - 1; i++) {
-                newData.push_back(data[i + 1] - data[i]);
-                if (newData[newData.size() - 1] != 0) {
-                    all0s = false;
-                }
-            }
-
+        int64_t ExtrapolateB(const std::vector<int64_t>& data, const std::vector<int64_t>& newData, bool all0s) {
             if (all0s) {
                 return data[0];
             }
             else {
-                return data[0] - ProcessB(newData);
+                return data[0] - Process(newData, ExtrapolateB);
             }
         }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+        std::pair<uint64_t, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, const ExtrapolationFunction& extrapFunc) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
             int64_t score = 0;
-            for (auto& line: input) {
+            for (auto& line : input) {
                 auto data = ParseLine(line);
 
-                score += ProcessA(data);
+                score += Process(data, extrapFunc);
             }
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { score, endtime - starttime };
         }
 
+        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+            return Solve(input, ExtrapolateA);
+        }
+
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-            auto startTime = std::chrono::high_resolution_clock::now();
-
-            int64_t score = 0;
-            for (auto& line : input) {
-                auto data = ParseLine(line);
-
-                score += ProcessB(data);
-            }
-
-            auto endTime = std::chrono::high_resolution_clock::now();
-            return { score, endTime - startTime };
+            return Solve(input, ExtrapolateB);
         }
     }
 }
