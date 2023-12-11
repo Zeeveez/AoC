@@ -48,7 +48,7 @@ namespace AoC2023::Day10 {
 
     size_t InflateAndFillGrid(const std::vector<std::vector<Pipe>>& grid) {
         std::vector<std::vector<int>> output = {};
-        output.push_back({0,0,0,0,0,0});
+        output.push_back({ 0,0,0,0,0,0 });
         output.push_back({ 0,0,0,0,0,0 });
         output.push_back({ 0,0,0,0,0,0 });
         for (size_t x = 0; x < grid[0].size(); x++) {
