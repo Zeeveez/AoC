@@ -103,7 +103,7 @@ namespace AoC2023::Day12 {
 
     std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
         auto parseStart = std::chrono::high_resolution_clock::now();
-        auto springRows = ParseInput(input, true);
+        auto springRows = ParseInput(input/*, true*/);
         auto parseEnd = std::chrono::high_resolution_clock::now();
 
         auto startTime = std::chrono::high_resolution_clock::now();

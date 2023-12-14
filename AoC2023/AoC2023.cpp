@@ -75,13 +75,18 @@ int main()
 
     auto D12P1 = AoC2023::Day12::A(AoC::Helpers::ReadLines("./Day12.txt"));
     Output(12, 'A', D12P1);
-    //auto D12P2 = AoC2023::Day12::B(AoC::Helpers::ReadLines("./Day12.txt"));
-    //std::cout << "Day 12 - B (" << std::format("{:10.4f}", D12P2.second.count()) << "ms): " << D12P2.first << "\n";
+    auto D12P2 = AoC2023::Day12::B(AoC::Helpers::ReadLines("./Day12.txt"));
+    Output(12, 'B', D12P2);
 
     auto D13P1 = AoC2023::Day13::A(AoC::Helpers::ReadLines("./Day13.txt"));
     Output(13, 'A', D13P1);
     auto D13P2 = AoC2023::Day13::B(AoC::Helpers::ReadLines("./Day13.txt"));
     Output(13, 'B', D13P2);
+
+    auto D14P1 = AoC2023::Day14::A(AoC::Helpers::ReadLines("./Day14.txt"));
+    Output(14, 'A', D14P1);
+    auto D14P2 = AoC2023::Day14::B(AoC::Helpers::ReadLines("./Day14.txt"));
+    Output(14, 'B', D14P2);
 
     auto totalParseTime = std::get<1>(D01P1) + std::get<1>(D01P2)
         + std::get<1>(D02P1) + std::get<1>(D02P2)
@@ -94,8 +99,9 @@ int main()
         + std::get<1>(D09P1) + std::get<1>(D09P2)
         + std::get<1>(D10P1) + std::get<1>(D10P2)
         + std::get<1>(D11P1) + std::get<1>(D11P2)
-        + std::get<1>(D12P1) //+ std::get<1>(D12P2)
-        + std::get<1>(D13P1) + std::get<1>(D13P2);
+        + std::get<1>(D12P1) + std::get<1>(D12P2)
+        + std::get<1>(D13P1) + std::get<1>(D13P2)
+        + std::get<1>(D14P1) + std::get<1>(D14P2);
 
     auto totalRunTime = std::get<2>(D01P1) + std::get<2>(D01P2)
         + std::get<2>(D02P1) + std::get<2>(D02P2)
@@ -108,12 +114,15 @@ int main()
         + std::get<2>(D09P1) + std::get<2>(D09P2)
         + std::get<2>(D10P1) + std::get<2>(D10P2)
         + std::get<2>(D11P1) + std::get<2>(D11P2)
-        + std::get<2>(D12P1) //+ std::get<2>(D12P2)
-        + std::get<2>(D13P1) + std::get<2>(D13P2);
+        + std::get<2>(D12P1) + std::get<2>(D12P2)
+        + std::get<2>(D13P1) + std::get<2>(D13P2)
+        +std::get<2>(D14P1) + std::get<2>(D14P2);
 
 
     std::cout << std::format("\n    Totals:  {:10.4f}ms + {:10.4f}ms : {:.4f}ms\n",
                              totalParseTime.count(),
                              totalRunTime.count(),
                              (totalParseTime + totalRunTime).count());
+
+    std::cout << "\n12B Pending\n";
 }
