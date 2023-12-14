@@ -47,8 +47,11 @@ namespace AoC2023::Day09 {
         }
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, const ExtrapolationFunction& extrapFunc) {
-        auto starttime = std::chrono::high_resolution_clock::now();
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, const ExtrapolationFunction& extrapFunc) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
 
         int64_t score = 0;
         for (auto& line : input) {
@@ -57,15 +60,15 @@ namespace AoC2023::Day09 {
             score += Process(data, extrapFunc);
         }
 
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { score, endtime - starttime };
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
         return Solve(input, ExtrapolateA);
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
         return Solve(input, ExtrapolateB);
     }
 }

@@ -59,12 +59,14 @@ namespace AoC2023::Day02 {
         return games;
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto starttime = std::chrono::high_resolution_clock::now();
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
+        auto games = ParseInput(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
 
         size_t score = 0;
-        auto games = ParseInput(input);
-
         for (size_t i = 0; i < games.size(); i++) {
             for (auto& round : games[i]) {
                 size_t reds = round.contains(Color::RED) ? round[Color::RED] : 0;
@@ -79,16 +81,18 @@ namespace AoC2023::Day02 {
         }
 
 
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { score, endtime - starttime };
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
+        auto games = ParseInput(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
         auto startTime = std::chrono::high_resolution_clock::now();
 
         size_t score = 0;
-        auto games = ParseInput(input);
-
         for (size_t i = 0; i < games.size(); i++) {
             std::unordered_map<Color, int> mins = {
                 { Color::RED, 0 },
@@ -105,6 +109,6 @@ namespace AoC2023::Day02 {
         }
 
         auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, endTime - startTime };
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

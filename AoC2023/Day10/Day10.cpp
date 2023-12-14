@@ -235,25 +235,31 @@ namespace AoC2023::Day10 {
         return visited;
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
         auto grid = ParseGrid(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+
         auto start = FindStart(grid);
         auto path = FindPath(grid, start);
         auto score = path.size() / 2;   // Furthest difference through a loop is half its size
 
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { score, endtime - starttime };
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
         auto grid = ParseGrid(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+
         uint64_t score = InflateAndFillGrid(grid);
 
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { score, endtime - starttime };
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

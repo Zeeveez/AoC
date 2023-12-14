@@ -49,10 +49,12 @@ namespace AoC2023::Day04 {
         return winnerCount;
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
         auto cards = ParseInput(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
 
         uint64_t score = 0;
         for (auto& card : cards) {
@@ -62,14 +64,16 @@ namespace AoC2023::Day04 {
             }
         }
 
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { score, endtime - starttime };
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
         auto cards = ParseInput(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
 
         std::vector<int> cardCounts = {};
         for (size_t i = 0; i < cards.size(); i++) {
@@ -90,6 +94,6 @@ namespace AoC2023::Day04 {
 
 
         auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, endTime - startTime };
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

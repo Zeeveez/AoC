@@ -39,10 +39,13 @@ namespace AoC2023::Day11 {
         return { widthExpansions, heightExpansions };
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, int64_t expansionAmount) {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, int64_t expansionAmount) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
         auto universe = LoadUniverse(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+
         auto expansions = GetExpansionsPerDimension(universe, input[0].size(), input.size());
 
         uint64_t score = 0;
@@ -63,16 +66,16 @@ namespace AoC2023::Day11 {
             }
         }
 
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { score, endtime - starttime };
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
         return Solve(input, 1);
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
         return Solve(input, 999999);
     }
 }

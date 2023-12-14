@@ -15,10 +15,13 @@ namespace AoC2023::Day08 {
         return paths;
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
         auto paths = LoadPaths(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+
         size_t score = 0;
 
         size_t pos = 0;         // AAA = 0
@@ -26,14 +29,17 @@ namespace AoC2023::Day08 {
             pos = input[0][score++ % input[0].length()] == 'L' ? paths.at(pos).first : paths.at(pos).second;
         }
 
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { score, endtime - starttime };
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
+        auto paths = LoadPaths(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
         auto startTime = std::chrono::high_resolution_clock::now();
 
-        auto paths = LoadPaths(input);
         uint64_t score = 1;
 
         for (auto& [start, _] : paths) {
@@ -47,6 +53,6 @@ namespace AoC2023::Day08 {
         }
 
         auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, endTime - startTime };
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

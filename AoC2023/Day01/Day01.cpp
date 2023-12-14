@@ -27,29 +27,35 @@ namespace AoC2023::Day01 {
         return digits;
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto starttime = std::chrono::high_resolution_clock::now();
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
+        auto parseEnd = std::chrono::high_resolution_clock::now();
 
-        uint64_t s = 0;
-        for (auto& l : input) {
-            auto digits = GetDigits(l);
-            s += digits[0] * 10 + digits[digits.size() - 1];
-        }
-
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { s, endtime - starttime };
-    }
-
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
         auto startTime = std::chrono::high_resolution_clock::now();
 
-        uint64_t s = 0;
+        uint64_t score = 0;
         for (auto& l : input) {
-            auto digits = GetDigits(l, true);
-            s += digits[0] * 10 + digits[digits.size() - 1];
+            auto digits = GetDigits(l);
+            score += digits[0] * 10 + digits[digits.size() - 1];
         }
 
         auto endTime = std::chrono::high_resolution_clock::now();
-        return { s, endTime - startTime };
+        return { score, parseEnd - parseStart, endTime - startTime };
+    }
+
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+
+        uint64_t score = 0;
+        for (auto& l : input) {
+            auto digits = GetDigits(l, true);
+            score += digits[0] * 10 + digits[digits.size() - 1];
+        }
+
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

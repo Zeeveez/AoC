@@ -181,24 +181,29 @@ namespace AoC2023::Day05 {
         return { seeds, almanac };
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
         auto [seeds, almanac] = ParseInput(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
 
         size_t score = std::numeric_limits<size_t>::max();
         for (auto& seed : seeds) {
             score = std::min(score, almanac.Traverse("seed", "location", seed));
         }
 
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { score, endtime - starttime };
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
+        auto [seeds, almanac] = ParseInput(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
         auto startTime = std::chrono::high_resolution_clock::now();
 
-        auto [seeds, almanac] = ParseInput(input);
         almanac.Flatten("seed");
 
         size_t score = std::numeric_limits<size_t>::max();
@@ -214,6 +219,6 @@ namespace AoC2023::Day05 {
         }
 
         auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, endTime - startTime };
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

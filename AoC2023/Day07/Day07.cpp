@@ -189,25 +189,13 @@ namespace AoC2023::Day07 {
         return hands;
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
         auto hands = ParseInput(input);
-        std::sort(hands.begin(), hands.end());
+        auto parseEnd = std::chrono::high_resolution_clock::now();
 
-        uint64_t score = 0;
-        for (size_t i = 0; i < hands.size(); i++) {
-            score += (i + 1) * hands[i].bid;
-        }
-
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { score, endtime - starttime };
-    }
-
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
         auto startTime = std::chrono::high_resolution_clock::now();
 
-        auto hands = ParseInput(input, true);
         std::sort(hands.begin(), hands.end());
 
         uint64_t score = 0;
@@ -216,6 +204,24 @@ namespace AoC2023::Day07 {
         }
 
         auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, endTime - startTime };
+        return { score, parseEnd - parseStart, endTime - startTime };
+    }
+
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
+        auto hands = ParseInput(input, true);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+
+        std::sort(hands.begin(), hands.end());
+
+        uint64_t score = 0;
+        for (size_t i = 0; i < hands.size(); i++) {
+            score += (i + 1) * hands[i].bid;
+        }
+
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

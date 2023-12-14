@@ -32,7 +32,7 @@ namespace AoC2023::Day10 {
     std::set<std::pair<size_t, size_t>> FindPath(const std::vector<std::vector<Pipe>>& grid, const std::pair<size_t, size_t>& pos);
     uint64_t FindVolume(const std::vector<std::vector<Pipe>>& grid, const std::set<std::pair<size_t, size_t>>& path);
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
 }
 #endif

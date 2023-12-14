@@ -17,7 +17,7 @@ namespace AoC2023::Day13 {
     int GetVerticalReflection(const std::vector<std::vector<bool>>& grid);
     int GetVerticalReflectionB(std::vector<std::vector<bool>>& grid);
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
 }
 #endif

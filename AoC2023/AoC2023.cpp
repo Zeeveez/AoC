@@ -3,86 +3,117 @@
 
 #include "AoC2023.h"
 
+void Output(int day, char part, std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> res) {
+    std::cout
+        << std::format("Day {:02} - {}: ({:10.4f}ms + {:10.4f}ms): ",
+                       day,
+                       part,
+                       std::get<1>(res).count(),
+                       std::get<2>(res).count())
+        << std::get<0>(res) << "\n";
+
+}
+
 int main()
 {
+    std::cout << "Day ## - #: (  Parse Time +     Run Time):\n";
+    std::cout << "-----------------------------------------\n";
     auto D01P1 = AoC2023::Day01::A(AoC::Helpers::ReadLines("./Day01.txt"));
-    std::cout << "Day 01 - A (" << std::format("{:10.4f}", D01P1.second.count()) << "ms): " << D01P1.first << "\n";
+    Output(1, 'A', D01P1);
     auto D01P2 = AoC2023::Day01::B(AoC::Helpers::ReadLines("./Day01.txt"));
-    std::cout << "Day 01 - B (" << std::format("{:10.4f}", D01P2.second.count()) << "ms): " << D01P2.first << "\n";
+    Output(1, 'B', D01P2);
 
     auto D02P1 = AoC2023::Day02::A(AoC::Helpers::ReadLines("./Day02.txt"));
-    std::cout << "Day 02 - A (" << std::format("{:10.4f}", D02P1.second.count()) << "ms): " << D02P1.first << "\n";
+    Output(2, 'A', D02P1);
     auto D02P2 = AoC2023::Day02::B(AoC::Helpers::ReadLines("./Day02.txt"));
-    std::cout << "Day 02 - B (" << std::format("{:10.4f}", D02P2.second.count()) << "ms): " << D02P2.first << "\n";
+    Output(2, 'B', D02P2);
 
     auto D03P1 = AoC2023::Day03::A(AoC::Helpers::ReadLines("./Day03.txt"));
-    std::cout << "Day 03 - A (" << std::format("{:10.4f}", D03P1.second.count()) << "ms): " << D03P1.first << "\n";
+    Output(3, 'A', D03P1);
     auto D03P2 = AoC2023::Day03::B(AoC::Helpers::ReadLines("./Day03.txt"));
-    std::cout << "Day 03 - B (" << std::format("{:10.4f}", D03P2.second.count()) << "ms): " << D03P2.first << "\n";
+    Output(3, 'B', D03P2);
 
     auto D04P1 = AoC2023::Day04::A(AoC::Helpers::ReadLines("./Day04.txt"));
-    std::cout << "Day 04 - A (" << std::format("{:10.4f}", D04P1.second.count()) << "ms): " << D04P1.first << "\n";
+    Output(4, 'A', D04P1);
     auto D04P2 = AoC2023::Day04::B(AoC::Helpers::ReadLines("./Day04.txt"));
-    std::cout << "Day 04 - B (" << std::format("{:10.4f}", D04P2.second.count()) << "ms): " << D04P2.first << "\n";
+    Output(4, 'B', D04P2);
 
     auto D05P1 = AoC2023::Day05::A(AoC::Helpers::ReadLines("./Day05.txt"));
-    std::cout << "Day 05 - A (" << std::format("{:10.4f}", D05P1.second.count()) << "ms): " << D05P1.first << "\n";
+    Output(5, 'A', D05P1);
     auto D05P2 = AoC2023::Day05::B(AoC::Helpers::ReadLines("./Day05.txt"));
-    std::cout << "Day 05 - B (" << std::format("{:10.4f}", D05P2.second.count()) << "ms): " << D05P2.first << "\n";
+    Output(5, 'B', D05P2);
 
     auto D06P1 = AoC2023::Day06::A(AoC::Helpers::ReadLines("./Day06.txt"));
-    std::cout << "Day 06 - A (" << std::format("{:10.4f}", D06P1.second.count()) << "ms): " << D06P1.first << "\n";
+    Output(6, 'A', D06P1);
     auto D06P2 = AoC2023::Day06::B(AoC::Helpers::ReadLines("./Day06.txt"));
-    std::cout << "Day 06 - B (" << std::format("{:10.4f}", D06P2.second.count()) << "ms): " << D06P2.first << "\n";
+    Output(06, 'B', D06P2);
 
     auto D07P1 = AoC2023::Day07::A(AoC::Helpers::ReadLines("./Day07.txt"));
-    std::cout << "Day 07 - A (" << std::format("{:10.4f}", D07P1.second.count()) << "ms): " << D07P1.first << "\n";
+    Output(07, 'A', D07P1);
     auto D07P2 = AoC2023::Day07::B(AoC::Helpers::ReadLines("./Day07.txt"));
-    std::cout << "Day 07 - B (" << std::format("{:10.4f}", D07P2.second.count()) << "ms): " << D07P2.first << "\n";
+    Output(07, 'B', D07P2);
 
     auto D08P1 = AoC2023::Day08::A(AoC::Helpers::ReadLines("./Day08.txt"));
-    std::cout << "Day 08 - A (" << std::format("{:10.4f}", D08P1.second.count()) << "ms): " << D08P1.first << "\n";
+    Output(8, 'A', D08P1);
     auto D08P2 = AoC2023::Day08::B(AoC::Helpers::ReadLines("./Day08.txt"));
-    std::cout << "Day 08 - B (" << std::format("{:10.4f}", D08P2.second.count()) << "ms): " << D08P2.first << "\n";
+    Output(8, 'B', D08P2);
 
     auto D09P1 = AoC2023::Day09::A(AoC::Helpers::ReadLines("./Day09.txt"));
-    std::cout << "Day 09 - A (" << std::format("{:10.4f}", D09P1.second.count()) << "ms): " << D09P1.first << "\n";
+    Output(9, 'A', D09P1);
     auto D09P2 = AoC2023::Day09::B(AoC::Helpers::ReadLines("./Day09.txt"));
-    std::cout << "Day 09 - B (" << std::format("{:10.4f}", D09P2.second.count()) << "ms): " << D09P2.first << "\n";
+    Output(9, 'B', D09P2);
 
     auto D10P1 = AoC2023::Day10::A(AoC::Helpers::ReadLines("./Day10.txt"));
-    std::cout << "Day 10 - A (" << std::format("{:10.4f}", D10P1.second.count()) << "ms): " << D10P1.first << "\n";
+    Output(10, 'A', D10P1);
     auto D10P2 = AoC2023::Day10::B(AoC::Helpers::ReadLines("./Day10.txt"));
-    std::cout << "Day 10 - B (" << std::format("{:10.4f}", D10P2.second.count()) << "ms): " << D10P2.first << "\n";
+    Output(10, 'B', D10P2);
 
     auto D11P1 = AoC2023::Day11::A(AoC::Helpers::ReadLines("./Day11.txt"));
-    std::cout << "Day 11 - A (" << std::format("{:10.4f}", D11P1.second.count()) << "ms): " << D11P1.first << "\n";
+    Output(11, 'A', D11P1);
     auto D11P2 = AoC2023::Day11::B(AoC::Helpers::ReadLines("./Day11.txt"));
-    std::cout << "Day 11 - B (" << std::format("{:10.4f}", D11P2.second.count()) << "ms): " << D11P2.first << "\n";
+    Output(11, 'B', D11P2);
 
     auto D12P1 = AoC2023::Day12::A(AoC::Helpers::ReadLines("./Day12.txt"));
-    std::cout << "Day 12 - A (" << std::format("{:10.4f}", D12P1.second.count()) << "ms): " << D12P1.first << "\n";
+    Output(12, 'A', D12P1);
     //auto D12P2 = AoC2023::Day12::B(AoC::Helpers::ReadLines("./Day12.txt"));
     //std::cout << "Day 12 - B (" << std::format("{:10.4f}", D12P2.second.count()) << "ms): " << D12P2.first << "\n";
 
     auto D13P1 = AoC2023::Day13::A(AoC::Helpers::ReadLines("./Day13.txt"));
-    std::cout << "Day 13 - A (" << std::format("{:10.4f}", D13P1.second.count()) << "ms): " << D13P1.first << "\n";
+    Output(13, 'A', D13P1);
     auto D13P2 = AoC2023::Day13::B(AoC::Helpers::ReadLines("./Day13.txt"));
-    std::cout << "Day 13 - B (" << std::format("{:10.4f}", D13P2.second.count()) << "ms): " << D13P2.first << "\n";
+    Output(13, 'B', D13P2);
 
-    auto total = D01P1.second + D01P2.second
-        + D02P1.second + D02P2.second
-        + D03P1.second + D03P2.second
-        + D04P1.second + D04P2.second
-        + D05P1.second + D05P2.second
-        + D06P1.second + D06P2.second
-        + D07P1.second + D07P2.second
-        + D08P1.second + D08P2.second
-        + D09P1.second + D09P2.second
-        + D10P1.second + D10P2.second
-        + D11P1.second + D11P2.second
-        + D12P1.second //+ D12P2.second
-        + D13P1.second + D13P2.second;
+    auto totalParseTime = std::get<1>(D01P1) + std::get<1>(D01P2)
+        + std::get<1>(D02P1) + std::get<1>(D02P2)
+        + std::get<1>(D03P1) + std::get<1>(D03P2)
+        + std::get<1>(D04P1) + std::get<1>(D04P2)
+        + std::get<1>(D05P1) + std::get<1>(D05P2)
+        + std::get<1>(D06P1) + std::get<1>(D06P2)
+        + std::get<1>(D07P1) + std::get<1>(D07P2)
+        + std::get<1>(D08P1) + std::get<1>(D08P2)
+        + std::get<1>(D09P1) + std::get<1>(D09P2)
+        + std::get<1>(D10P1) + std::get<1>(D10P2)
+        + std::get<1>(D11P1) + std::get<1>(D11P2)
+        + std::get<1>(D12P1) //+ std::get<1>(D12P2)
+        + std::get<1>(D13P1) + std::get<1>(D13P2);
 
-    std::cout << "\nTotal Time: " << std::format("{:10.4f}", total.count()) << "ms\n";
+    auto totalRunTime = std::get<2>(D01P1) + std::get<2>(D01P2)
+        + std::get<2>(D02P1) + std::get<2>(D02P2)
+        + std::get<2>(D03P1) + std::get<2>(D03P2)
+        + std::get<2>(D04P1) + std::get<2>(D04P2)
+        + std::get<2>(D05P1) + std::get<2>(D05P2)
+        + std::get<2>(D06P1) + std::get<2>(D06P2)
+        + std::get<2>(D07P1) + std::get<2>(D07P2)
+        + std::get<2>(D08P1) + std::get<2>(D08P2)
+        + std::get<2>(D09P1) + std::get<2>(D09P2)
+        + std::get<2>(D10P1) + std::get<2>(D10P2)
+        + std::get<2>(D11P1) + std::get<2>(D11P2)
+        + std::get<2>(D12P1) //+ std::get<2>(D12P2)
+        + std::get<2>(D13P1) + std::get<2>(D13P2);
+
+
+    std::cout << std::format("\n    Totals:  {:10.4f}ms + {:10.4f}ms : {:.4f}ms\n",
+                             totalParseTime.count(),
+                             totalRunTime.count(),
+                             (totalParseTime + totalRunTime).count());
 }

@@ -57,11 +57,14 @@ namespace AoC2023::Day03 {
         return partNoLists;
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
-        uint64_t score = 0;
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
         auto partNoLists = GetPartNumberLists(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+        
+        uint64_t score = 0;
 
         for (auto& kvp : partNoLists) {
             for (auto& part : kvp.second) {
@@ -69,15 +72,18 @@ namespace AoC2023::Day03 {
             }
         }
 
-        auto endtime = std::chrono::high_resolution_clock::now();
-        return { score, endtime - starttime };
+        auto endTime = std::chrono::high_resolution_clock::now();
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 
-    std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+        auto parseStart = std::chrono::high_resolution_clock::now();
+        auto partNoLists = GetPartNumberLists(input);
+        auto parseEnd = std::chrono::high_resolution_clock::now();
+
         auto startTime = std::chrono::high_resolution_clock::now();
 
         uint64_t score = 0;
-        auto partNoLists = GetPartNumberLists(input);
 
         for (auto& kvp : partNoLists) {
             if (input[kvp.first.second][kvp.first.first] == '*' && kvp.second.size() == 2) {
@@ -86,6 +92,6 @@ namespace AoC2023::Day03 {
         }
 
         auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, endTime - startTime };
+        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }
