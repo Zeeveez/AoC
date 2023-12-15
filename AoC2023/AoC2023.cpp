@@ -123,6 +123,4 @@ int main()
                              totalParseTime.count(),
                              totalRunTime.count(),
                              (totalParseTime + totalRunTime).count());
-
-    std::cout << "\n12B Pending\n";
 }
