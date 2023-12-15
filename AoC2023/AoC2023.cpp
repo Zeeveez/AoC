@@ -116,7 +116,7 @@ int main()
         + std::get<2>(D11P1) + std::get<2>(D11P2)
         + std::get<2>(D12P1) + std::get<2>(D12P2)
         + std::get<2>(D13P1) + std::get<2>(D13P2)
-        +std::get<2>(D14P1) + std::get<2>(D14P2);
+        + std::get<2>(D14P1) + std::get<2>(D14P2);
 
 
     std::cout << std::format("\n    Totals:  {:10.4f}ms + {:10.4f}ms : {:.4f}ms\n",

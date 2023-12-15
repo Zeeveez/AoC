@@ -2,77 +2,129 @@
 
 #include <iostream>
 #include <numeric>
+#include <regex>
+#include <algorithm>
 
 namespace AoC2023::Day12 {
     SpringRow::SpringRow(const std::string& input, bool partB) {
-        springs = {};
-        damagedSpringGroups = {};
+        auto baseSprings = input.substr(0, input.find(' '));
+        auto baseCounts = input.substr(input.find(' ') + 1);
+
+        std::string extendedSprings = "";
+        std::string counts = "";
 
         for (size_t i = 0; i < (partB ? 5 : 1); i++) {
-            int springGroup = 0;
-            for (auto& c : input) {
-                if (c == ' ') { continue; }
-                if (c >= '0' && c <= '9') {
-                    springGroup = springGroup * 10 + c - '0';
-                }
-                else if (c == ',') {
-                    damagedSpringGroups.push_back(springGroup);
-                    springGroup = 0;
-                }
-                else {
-                    springs.push_back(c);
-                }
+            extendedSprings += (i ? "?" : "") + baseSprings;
+            counts += (i ? "," : "") + baseCounts;
+        }
+
+        damagedSpringGroups = {};
+
+        for (auto& c : extendedSprings) {
+            if (c == '.' && springs.length() && springs.back() == '.') {
+                continue;
             }
-            damagedSpringGroups.push_back(springGroup);
+            springs.push_back(c);
+        }
+
+        std::string::const_iterator countSearch(counts.cbegin());
+        static const std::regex countRe("(\\d+)", std::regex::optimize);
+        std::smatch countMatch;
+        while (std::regex_search(countSearch, counts.cend(), countMatch, countRe)) {
+            damagedSpringGroups.push_back(std::stoi(countMatch[1]));
+            countSearch = countMatch.suffix().first;
         }
     }
 
-    bool SpringRow::CheckValid(const std::vector<char>& springRow) {
-        size_t currentGroupIdx = 0;
-        size_t currentGroupLength = 0;
-        for (size_t i = 0; i < springRow.size(); i++) {
-            if (springRow[i] == '.') {
-                if (currentGroupLength && currentGroupIdx >= damagedSpringGroups.size()) { return false; }
-                if (currentGroupLength && currentGroupLength != damagedSpringGroups[currentGroupIdx++]) {
-                    return false;
+    size_t SpringRow::CountPossibilities(size_t pos, size_t currentGroupIdx, size_t toFit) {
+        // Memoization
+        if (cache.contains({ pos, currentGroupIdx })) {
+            return cache[{pos, currentGroupIdx}];
+        }
+
+        // Captured all groups, check if valid
+        if (currentGroupIdx == damagedSpringGroups.size()) {
+            for (size_t i = pos; i < springs.length(); i++) {
+                if (springs[i] == '#') {
+                    cache[{pos, currentGroupIdx}] = 0;
+                    return 0;
                 }
-                currentGroupLength = 0;
             }
-            else {
-                currentGroupLength++;
-            }
+            cache[{pos, currentGroupIdx}] = 1;
+            return 1;
         }
 
-        return (currentGroupLength == 0 && currentGroupIdx == damagedSpringGroups.size())
-            || (currentGroupIdx == damagedSpringGroups.size() - 1 && currentGroupLength == damagedSpringGroups[currentGroupIdx]);
-    }
-
-    size_t SpringRow::SpringPossibilityCount(std::vector<char>& springRow) {
-        if (springRow.size() == springs.size()) {
-            return CheckValid(springRow) ? 1 : 0;
+        // End of string
+        if (pos >= springs.size()) {
+            cache[{pos, currentGroupIdx}] = 0;
+            return 0;
         }
 
-        if (springs[springRow.size()] == '?') {
+        // No way to fit groups
+        if (springs.size() - pos < toFit) {
+            cache[{pos, currentGroupIdx}] = 0;
+            return 0;
+        }
+
+        // Skip gaps
+        if (springs[pos] == '.') {
+            cache[{pos, currentGroupIdx}] = CountPossibilities(pos + 1, currentGroupIdx, toFit);
+            return cache[{pos, currentGroupIdx}];
+        }
+
+        // Forced group position
+        if (springs[pos] == '#') {
+            // Spring group doesn't end at expected position
+            if (springs[pos + damagedSpringGroups[currentGroupIdx]] == '#') {
+                cache[{pos, currentGroupIdx}] = 0;
+                return 0;
+            }
+
+            for (size_t offset = 1; offset < damagedSpringGroups[currentGroupIdx]; offset++) {
+                if (springs[pos + offset] == '.') {
+                    cache[{pos, currentGroupIdx}] = 0;
+                    return 0;
+                }
+            }
+
+            cache[{pos, currentGroupIdx}] = CountPossibilities(pos + damagedSpringGroups[currentGroupIdx] + 1, currentGroupIdx + 1, toFit - damagedSpringGroups[currentGroupIdx] - 1);
+            return cache[{pos, currentGroupIdx}];
+        }
+        else {
             size_t res = 0;
-            springRow.push_back('#');
-            res += SpringPossibilityCount(springRow);
-            springRow.pop_back();
-            springRow.push_back('.');
-            res += SpringPossibilityCount(springRow);
-            springRow.pop_back();
+            // Try #
+            bool shouldTry = true;
+            if (springs[pos + damagedSpringGroups[currentGroupIdx]] == '#') {
+                shouldTry = false;
+            }
+            if (shouldTry) {
+                for (size_t offset = 1; offset < damagedSpringGroups[currentGroupIdx]; offset++) {
+                    if (springs[pos + offset] == '.') {
+                        shouldTry = false;
+                        break;
+                    }
+                }
+            }
+            if (shouldTry) {
+                res += CountPossibilities(pos + damagedSpringGroups[currentGroupIdx] + 1, currentGroupIdx + 1, toFit - damagedSpringGroups[currentGroupIdx] - 1);
+            }
+
+
+            // Try .
+            res += CountPossibilities(pos + 1, currentGroupIdx, toFit);
+
+            cache[{pos, currentGroupIdx}] = res;
             return res;
         }
-
-        springRow.push_back(springs[springRow.size()]);
-        size_t res = SpringPossibilityCount(springRow);
-        springRow.pop_back();
-        return res;
     }
 
-    size_t SpringRow::SpringPossibilityCount() {
-        std::vector<char> springRow = {};
-        std::vector<char> springGroups = {};
-        return SpringPossibilityCount(springRow);
+    size_t SpringRow::CountPossibilities() {
+        size_t toFit = 0;
+        for (size_t i = 0; i < damagedSpringGroups.size(); i++) {
+            toFit += damagedSpringGroups[i];
+        }
+        toFit += damagedSpringGroups.size() - 1;
+        return CountPossibilities(0, 0, toFit);
     }
 
     std::vector<SpringRow> ParseInput(const std::vector<std::string>& input, bool partB) {
@@ -93,8 +145,7 @@ namespace AoC2023::Day12 {
 
         uint64_t score = 0;
         for (auto& springRow : springRows) {
-            size_t res = springRow.SpringPossibilityCount();
-            score += res;
+            score += springRow.CountPossibilities();
         }
 
         auto endTime = std::chrono::high_resolution_clock::now();
@@ -103,15 +154,14 @@ namespace AoC2023::Day12 {
 
     std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
         auto parseStart = std::chrono::high_resolution_clock::now();
-        auto springRows = ParseInput(input/*, true*/);
+        auto springRows = ParseInput(input, true);
         auto parseEnd = std::chrono::high_resolution_clock::now();
 
         auto startTime = std::chrono::high_resolution_clock::now();
 
         uint64_t score = 0;
         for (auto& springRow : springRows) {
-            size_t res = springRow.SpringPossibilityCount();
-            score += res;
+            score += springRow.CountPossibilities();
         }
 
         auto endTime = std::chrono::high_resolution_clock::now();

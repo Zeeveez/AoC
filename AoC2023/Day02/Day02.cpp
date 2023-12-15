@@ -1,6 +1,5 @@
 #include "Day02.h"
 
-#include <regex>
 #include <algorithm>
 
 namespace AoC2023::Day02 {
