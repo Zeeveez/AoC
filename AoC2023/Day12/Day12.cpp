@@ -135,10 +135,9 @@ namespace AoC2023::Day12 {
         return springs;
     }
 
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, bool partB) {
         auto parseStart = std::chrono::high_resolution_clock::now();
-        auto springRows = ParseInput(input);
+        auto springRows = ParseInput(input, partB);
         auto parseEnd = std::chrono::high_resolution_clock::now();
 
         auto startTime = std::chrono::high_resolution_clock::now();
@@ -152,19 +151,11 @@ namespace AoC2023::Day12 {
         return { score, parseEnd - parseStart, endTime - startTime };
     }
 
+    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+        return Solve(input);
+    }
+
     std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto springRows = ParseInput(input, true);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t score = 0;
-        for (auto& springRow : springRows) {
-            score += springRow.CountPossibilities();
-        }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
+        return Solve(input, true);
     }
 }
