@@ -22,5 +22,6 @@
 #include "Day14/Day14.h"
 #include "Day15/Day15.h"
 #include "Day16/Day16.h"
+#include "Day17/Day17.h"
 
 #endif
