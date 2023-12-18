@@ -103,6 +103,11 @@ int main()
     //auto D17P2 = AoC2023::Day17::B(AoC::Helpers::ReadLines("./Day17.txt"));
     //Output(17, 'B', D17P2);
 
+    auto D18P1 = AoC2023::Day18::A(AoC::Helpers::ReadLines("./Day18.txt"));
+    Output(18, 'A', D18P1);
+    auto D18P2 = AoC2023::Day18::B(AoC::Helpers::ReadLines("./Day18.txt"));
+    Output(18, 'B', D18P2);
+
     auto totalParseTime = std::get<1>(D01P1) + std::get<1>(D01P2)
         + std::get<1>(D02P1) + std::get<1>(D02P2)
         + std::get<1>(D03P1) + std::get<1>(D03P2)
@@ -119,7 +124,8 @@ int main()
         + std::get<1>(D14P1) + std::get<1>(D14P2)
         + std::get<1>(D15P1) + std::get<1>(D15P2)
         + std::get<1>(D16P1)/* + std::get<1>(D16P2)
-        + std::get<1>(D17P1) + std::get<1>(D17P2)*/;
+        + std::get<1>(D17P1) + std::get<1>(D17P2)*/
+        + std::get<1>(D18P1) + std::get<1>(D18P2);
 
     auto totalRunTime = std::get<2>(D01P1) + std::get<2>(D01P2)
         + std::get<2>(D02P1) + std::get<2>(D02P2)
@@ -137,7 +143,8 @@ int main()
         + std::get<2>(D14P1) + std::get<2>(D14P2)
         + std::get<2>(D15P1) + std::get<2>(D15P2)
         + std::get<2>(D16P1)/* + std::get<2>(D16P2)
-        + std::get<2>(D17P1) + std::get<2>(D17P2)*/;
+        + std::get<1>(D17P1) + std::get<1>(D17P2)*/
+        + std::get<2>(D18P1) + std::get<2>(D18P2);
 
 
     std::cout << std::format("\n    Totals:  {:10.4f}ms + {:10.4f}ms : {:.4f}ms\n",

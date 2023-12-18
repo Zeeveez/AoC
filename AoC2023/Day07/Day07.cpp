@@ -1,9 +1,10 @@
 #include "Day07.h"
 
 #include <iostream>
+#include <numeric>
 
 namespace AoC2023::Day07 {
-    std::unordered_map<char, int> cardToValueMap = {
+    const std::unordered_map<char, int> cardToValueMap = {
             { 'A', 14 },
             { 'K', 13 },
             { 'Q', 12 },
@@ -34,7 +35,7 @@ namespace AoC2023::Day07 {
     void Hand::LoadValue(bool partB) {
         value = 0;
         for (auto& c : cards) {
-            value = value * 128 + cardToValueMap[c] + (partB && c == 'J' ? -10 : 0);
+            value = value * 128 + cardToValueMap.at(c) + (partB && c == 'J' ? -10 : 0);
         }
         this->value = value;
     }
@@ -189,6 +190,19 @@ namespace AoC2023::Day07 {
         return hands;
     }
 
+    uint64_t ScoreHands(std::vector<Hand>& hands) {
+        std::sort(hands.begin(), hands.end());
+        size_t hIdx = 1;
+        return std::accumulate(
+            hands.begin(),
+            hands.end(),
+            (uint64_t)0,
+            [&hIdx](const uint64_t& acc, const Hand& h) {
+                return acc + hIdx++ * h.bid;
+            }
+        );
+    }
+
     std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
         auto parseStart = std::chrono::high_resolution_clock::now();
         auto hands = ParseInput(input);
@@ -196,12 +210,7 @@ namespace AoC2023::Day07 {
 
         auto startTime = std::chrono::high_resolution_clock::now();
 
-        std::sort(hands.begin(), hands.end());
-
-        uint64_t score = 0;
-        for (size_t i = 0; i < hands.size(); i++) {
-            score += (i + 1) * hands[i].bid;
-        }
+        auto score = ScoreHands(hands);
 
         auto endTime = std::chrono::high_resolution_clock::now();
         return { score, parseEnd - parseStart, endTime - startTime };
@@ -214,12 +223,7 @@ namespace AoC2023::Day07 {
 
         auto startTime = std::chrono::high_resolution_clock::now();
 
-        std::sort(hands.begin(), hands.end());
-
-        uint64_t score = 0;
-        for (size_t i = 0; i < hands.size(); i++) {
-            score += (i + 1) * hands[i].bid;
-        }
+        auto score = ScoreHands(hands);
 
         auto endTime = std::chrono::high_resolution_clock::now();
         return { score, parseEnd - parseStart, endTime - startTime };
