@@ -103,6 +103,7 @@ namespace AoC2023::Day18 {
             length += std::abs((int64_t)std::get<2>(instr).second * std::get<3>(instr));
         }
 
+        // Pick's theorem
         score += length / 2 + 1;
 
         auto endTime = std::chrono::high_resolution_clock::now();
