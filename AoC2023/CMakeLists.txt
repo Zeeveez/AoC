@@ -22,7 +22,8 @@ add_executable (AoC2023 "AoC2023.cpp" "AoC2023.h" "../Helpers/Helpers.cpp" "../H
     "Day15/Day15.cpp" "Day15/Day15.h"
     "Day16/Day16.cpp" "Day16/Day16.h"
     "Day17/Day17.cpp" "Day17/Day17.h"
-    "Day18/Day18.cpp" "Day18/Day18.h")
+    "Day18/Day18.cpp" "Day18/Day18.h"
+    "Day19/Day19.cpp" "Day19/Day19.h")
 
 set_property(TARGET AoC2023 PROPERTY CXX_STANDARD 20)
 set_property(TARGET AoC2023 PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -47,3 +48,4 @@ configure_file("Day15/Day15.txt" ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 configure_file("Day16/Day16.txt" ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 configure_file("Day17/Day17.txt" ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 configure_file("Day18/Day18.txt" ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+configure_file("Day19/Day19.txt" ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
