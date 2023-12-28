@@ -5,12 +5,12 @@
 #include <vector>
 #include <chrono>
 #include <string>
-#include <map>
+#include <unordered_map>
 
 namespace AoC2023::Day12 {
     class SpringRow {
     public:
-        std::map<std::pair<size_t,size_t>, size_t> cache;
+        std::unordered_map<size_t, size_t> cache;
         std::string springs;
         std::vector<int> damagedSpringGroups;
 
