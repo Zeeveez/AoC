@@ -77,15 +77,15 @@ namespace AoC2023::Day12 {
                 cache[idx] = 0;
             }
             else {
-                bool valid = true;
+                bool invalid = false;
                 for (size_t offset = 1; offset < damagedSpringGroups[currentGroupIdx]; offset++) {
                     if (springs[pos + offset] == '.') {
-                        valid = false;
+                        invalid = true;
                         break;
                     }
                 }
 
-                cache[idx] = valid ? 0 : CountPossibilities(pos + damagedSpringGroups[currentGroupIdx] + 1, currentGroupIdx + 1, toFit - damagedSpringGroups[currentGroupIdx] - 1);
+                cache[idx] = invalid ? 0 : CountPossibilities(pos + damagedSpringGroups[currentGroupIdx] + 1, currentGroupIdx + 1, toFit - damagedSpringGroups[currentGroupIdx] - 1);
             }
         }
         else {
