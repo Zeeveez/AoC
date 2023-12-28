@@ -5,12 +5,12 @@
 #include <vector>
 #include <chrono>
 #include <string>
-#include <unordered_map>
+#include <vector>
 
 namespace AoC2023::Day12 {
     class SpringRow {
     public:
-        std::unordered_map<size_t, size_t> cache;
+        std::vector<size_t> cache;
         std::string springs;
         std::vector<int> damagedSpringGroups;
 
@@ -20,8 +20,6 @@ namespace AoC2023::Day12 {
         size_t CountPossibilities(size_t pos, size_t currentGroupIdx, size_t toFit);
         size_t CountPossibilities();
     };
-
-    std::vector<SpringRow> ParseInput(const std::vector<std::string>& input, bool partB = false);
 
     std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, bool partB = false);
 
