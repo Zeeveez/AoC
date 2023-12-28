@@ -40,56 +40,53 @@ namespace AoC2023::Day12 {
         // Memoization
         size_t idx =  pos * 100 + currentGroupIdx;
         if (cache.contains(idx)) {
-            return cache[idx];
+            // nothing to do here
         }
 
         // Captured all groups, check if valid
-        if (currentGroupIdx == damagedSpringGroups.size()) {
+        else if (currentGroupIdx == damagedSpringGroups.size()) {
+            bool valid = true;
             for (size_t i = pos; i < springs.length(); i++) {
                 if (springs[i] == '#') {
-                    cache[idx] = 0;
-                    return 0;
+                    valid = false;
+                    break;
                 }
             }
-            cache[idx] = 1;
-            return 1;
+            cache[idx] = valid ? 1 : 0;
         }
 
         // End of string
-        if (pos >= springs.size()) {
+        else if (pos >= springs.size()) {
             cache[idx] = 0;
-            return 0;
         }
 
         // No way to fit groups
-        if (springs.size() - pos < toFit) {
+        else if (springs.size() - pos < toFit) {
             cache[idx] = 0;
-            return 0;
         }
 
         // Skip gaps
-        if (springs[pos] == '.') {
+        else if (springs[pos] == '.') {
             cache[idx] = CountPossibilities(pos + 1, currentGroupIdx, toFit);
-            return cache[idx];
         }
 
         // Forced group position
-        if (springs[pos] == '#') {
+        else if (springs[pos] == '#') {
             // Spring group doesn't end at expected position
             if (springs[pos + damagedSpringGroups[currentGroupIdx]] == '#') {
                 cache[idx] = 0;
-                return 0;
             }
-
-            for (size_t offset = 1; offset < damagedSpringGroups[currentGroupIdx]; offset++) {
-                if (springs[pos + offset] == '.') {
-                    cache[idx] = 0;
-                    return 0;
+            else {
+                bool valid = true;
+                for (size_t offset = 1; offset < damagedSpringGroups[currentGroupIdx]; offset++) {
+                    if (springs[pos + offset] == '.') {
+                        valid = false;
+                        break;
+                    }
                 }
-            }
 
-            cache[idx] = CountPossibilities(pos + damagedSpringGroups[currentGroupIdx] + 1, currentGroupIdx + 1, toFit - damagedSpringGroups[currentGroupIdx] - 1);
-            return cache[idx];
+                cache[idx] = valid ? 0 : CountPossibilities(pos + damagedSpringGroups[currentGroupIdx] + 1, currentGroupIdx + 1, toFit - damagedSpringGroups[currentGroupIdx] - 1);
+            }
         }
         else {
             size_t res = 0;
@@ -116,8 +113,9 @@ namespace AoC2023::Day12 {
             res += CountPossibilities(pos + 1, currentGroupIdx, toFit);
 
             cache[idx] = res;
-            return res;
         }
+
+        return cache[idx];
     }
 
     size_t SpringRow::CountPossibilities() {
