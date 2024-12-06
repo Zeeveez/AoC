@@ -5,6 +5,8 @@
 
 int main()
 {
+    auto startTime = std::chrono::high_resolution_clock::now();
+
     auto D01P1 = AoC2024::Day01::A(AoC::Helpers::ReadTokenGrid<uint64_t>("./Day01.txt"));
     std::cout << "Day 01 - A (" << std::format("{:10.4f}", D01P1.second.count()) << "ms): " << D01P1.first << "\n";
     auto D01P2 = AoC2024::Day01::B(AoC::Helpers::ReadTokenGrid<uint64_t>("./Day01.txt"));
@@ -32,8 +34,8 @@ int main()
 
     auto D06P1 = AoC2024::Day06::A(AoC::Helpers::ReadLines("./Day06.txt"));
     std::cout << "Day 06 - A (" << std::format("{:10.4f}", D06P1.second.count()) << "ms): " << D06P1.first << "\n";
-    auto D06P2 = AoC2024::Day06::B(AoC::Helpers::ReadLines("./Day06.txt"));
-    std::cout << "Day 06 - B (" << std::format("{:10.4f}", D06P2.second.count()) << "ms): " << D06P2.first << "\n";
+    //auto D06P2 = AoC2024::Day06::B(AoC::Helpers::ReadLines("./Day06.txt"));
+    //std::cout << "Day 06 - B (" << std::format("{:10.4f}", D06P2.second.count()) << "ms): " << D06P2.first << "\n";
 
     //auto D02P1 = AoC2022::Day02::A(AoC::Helpers::ReadTokens<char>("./Day02.txt"));
     //std::cout << "Day 02 - A (" << std::format("{:10.4f}", D02P1.second.count()) << "ms): " << D02P1.first << "\n";
@@ -154,13 +156,16 @@ int main()
     //std::cout << "Day 25 - A (" << std::format("{:10.4f}", D25P1.second.count()) << "ms): " << D25P1.first << "\n";
     //auto D25P2 = AoC2022::Day25::B(AoC::Helpers::ReadLines("./Day25.txt"));
     //std::cout << "Day 25 - B (" << std::format("{:10.4f}", D25P2.second.count()) << "ms): " << D25P2.first << "\n";
-    
+
+    auto endTime = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration = endTime - startTime;
+
     auto total = D01P1.second + D01P2.second
         + D02P1.second + D02P2.second
         + D03P1.second + D03P2.second
         + D04P1.second + D04P2.second
         + D05P1.second + D05P2.second
-        //+ D06P1.second + D06P2.second
+        + D06P1.second //+ D06P2.second
         //+ D07P1.second + D07P2.second
         //+ D08P1.second + D08P2.second
         //+ D09P1.second + D09P2.second
@@ -183,4 +188,5 @@ int main()
         ;
 
     std::cout << "\nTotal Time: " << std::format("{:10.4f}", total.count()) << "ms\n";
+    std::cout << "Total Time (w/ I/O): " << std::format("{:10.4f}", duration.count()) << "ms\n";
 }

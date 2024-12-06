@@ -1,6 +1,5 @@
 #include "Day05.h"
 
-#include <regex>
 #include <sstream>
 #include <algorithm>
 
@@ -11,24 +10,18 @@ namespace AoC2024 {
             std::unordered_map<int, std::unordered_set<int>> blackList = {};
             std::vector<std::vector<int>> updates = {};
 
-            static const std::regex re("(\\d+)\\|(\\d+)", std::regex::optimize);
-
             bool rules = true;
             for (auto& line : input) {
                 if (line == "") { rules = false; continue; }
 
                 if (rules) {
-                    std::smatch sm;
-                    if (std::regex_search(line, sm, re)) {
-                        int before = std::stoi(sm[1]);
-                        int after = std::stoi(sm[2]);
+                    int before = (line[1] - '0') * 10 + line[1] - '0';
+                    int after = (line[3] - '0') * 10 + line[4] - '0';
+                    if (!whiteList.contains(before)) { whiteList[before] = {}; }
+                    whiteList[before].insert(after);
 
-                        if (!whiteList.contains(before)) { whiteList[before] = {}; }
-                        whiteList[before].insert(after);
-
-                        if (!blackList.contains(after)) { blackList[after] = {}; }
-                        blackList[after].insert(before);
-                    }
+                    if (!blackList.contains(after)) { blackList[after] = {}; }
+                    blackList[after].insert(before);
                 }
                 else {
                     std::stringstream allInputs(line);
