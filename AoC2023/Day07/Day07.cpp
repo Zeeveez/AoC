@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <numeric>
+#include <algorithm>
 
 namespace AoC2023::Day07 {
     const std::unordered_map<char, int> cardToValueMap = {

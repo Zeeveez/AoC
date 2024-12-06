@@ -1,7 +1,6 @@
 #include "Day13.h"
 
 #include <iostream>
-#include <algorithm>
 
 namespace AoC2022 {
     namespace Day13 {

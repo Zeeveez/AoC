@@ -6,10 +6,12 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 namespace AoC {
     namespace Helpers {
         std::string ParseDrawnString(const std::vector<std::vector<bool>>& drawnString);
+        std::vector<std::string> ReadLines(std::string path);
 
         template<typename T>
         std::vector<T> ReadTokens(std::string path) {
@@ -24,7 +26,24 @@ namespace AoC {
             return v;
         }
 
-        std::vector<std::string> ReadLines(std::string path);
+        template<typename T>
+        std::vector<std::vector<T>> ReadTokenGrid(std::string path) {
+            auto lines = ReadLines(path);
+            std::vector<std::vector<T>> v = {};
+
+            T n;
+            for (auto& line : lines) {
+                auto s = std::stringstream(line);
+                std::vector<T> lv;
+                while (s >> n) {
+                    lv.push_back(n);
+                }
+                v.push_back(lv);
+            }
+
+            return v;
+        }
+
 
         template<typename T>
         T ReadToken(std::string path) {
