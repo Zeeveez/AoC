@@ -44,17 +44,6 @@ namespace AoC2024 {
             return { whiteList, blackList, updates };
         }
 
-        bool Check(const std::vector<std::string>& input, int x, int y, int sx, int sy, std::string target) {
-            for (int i = 0; i < target.length(); i++) {
-                int cx = x + sx * i;
-                int cy = y + sy * i;
-                if (cy < 0 || cy >= input.size()) { return false; }
-                if (cx < 0 || cx >= input[cy].size()) { return false; }
-                if (input[cy][cx] != target[i]) { return false; }
-            }
-            return true;
-        }
-
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
