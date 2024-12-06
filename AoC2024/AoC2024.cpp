@@ -30,6 +30,11 @@ int main()
     auto D05P2 = AoC2024::Day05::B(AoC::Helpers::ReadLines("./Day05.txt"));
     std::cout << "Day 05 - B (" << std::format("{:10.4f}", D05P2.second.count()) << "ms): " << D05P2.first << "\n";
 
+    auto D06P1 = AoC2024::Day06::A(AoC::Helpers::ReadLines("./Day06.txt"));
+    std::cout << "Day 06 - A (" << std::format("{:10.4f}", D06P1.second.count()) << "ms): " << D06P1.first << "\n";
+    auto D06P2 = AoC2024::Day06::B(AoC::Helpers::ReadLines("./Day06.txt"));
+    std::cout << "Day 06 - B (" << std::format("{:10.4f}", D06P2.second.count()) << "ms): " << D06P2.first << "\n";
+
     //auto D02P1 = AoC2022::Day02::A(AoC::Helpers::ReadTokens<char>("./Day02.txt"));
     //std::cout << "Day 02 - A (" << std::format("{:10.4f}", D02P1.second.count()) << "ms): " << D02P1.first << "\n";
     //auto D02P2 = AoC2022::Day02::B(AoC::Helpers::ReadTokens<char>("./Day02.txt"));
