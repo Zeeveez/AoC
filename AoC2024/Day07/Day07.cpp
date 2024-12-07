@@ -2,12 +2,16 @@
 
 namespace AoC2024 {
     namespace Day07 {
+        bool Valid(const std::vector<uint64_t>& eq, bool withConcat) {
+            return Valid(eq[0], eq[1], eq, 2, withConcat);
+        }
+
         bool Valid(uint64_t solution, uint64_t current, const std::vector<uint64_t>& eq, int i, bool withConcat) {
             if (eq.size() == i) {
                 return solution == current;
             }
             else {
-                if(current >= solution){ return false; }
+                if(current > solution){ return false; }
                 return Valid(solution, current + eq[i], eq, i + 1, withConcat)
                     || Valid(solution, current * eq[i], eq, i + 1, withConcat)
                     || (withConcat && Valid(solution, Concat(current, eq[i]), eq, i + 1, withConcat));
@@ -30,7 +34,7 @@ namespace AoC2024 {
                 while (s >> tk) {
                     eq.push_back(std::stoull(tk));
                 }
-                if (Valid(eq[0], eq[1], eq, 2, withConcat)) {
+                if (Valid(eq, withConcat)) {
                     res += eq[0];
                 }
             }
