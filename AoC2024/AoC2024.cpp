@@ -34,38 +34,13 @@ int main()
 
     auto D06P1 = AoC2024::Day06::A(AoC::Helpers::ReadLines("./Day06.txt"));
     std::cout << "Day 06 - A (" << std::format("{:10.4f}", D06P1.second.count()) << "ms): " << D06P1.first << "\n";
-    //auto D06P2 = AoC2024::Day06::B(AoC::Helpers::ReadLines("./Day06.txt"));
-    //std::cout << "Day 06 - B (" << std::format("{:10.4f}", D06P2.second.count()) << "ms): " << D06P2.first << "\n";
+    auto D06P2 = AoC2024::Day06::B(AoC::Helpers::ReadLines("./Day06.txt"));
+    std::cout << "Day 06 - B (" << std::format("{:10.4f}", D06P2.second.count()) << "ms): " << D06P2.first << "\n";
 
-    //auto D02P1 = AoC2022::Day02::A(AoC::Helpers::ReadTokens<char>("./Day02.txt"));
-    //std::cout << "Day 02 - A (" << std::format("{:10.4f}", D02P1.second.count()) << "ms): " << D02P1.first << "\n";
-    //auto D02P2 = AoC2022::Day02::B(AoC::Helpers::ReadTokens<char>("./Day02.txt"));
-    //std::cout << "Day 02 - B (" << std::format("{:10.4f}", D02P2.second.count()) << "ms): " << D02P2.first << "\n";
-
-    //auto D03P1 = AoC2022::Day03::A(AoC::Helpers::ReadTokens<std::string>("./Day03.txt"));
-    //std::cout << "Day 03 - A (" << std::format("{:10.4f}", D03P1.second.count()) << "ms): " << D03P1.first << "\n";
-    //auto D03P2 = AoC2022::Day03::B(AoC::Helpers::ReadTokens<std::string>("./Day03.txt"));
-    //std::cout << "Day 03 - B (" << std::format("{:10.4f}", D03P2.second.count()) << "ms): " << D03P2.first << "\n";
-
-    //auto D04P1 = AoC2022::Day04::A(AoC::Helpers::ReadLines("./Day04.txt"));
-    //std::cout << "Day 04 - A (" << std::format("{:10.4f}", D04P1.second.count()) << "ms): " << D04P1.first << "\n";
-    //auto D04P2 = AoC2022::Day04::B(AoC::Helpers::ReadLines("./Day04.txt"));
-    //std::cout << "Day 04 - B (" << std::format("{:10.4f}", D04P2.second.count()) << "ms): " << D04P2.first << "\n";
-
-    //auto D05P1 = AoC2022::Day05::A(AoC::Helpers::ReadLines("./Day05.txt"));
-    //std::cout << "Day 05 - A (" << std::format("{:10.4f}", D05P1.second.count()) << "ms): " << D05P1.first << "\n";
-    //auto D05P2 = AoC2022::Day05::B(AoC::Helpers::ReadLines("./Day05.txt"));
-    //std::cout << "Day 05 - B (" << std::format("{:10.4f}", D05P2.second.count()) << "ms): " << D05P2.first << "\n";
-
-    //auto D06P1 = AoC2022::Day06::A(AoC::Helpers::ReadToken<std::string>("./Day06.txt"));
-    //std::cout << "Day 06 - A (" << std::format("{:10.4f}", D06P1.second.count()) << "ms): " << D06P1.first << "\n";
-    //auto D06P2 = AoC2022::Day06::B(AoC::Helpers::ReadToken<std::string>("./Day06.txt"));
-    //std::cout << "Day 06 - B (" << std::format("{:10.4f}", D06P2.second.count()) << "ms): " << D06P2.first << "\n";
-
-    //auto D07P1 = AoC2022::Day07::A(AoC::Helpers::ReadLines("./Day07.txt"));
-    //std::cout << "Day 07 - A (" << std::format("{:10.4f}", D07P1.second.count()) << "ms): " << D07P1.first << "\n";
-    //auto D07P2 = AoC2022::Day07::B(AoC::Helpers::ReadLines("./Day07.txt"));
-    //std::cout << "Day 07 - B (" << std::format("{:10.4f}", D07P2.second.count()) << "ms): " << D07P2.first << "\n";
+    auto D07P1 = AoC2024::Day07::A(AoC::Helpers::ReadTokenGrid<uint64_t>("./Day07.txt"));
+    std::cout << "Day 07 - A (" << std::format("{:10.4f}", D07P1.second.count()) << "ms): " << D07P1.first << "\n";
+    auto D07P2 = AoC2024::Day07::B(AoC::Helpers::ReadTokenGrid<uint64_t>("./Day07.txt"));
+    std::cout << "Day 07 - B (" << std::format("{:10.4f}", D07P2.second.count()) << "ms): " << D07P2.first << "\n";
 
     //auto D08P1 = AoC2022::Day08::A(AoC::Helpers::ReadLines("./Day08.txt"));
     //std::cout << "Day 08 - A (" << std::format("{:10.4f}", D08P1.second.count()) << "ms): " << D08P1.first << "\n";
@@ -164,9 +139,9 @@ int main()
         + D02P1.second + D02P2.second
         + D03P1.second + D03P2.second
         + D04P1.second + D04P2.second
-        + D05P1.second + D05P2.second
+        + D05P1.second //+ D05P2.second
         + D06P1.second //+ D06P2.second
-        //+ D07P1.second + D07P2.second
+        + D07P1.second + D07P2.second
         //+ D08P1.second + D08P2.second
         //+ D09P1.second + D09P2.second
         //+ D10P1.second + D10P2.second
