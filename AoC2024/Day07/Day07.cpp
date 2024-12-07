@@ -19,29 +19,37 @@ namespace AoC2024 {
             return x * pow + y;
         }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::vector<uint64_t>>& input) {
-            auto starttime = std::chrono::high_resolution_clock::now();
-
+        uint64_t Run(const std::vector<std::string>& input, bool withConcat) {
             uint64_t res = 0;
+
             for (auto& line : input) {
-                if (Valid(line[0], line[1], line, 2)) {
-                    res += line[0];
+                std::vector<uint64_t> eq = {};
+                auto s = std::stringstream(line);
+                std::string tk;
+                while (s >> tk) {
+                    eq.push_back(std::stoull(tk));
+                }
+                if (Valid(eq[0], eq[1], eq, 2, withConcat)) {
+                    res += eq[0];
                 }
             }
+
+            return res;
+        }
+
+        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+            auto starttime = std::chrono::high_resolution_clock::now();
+
+            uint64_t res = Run(input);
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
         }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::vector<uint64_t>>& input) {
+        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
             auto startTime = std::chrono::high_resolution_clock::now();
 
-            uint64_t res = 0;
-            for (auto& line : input) {
-                if (Valid(line[0], line[1], line, 2, true)) {
-                    res += line[0];
-                }
-            }
+            uint64_t res = Run(input, true);
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - startTime };

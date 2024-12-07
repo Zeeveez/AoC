@@ -15,7 +15,7 @@ namespace AoC2024 {
                 if (line == "") { rules = false; continue; }
 
                 if (rules) {
-                    int before = (line[1] - '0') * 10 + line[1] - '0';
+                    int before = (line[0] - '0') * 10 + line[1] - '0';
                     int after = (line[3] - '0') * 10 + line[4] - '0';
                     if (!whiteList.contains(before)) { whiteList[before] = {}; }
                     whiteList[before].insert(after);
