@@ -35,7 +35,7 @@ namespace AoC2024 {
                 inst.begin(),
                 inst.end(),
                 0ui64,
-                [](uint64_t acc, std::tuple<std::string, int, int> inst) {
+                [](uint64_t acc, const std::tuple<std::string, int, int>& inst) {
                     if (std::get<0>(inst) != "mul") { return acc; }
                     return acc + std::get<1>(inst) * std::get<2>(inst);
                 }
@@ -48,12 +48,11 @@ namespace AoC2024 {
             auto inst = PreProcessInput(input);
 
             bool adding = true;
-
             uint64_t res = std::accumulate(
                 inst.begin(),
                 inst.end(),
                 0ui64,
-                [&adding](uint64_t acc, std::tuple<std::string, int, int> inst) {
+                [&adding](uint64_t acc, const std::tuple<std::string, int, int>& inst) {
                     if (std::get<0>(inst) == "do") { adding = true; }
                     if (std::get<0>(inst) == "don't") { adding = false; }
 

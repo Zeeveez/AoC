@@ -81,20 +81,21 @@ namespace AoC2024 {
                 std::unordered_set<int> seen = {};
 
                 do {
-                    if (seen.contains((pos.first * input.size() + pos.second) * 4 + dir)) {
-                        res += 1;
-                        break;
-                    }
-                    seen.insert((pos.first * input.size() + pos.second) * 4 + dir);
 
                     std::pair<int, int> newPos = { pos.first + dirs[dir].first, pos.second + dirs[dir].second };
                     while ((newPos.first >= 0 && newPos.first < input[0].size() && newPos.second >= 0 && newPos.second < input.size()) && (input[newPos.second][newPos.first] == '#' || (newPos.first == x && newPos.second == y))) {
+                        if (seen.contains((pos.first * input.size() + pos.second) * 4 + dir)) {
+                            res += 1;
+                            goto done;
+                        }
+                        seen.insert((pos.first * input.size() + pos.second) * 4 + dir);
                         dir = (dir + 1) % 4;
                         newPos = { pos.first + dirs[dir].first, pos.second + dirs[dir].second };
                     }
                     pos.first += dirs[dir].first;
                     pos.second += dirs[dir].second;
                 } while (pos.first >= 0 && pos.first < input[0].size() && pos.second >= 0 && pos.second < input.size());
+            done:;
             }
 
             auto endtime = std::chrono::high_resolution_clock::now();

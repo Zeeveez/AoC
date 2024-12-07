@@ -139,8 +139,8 @@ int main()
         + D02P1.second + D02P2.second
         + D03P1.second + D03P2.second
         + D04P1.second + D04P2.second
-        + D05P1.second //+ D05P2.second
-        + D06P1.second //+ D06P2.second
+        + D05P1.second + D05P2.second
+        + D06P1.second + D06P2.second
         + D07P1.second + D07P2.second
         //+ D08P1.second + D08P2.second
         //+ D09P1.second + D09P2.second

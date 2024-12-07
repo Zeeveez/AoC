@@ -7,6 +7,7 @@ namespace AoC2024 {
                 return solution == current;
             }
             else {
+                if(current >= solution){ return false; }
                 return Valid(solution, current + eq[i], eq, i + 1, withConcat)
                     || Valid(solution, current * eq[i], eq, i + 1, withConcat)
                     || (withConcat && Valid(solution, Concat(current, eq[i]), eq, i + 1, withConcat));
