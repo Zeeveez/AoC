@@ -1,7 +1,6 @@
 #include "Day08.h"
 
 #include <numeric>
-#include <functional>
 
 namespace AoC2024 {
     namespace Day08 {
@@ -20,12 +19,12 @@ namespace AoC2024 {
             return nodes;
         }
 
-        void AddAntinodesA(std::pair<int, int> a, std::pair<int, int> b, std::vector<std::string>& grid) {
+        void AddAntinodesA(const std::pair<int, int>& a, const std::pair<int, int>& b, std::vector<std::string>& grid) {
             int dx = a.first - b.first;
             int dy = a.second - b.second;
             int newx1 = a.first + dx;
-            int newx2 = b.first - dx;
             int newy1 = a.second + dy;
+            int newx2 = b.first - dx;
             int newy2 = b.second - dy;
 
             if (newy1 >= 0 && newy1 < grid.size() && newx1 >= 0 && newx1 < grid[newy1].size()) {
@@ -36,23 +35,23 @@ namespace AoC2024 {
             }
         }
 
-        void AddAntinodesB(std::pair<int, int> a, std::pair<int, int> b, std::vector<std::string>& grid) {
+        void AddAntinodesB(const std::pair<int, int>& a, const std::pair<int, int>& b, std::vector<std::string>& grid) {
             int dx = a.first - b.first;
             int dy = a.second - b.second;
             int newx1 = a.first;
-            int newx2 = b.first;
             int newy1 = a.second;
+            int newx2 = b.first;
             int newy2 = b.second;
 
             while (newy1 >= 0 && newy1 < grid.size() && newx1 >= 0 && newx1 < grid[newy1].size()) {
                 grid[newy1][newx1] = '#';
-                newx1 += dx;
-                newy1 += dy;
+                newx1 -= dx;
+                newy1 -= dy;
             }
             while (newy2 >= 0 && newy2 < grid.size() && newx2 >= 0 && newx2 < grid[newy2].size()) {
                 grid[newy2][newx2] = '#';
-                newx2 -= dx;
-                newy2 -= dy;
+                newx2 += dx;
+                newy2 += dy;
             }
         }
 
@@ -79,10 +78,10 @@ namespace AoC2024 {
         uint64_t Run(std::vector<std::string> input, std::function<void(std::pair<int, int> a, std::pair<int, int> b, std::vector<std::string>& grid)> antinodeFunc) {
             auto nodes = GetNodes(input);
             for (auto& kvp : nodes) {
-                for (int i = 0; i < kvp.second.size(); i++) {
-                    for (int j = 0; j < kvp.second.size(); j++) {
-                        if (i == j) { continue; }
-                        antinodeFunc(kvp.second[i], kvp.second[j], input);
+                for (const auto& n1 : kvp.second) {
+                    for (const auto& n2 : kvp.second) {
+                        if (n1 == n2) { continue; }
+                        antinodeFunc(n1, n2, input);
                     }
                 }
             }
