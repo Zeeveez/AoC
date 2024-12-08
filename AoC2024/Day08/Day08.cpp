@@ -1,122 +1,112 @@
 #include "Day08.h"
 
-namespace AoC2022 {
+#include <unordered_map>
+
+namespace AoC2024 {
     namespace Day08 {
-        std::vector<std::vector<int>> PreProcessInput(const std::vector<std::string>& input) {
-            std::vector<std::vector<int>> grid = {};
-            for (auto& line : input) {
-                grid.push_back({});
-                for (auto& c : line) {
-                    grid[grid.size() - 1].push_back(c - '0');
+        std::unordered_map<char, std::vector<std::pair<int, int>>> GetNodes(const std::vector<std::string>& input) {
+            std::unordered_map<char, std::vector<std::pair<int, int>>> nodes = {};
+            for (int y = 0; y < input.size(); y++) {
+                for (int x = 0; x < input[y].size(); x++) {
+                    if (input[y][x] != '.') {
+                        if (!nodes.contains(input[y][x])) {
+                            nodes[input[y][x]] = {};
+                        }
+                        nodes[input[y][x]].push_back({ x, y });
+                    }
                 }
             }
-            return grid;
+            return nodes;
         }
 
-        bool IsTreeVisible(const std::vector<std::vector<int>>& grid, int tx, int ty) {
-            for (int x = 0; x <= tx; x++) {
-                if (x == tx) {
-                    return true;
-                }
-                else if (grid[ty][x] >= grid[ty][tx]) {
-                    break;
-                }
+        void AddAntinodes(std::pair<int, int> a, std::pair<int, int> b, std::vector<std::string>& grid) {
+            int dx = a.first - b.first;
+            int dy = a.second - b.second;
+            int newx1 = a.first + dx;
+            int newx2 = b.first - dx;
+            int newy1 = a.second + dy;
+            int newy2 = b.second - dy;
+
+            if (newy1 >= 0 && newy1 < grid.size() && newx1 >= 0 && newx1 < grid[newy1].size()) {
+                grid[newy1][newx1] = '#';
             }
-            for (int x = grid[ty].size() - 1; x >= tx; x--) {
-                if (x == tx) {
-                    return true;
-                }
-                else if (grid[ty][x] >= grid[ty][tx]) {
-                    break;
-                }
+            if (newy2 >= 0 && newy2 < grid.size() && newx2 >= 0 && newx2 < grid[newy2].size()) {
+                grid[newy2][newx2] = '#';
             }
-            for (int y = 0; y <= ty; y++) {
-                if (y == ty) {
-                    return true;
-                }
-                else if (grid[y][tx] >= grid[ty][tx]) {
-                    break;
-                }
-            }
-            for (int y = grid.size() - 1; y >= ty; y--) {
-                if (y == ty) {
-                    return true;
-                }
-                else if (grid[y][tx] >= grid[ty][tx]) {
-                    break;
-                }
-            }
-            return false;
         }
 
-        uint64_t GetTreeViewScore(const std::vector<std::vector<int>>& grid, int tx, int ty) {
-            int upScore = 0;
-            for (int y = ty - 1; y > -1; y--) {
-                upScore++;
-                if (grid[y][tx] >= grid[ty][tx]) {
-                    break;
-                }
-            }
+        void AddAntinodes2(std::pair<int, int> a, std::pair<int, int> b, std::vector<std::string>& grid) {
+            int dx = a.first - b.first;
+            int dy = a.second - b.second;
+            int newx1 = a.first;
+            int newx2 = b.first;
+            int newy1 = a.second;
+            int newy2 = b.second;
 
-            int leftScore = 0;
-            for (int x = tx - 1; x > -1; x--) {
-                leftScore++;
-                if (grid[ty][x] >= grid[ty][tx]) {
-                    break;
-                }
+            while (newy1 >= 0 && newy1 < grid.size() && newx1 >= 0 && newx1 < grid[newy1].size()) {
+                grid[newy1][newx1] = '#';
+                newx1 += dx;
+                newy1 += dy;
             }
-
-            int downScore = 0;
-            for (int y = ty + 1; y < grid.size(); y++) {
-                downScore++;
-                if (grid[y][tx] >= grid[ty][tx]) {
-                    break;
-                }
+            if (newy2 >= 0 && newy2 < grid.size() && newx2 >= 0 && newx2 < grid[newy2].size()) {
+                grid[newy2][newx2] = '#';
+                newx2 -= dx;
+                newx2 -= dy;
             }
-
-            int rightScore = 0;
-            for (int x = tx + 1; x < grid[ty].size(); x++) {
-                rightScore++;
-                if (grid[ty][x] >= grid[ty][tx]) {
-                    break;
-                }
-            }
-
-            return upScore * leftScore * downScore * rightScore;
         }
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto grid = PreProcessInput(input);
+            std::vector<std::string> grid = input;
 
-            uint64_t count = 0;
+            auto nodes = GetNodes(input);
+            for (auto& kvp : nodes) {
+                for (int i = 0; i < kvp.second.size(); i++) {
+                    for (int j = 0; j < kvp.second.size(); j++) {
+                        if (i == j) { continue; }
+                        AddAntinodes(kvp.second[i], kvp.second[j], grid);
+                    }
+                }
+            }
+            uint64_t res = 0;
             for (int y = 0; y < grid.size(); y++) {
                 for (int x = 0; x < grid[y].size(); x++) {
-                    if (IsTreeVisible(grid, x, y)) {
-                        count++;
+                    if (grid[y][x] == '#') {
+                        res++;
                     }
                 }
             }
 
             auto endtime = std::chrono::high_resolution_clock::now();
-            return { count, endtime - starttime };
+            return { res, endtime - starttime };
         }
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
             auto startTime = std::chrono::high_resolution_clock::now();
 
-            auto grid = PreProcessInput(input);
+            std::vector<std::string> grid = input;
 
-            uint64_t score = 0;
+            auto nodes = GetNodes(input);
+            for (auto& kvp : nodes) {
+                for (int i = 0; i < kvp.second.size(); i++) {
+                    for (int j = 0; j < kvp.second.size(); j++) {
+                        if (i == j) { continue; }
+                        AddAntinodes2(kvp.second[i], kvp.second[j], grid);
+                    }
+                }
+            }
+            uint64_t res = 0;
             for (int y = 0; y < grid.size(); y++) {
                 for (int x = 0; x < grid[y].size(); x++) {
-                    score = std::max(score, GetTreeViewScore(grid, x, y));
+                    if (grid[y][x] == '#') {
+                        res++;
+                    }
                 }
             }
 
             auto endtime = std::chrono::high_resolution_clock::now();
-            return { score, endtime - startTime };
+            return { res, endtime - startTime };
         }
     }
 }
