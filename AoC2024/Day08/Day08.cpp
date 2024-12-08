@@ -48,10 +48,10 @@ namespace AoC2024 {
                 newx1 += dx;
                 newy1 += dy;
             }
-            if (newy2 >= 0 && newy2 < grid.size() && newx2 >= 0 && newx2 < grid[newy2].size()) {
+            while (newy2 >= 0 && newy2 < grid.size() && newx2 >= 0 && newx2 < grid[newy2].size()) {
                 grid[newy2][newx2] = '#';
                 newx2 -= dx;
-                newx2 -= dy;
+                newy2 -= dy;
             }
         }
 
