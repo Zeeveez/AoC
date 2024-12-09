@@ -20,7 +20,7 @@ namespace AoC2024 {
             return map;
         }
 
-        std::pair<int, std::unordered_set<int>> GetPath(const std::vector<char>& map) {
+        std::pair<int, std::unordered_set<int>> GetStartAndPath(const std::vector<char>& map) {
             int startingPos = 0;
             for (int i = 0; i < map.size(); i++) {
                 if (map[i] == '^') {
@@ -51,7 +51,7 @@ namespace AoC2024 {
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            uint64_t res = GetPath(MakeFlat(input)).second.size();
+            uint64_t res = GetStartAndPath(MakeFlat(input)).second.size();
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
@@ -64,7 +64,7 @@ namespace AoC2024 {
             std::vector<int> loops;
             int size = std::sqrt(map.size());
             loops.resize(size * size * 4, -1);
-            auto [startingPos, path] = GetPath(map);
+            auto [startingPos, path] = GetStartAndPath(map);
 
             int res = 0;
             int iter = 0;
