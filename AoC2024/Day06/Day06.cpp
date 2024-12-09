@@ -2,37 +2,49 @@
 
 namespace AoC2024 {
     namespace Day06 {
-        std::unordered_set<int> GetPath(const std::vector<std::string>& input) {
-            std::pair<int, int> pos = { 0, 0 };
+        std::vector<char> MakeFlat(const std::vector<std::string>& input) {
+            std::vector<char> map = {};
+            for (int i = 0; i < input.size() + 2; i++) {
+                map.push_back('X');
+            }
             for (int y = 0; y < input.size(); y++) {
+                map.push_back('X');
                 for (int x = 0; x < input[y].size(); x++) {
-                    if (input[y][x] == '^') {
-                        pos = { x, y };
-                        y = 1000000;
-                        break;
-                    }
+                    map.push_back(input[y][x]);
+                }
+                map.push_back('X');
+            }
+            for (int i = 0; i < input.size() + 2; i++) {
+                map.push_back('X');
+            }
+            return map;
+        }
+
+        std::unordered_set<int> GetPath(const std::vector<std::string>& input) {
+            auto map = MakeFlat(input);
+
+            int64_t pos = 0;
+            for (int i = 0; i < map.size(); i++) {
+                if (map[i] == '^') {
+                    pos = i;
+                    break;
                 }
             }
 
-            std::vector<std::pair<int, int>> dirs = {
-                { 0, -1 },
-                { 1, 0 },
-                { 0, 1 },
-                { -1, 0 }
-            };
+            int64_t size = input.size() + 2;
+            std::vector<int64_t> dirs = { -size, 1, size, -1 };
             int dir = 0;
 
             std::unordered_set<int> seen = {};
             do {
-                seen.insert(pos.first * input.size() + pos.second);
-                std::pair<int, int> newPos = { pos.first + dirs[dir].first, pos.second + dirs[dir].second };
-                while ((newPos.first >= 0 && newPos.first < input[0].size() && newPos.second >= 0 && newPos.second < input.size()) && input[newPos.second][newPos.first] == '#') {
+                seen.insert(pos);
+                int newPos = pos + dirs[dir];
+                while (map[newPos] == '#') {
                     dir = (dir + 1) % 4;
-                    newPos = { pos.first + dirs[dir].first, pos.second + dirs[dir].second };
+                    newPos = pos + dirs[dir];
                 }
-                pos.first += dirs[dir].first;
-                pos.second += dirs[dir].second;
-            } while (pos.first >= 0 && pos.first < input[0].size() && pos.second >= 0 && pos.second < input.size());
+                pos += dirs[dir];
+            } while (map[pos] != 'X');
 
             return seen;
         }
@@ -50,54 +62,44 @@ namespace AoC2024 {
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
+            auto map = MakeFlat(input);
 
-            std::pair<int, int> startingPos = { 0, 0 };
-            for (int y = 0; y < input.size(); y++) {
-                for (int x = 0; x < input[y].size(); x++) {
-                    if (input[y][x] == '^') {
-                        startingPos = { x, y };
-                        y = 1000000;
-                        break;
-                    }
+            int64_t startingPos = 0;
+            for (int i = 0; i < map.size(); i++) {
+                if (map[i] == '^') {
+                    startingPos = i;
+                    break;
                 }
             }
 
-            std::vector<int> loops;
-            loops.resize(input.size() * input[0].size() * 4, -1);
-
+            std::vector<int64_t> loops;
+            int64_t size = input.size() + 2;
+            loops.resize(size * size * 4, -1);
             auto path = GetPath(input);
 
             uint64_t res = 0;
             uint64_t iter = 0;
-            for (auto& point : path) {
-                int y = point % input.size();
-                int x = point / input.size();
-                if (input[y][x] == '^' || input[y][x] == '#') { continue; }
+            std::vector<int64_t> dirs = { -size, 1, size, -1 };
+
+            for (auto point : path) {
+                if (map[point] == '^' || map[point] == '#') { continue; }
 
                 auto pos = startingPos;
-                std::vector<std::pair<int, int>> dirs = {
-                    { 0, -1 },
-                    { 1, 0 },
-                    { 0, 1 },
-                    { -1, 0 }
-                };
                 int dir = 0;
 
                 do {
-
-                    std::pair<int, int> newPos = { pos.first + dirs[dir].first, pos.second + dirs[dir].second };
-                    while ((newPos.first >= 0 && newPos.first < input[0].size() && newPos.second >= 0 && newPos.second < input.size()) && (input[newPos.second][newPos.first] == '#' || (newPos.first == x && newPos.second == y))) {
-                        if (loops[(pos.first * input.size() + pos.second) * 4 + dir] == iter){
+                    int64_t newPos = pos + dirs[dir];
+                    while (map[newPos] == '#' || newPos == point) {
+                        if (loops[pos * 4 + dir] == iter) {
                             res += 1;
                             goto done;
                         }
-                        loops[(pos.first * input.size() + pos.second) * 4 + dir] = iter;
+                        loops[pos * 4 + dir] = iter;
                         dir = (dir + 1) % 4;
-                        newPos = { pos.first + dirs[dir].first, pos.second + dirs[dir].second };
+                        newPos = pos + dirs[dir];
                     }
-                    pos.first += dirs[dir].first;
-                    pos.second += dirs[dir].second;
-                } while (pos.first >= 0 && pos.first < input[0].size() && pos.second >= 0 && pos.second < input.size());
+                    pos += dirs[dir];
+                } while (map[pos] != 'X');
             done:;
                 iter++;
             }
