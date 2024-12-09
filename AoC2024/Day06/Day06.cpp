@@ -62,9 +62,13 @@ namespace AoC2024 {
                 }
             }
 
+            std::vector<int> loops;
+            loops.resize(input.size() * input[0].size() * 4, -1);
+
             auto path = GetPath(input);
 
             uint64_t res = 0;
+            uint64_t iter = 0;
             for (auto& point : path) {
                 int y = point % input.size();
                 int x = point / input.size();
@@ -78,17 +82,16 @@ namespace AoC2024 {
                     { -1, 0 }
                 };
                 int dir = 0;
-                std::unordered_set<int> seen = {};
 
                 do {
 
                     std::pair<int, int> newPos = { pos.first + dirs[dir].first, pos.second + dirs[dir].second };
                     while ((newPos.first >= 0 && newPos.first < input[0].size() && newPos.second >= 0 && newPos.second < input.size()) && (input[newPos.second][newPos.first] == '#' || (newPos.first == x && newPos.second == y))) {
-                        if (seen.contains((pos.first * input.size() + pos.second) * 4 + dir)) {
+                        if (loops[(pos.first * input.size() + pos.second) * 4 + dir] == iter){
                             res += 1;
                             goto done;
                         }
-                        seen.insert((pos.first * input.size() + pos.second) * 4 + dir);
+                        loops[(pos.first * input.size() + pos.second) * 4 + dir] = iter;
                         dir = (dir + 1) % 4;
                         newPos = { pos.first + dirs[dir].first, pos.second + dirs[dir].second };
                     }
@@ -96,6 +99,7 @@ namespace AoC2024 {
                     pos.second += dirs[dir].second;
                 } while (pos.first >= 0 && pos.first < input[0].size() && pos.second >= 0 && pos.second < input.size());
             done:;
+                iter++;
             }
 
             auto endtime = std::chrono::high_resolution_clock::now();
