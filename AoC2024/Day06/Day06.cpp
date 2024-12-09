@@ -20,19 +20,18 @@ namespace AoC2024 {
             return map;
         }
 
-        std::unordered_set<int> GetPath(const std::vector<std::string>& input) {
-            auto map = MakeFlat(input);
-
-            int64_t pos = 0;
+        std::pair<int, std::unordered_set<int>> GetPath(const std::vector<char>& map) {
+            int startingPos = 0;
             for (int i = 0; i < map.size(); i++) {
                 if (map[i] == '^') {
-                    pos = i;
+                    startingPos = i;
                     break;
                 }
             }
+            int pos = startingPos;
 
-            int64_t size = input.size() + 2;
-            std::vector<int64_t> dirs = { -size, 1, size, -1 };
+            int size = std::sqrt(map.size());
+            std::vector<int> dirs = { -size, 1, size, -1 };
             int dir = 0;
 
             std::unordered_set<int> seen = {};
@@ -46,15 +45,13 @@ namespace AoC2024 {
                 pos += dirs[dir];
             } while (map[pos] != 'X');
 
-            return seen;
+            return { startingPos, seen };
         }
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto seen = GetPath(input);
-
-            uint64_t res = seen.size();
+            uint64_t res = GetPath(MakeFlat(input)).second.size();
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
@@ -64,22 +61,14 @@ namespace AoC2024 {
             auto starttime = std::chrono::high_resolution_clock::now();
             auto map = MakeFlat(input);
 
-            int64_t startingPos = 0;
-            for (int i = 0; i < map.size(); i++) {
-                if (map[i] == '^') {
-                    startingPos = i;
-                    break;
-                }
-            }
-
-            std::vector<int64_t> loops;
-            int64_t size = input.size() + 2;
+            std::vector<int> loops;
+            int size = std::sqrt(map.size());
             loops.resize(size * size * 4, -1);
-            auto path = GetPath(input);
+            auto [startingPos, path] = GetPath(map);
 
-            uint64_t res = 0;
-            uint64_t iter = 0;
-            std::vector<int64_t> dirs = { -size, 1, size, -1 };
+            int res = 0;
+            int iter = 0;
+            std::vector<int> dirs = { -1 * size, 1, size, -1 };
 
             for (auto point : path) {
                 if (map[point] == '^' || map[point] == '#') { continue; }
@@ -88,7 +77,7 @@ namespace AoC2024 {
                 int dir = 0;
 
                 do {
-                    int64_t newPos = pos + dirs[dir];
+                    short newPos = pos + dirs[dir];
                     while (map[newPos] == '#' || newPos == point) {
                         if (loops[pos * 4 + dir] == iter) {
                             res += 1;
