@@ -1,118 +1,92 @@
 #include "Day09.h"
 
-#include <set>
+#include <limits>
+#include <algorithm>
+#include <numeric>
+#include <iostream>
 
-namespace AoC2022 {
+namespace AoC2024 {
     namespace Day09 {
-        std::vector<std::pair<std::pair<int, int>, int>> PreProcessInput(const std::vector<std::string>& input) {
-            std::vector<std::pair<std::pair<int, int>, int>> instructions = {};
-            for (auto& line : input) {
-                switch (line[0]) {
-                case 'U':
-                    instructions.push_back(
-                        {
-                            { 0, 1 },
-                            std::stoi(line.substr(2))
-                        });
-                    break;
-                case 'D':
-                    instructions.push_back(
-                        {
-                            { 0, -1 },
-                            std::stoi(line.substr(2))
-                        });
-                    break;
-                case 'L':
-                    instructions.push_back(
-                        {
-                            { -1, 0 },
-                            std::stoi(line.substr(2))
-                        });
-                    break;
-                case 'R':
-                    instructions.push_back(
-                        {
-                            { 1, 0 },
-                            std::stoi(line.substr(2))
-                        });
-                    break;
+        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::string input) {
+            auto starttime = std::chrono::high_resolution_clock::now();
+
+            std::vector<uint64_t> files = {};
+
+            for (int i = 0; i < input.size(); i++) {
+                for (int j = 0; j < input[i] - '0'; j++) {
+                    files.push_back(i % 2 == 0 ? (i / 2) : std::numeric_limits<uint64_t>::max());
                 }
             }
-            return instructions;
+
+            for (int i = files.size() - 1; i >= 0; i--) {
+                if (files[i] == std::numeric_limits<uint64_t>::max()) { continue; }
+                size_t freeSpace = 0;
+                while (files[freeSpace] != std::numeric_limits<uint64_t>::max()) { freeSpace++; }
+                if (i < freeSpace) { break; }
+                files[freeSpace] = files[i];
+                files[i] = std::numeric_limits<uint64_t>::max();
+            }
+
+            uint64_t res = 0;
+            for (int i = 0; i < files.size(); i++) {
+                if (files[i] == std::numeric_limits<uint64_t>::max()) { break; }
+                res += files[i] * i;
+            }
+
+            auto endtime = std::chrono::high_resolution_clock::now();
+            return { res, endtime - starttime };
         }
 
-        int HashPair(std::pair<int, int>& p) {
-            return p.second * 2000 + p.first;
-        }
+        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::string input) {
+            auto starttime = std::chrono::high_resolution_clock::now();
 
-        void Follow(std::pair<int, int>* head, std::pair<int, int>* tail) {
-            if (head->first == tail->first + 2) {
-                tail->first++;
-                if (head->second != tail->second) {
-                    tail->second += tail->second < head->second ? 1 : -1;
-                }
+            std::vector<std::pair<uint64_t, uint64_t>> files = {}; // ID, size
+
+            uint64_t maxID = 0;
+            for (int i = 0; i < input.size(); i++) {
+                files.push_back({ i % 2 == 0 ? (i / 2) : std::numeric_limits<uint64_t>::max(), input[i] - '0'});
+                maxID = std::max(maxID, i % 2 == 0 ? (i / 2) : 0ull);
             }
-            else if (head->first == tail->first - 2) {
-                tail->first--;
-                if (head->second != tail->second) {
-                    tail->second += tail->second < head->second ? 1 : -1;
-                }
-            }
-            else if (head->second == tail->second + 2) {
-                tail->second++;
-                if (head->first != tail->first) {
-                    tail->first += tail->first < head->first ? 1 : -1;
-                }
-            }
-            else if (head->second == tail->second - 2) {
-                tail->second--;
-                if (head->first != tail->first) {
-                    tail->first += tail->first < head->first ? 1 : -1;
-                }
-            }
-        }
-
-        uint64_t Run(const std::vector<std::string>& input, int segments) {
-            auto instructions = PreProcessInput(input);
-
-            std::vector<std::pair<int, int>> parts = { };
-            for (int i = 0; i < segments; i++) {
-                parts.push_back({ 1000, 1000 });
-            }
-
-            std::set<int> tailVisited = { HashPair(parts[parts.size() - 1]) };
-
-            for (auto& instruction : instructions) {
-                for (int i = 0; i < instruction.second; i++) {
-                    parts[0].first += instruction.first.first;
-                    parts[0].second += instruction.first.second;
-
-                    for (int i = 0; i < segments - 1; i++) {
-                        Follow(&parts[i], &parts[i + 1]);
+           
+            for (int i = maxID; i >= 0; i--) {
+                for (int j = 0; j < files.size(); j++) {
+                    if (files[j].first == i) {
+                        for (int k = 0; k < files.size() && k < j; k++) {
+                            if (files[k].first == std::numeric_limits<uint64_t>::max() && files[k].second >= files[j].second) {
+                                files[k].second -= files[j].second;
+                                files.insert(files.begin() + k, { files[j].first, files[j].second });
+                                files[j + 1].first = std::numeric_limits<uint64_t>::max();
+                                break;
+                            }
+                        }
+                        for (int k = 0; k < files.size() - 1; k++) {
+                            if (files[k].first == std::numeric_limits<uint64_t>::max() && files[k + 1].first == std::numeric_limits<uint64_t>::max()) {
+                                files[k].second += files[k + 1].second;
+                                files.erase(files.begin() + k + 1);
+                                k--;
+                            }
+                        }
                     }
-                    tailVisited.insert(HashPair(parts[parts.size() - 1]));
                 }
             }
 
-            return tailVisited.size();
-        }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-            auto starttime = std::chrono::high_resolution_clock::now();
+            std::vector<uint64_t> blocks = {};
 
-            auto result = Run(input, 2);
+            for (int i = 0; i < files.size(); i++) {
+                for (int j = 0; j < files[i].second; j++) {
+                    blocks.push_back(files[i].first);
+                }
+            }
 
-            auto endtime = std::chrono::high_resolution_clock::now();
-            return { result, endtime - starttime };
-        }
-
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-            auto starttime = std::chrono::high_resolution_clock::now();
-
-            auto result = Run(input, 10);
+            uint64_t res = 0;
+            for (int i = 0; i < blocks.size(); i++) {
+                if (blocks[i] == std::numeric_limits<uint64_t>::max()) { continue; }
+                res += blocks[i] * i;
+            }
 
             auto endtime = std::chrono::high_resolution_clock::now();
-            return { result, endtime - starttime };
+            return { res, endtime - starttime };
         }
     }
 }

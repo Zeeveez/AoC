@@ -47,10 +47,10 @@ int main()
     auto D08P2 = AoC2024::Day08::B(AoC::Helpers::ReadLines("./Day08.txt"));
     std::cout << "Day 08 - B (" << std::format("{:10.4f}", D08P2.second.count()) << "ms): " << D08P2.first << "\n";
 
-    //auto D09P1 = AoC2022::Day09::A(AoC::Helpers::ReadLines("./Day09.txt"));
-    //std::cout << "Day 09 - A (" << std::format("{:10.4f}", D09P1.second.count()) << "ms): " << D09P1.first << "\n";
-    //auto D09P2 = AoC2022::Day09::B(AoC::Helpers::ReadLines("./Day09.txt"));
-    //std::cout << "Day 09 - B (" << std::format("{:10.4f}", D09P2.second.count()) << "ms): " << D09P2.first << "\n";
+    auto D09P1 = AoC2024::Day09::A(AoC::Helpers::ReadToken<std::string>("./Day09.txt"));
+    std::cout << "Day 09 - A (" << std::format("{:10.4f}", D09P1.second.count()) << "ms): " << D09P1.first << "\n";
+    auto D09P2 = AoC2024::Day09::B(AoC::Helpers::ReadToken<std::string>("./Day09.txt"));
+    std::cout << "Day 09 - B (" << std::format("{:10.4f}", D09P2.second.count()) << "ms): " << D09P2.first << "\n";
 
     //auto D10P1 = AoC2022::Day10::A(AoC::Helpers::ReadTokens<std::string>("./Day10.txt"));
     //std::cout << "Day 10 - A (" << std::format("{:10.4f}", D10P1.second.count()) << "ms): " << D10P1.first << "\n";
