@@ -87,7 +87,7 @@ namespace AoC2024 {
                         dir = (dir + 1) % 4;
                         newPos = pos + dirs[dir];
                     }
-                    pos += dirs[dir];
+                    pos = newPos;
                 } while (map[pos] != 'X');
             done:;
                 iter++;
