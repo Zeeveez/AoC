@@ -12,6 +12,7 @@ namespace AoC2024 {
         public:
             uint64_t value;
             uint64_t count;
+            Stone() = default;
             Stone(uint64_t value, uint64_t count);
             std::optional<Stone> Iterate();
         };

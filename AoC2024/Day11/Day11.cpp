@@ -2,6 +2,7 @@
 
 #include <optional>
 #include <numeric>
+#include <unordered_map>
 
 namespace AoC2024 {
     namespace Day11 {
@@ -28,30 +29,42 @@ namespace AoC2024 {
         }
 
         uint64_t Run(const std::vector<uint64_t>& input, int iterations) {
-            std::vector<Stone> stones = {};
+            std::unordered_map<uint64_t, Stone> stones = {};
             for (auto& num : input) {
-                stones.push_back(Stone(num));
+                stones[num] = Stone(num);
             }
 
             for (int i = 0; i < iterations; i++) {
-                for (int64_t j = stones.size() - 1; j > -1; j--) {
-                    auto res = stones[j].Iterate();
-                    if (res.has_value()) {
-                        stones.insert(stones.begin() + j + 1, res.value());
+                std::vector<Stone> newStones = {};
+                for (auto& stone : stones) {
+                    auto newStone = stone.second.Iterate();
+                    if (newStone.has_value()) {
+                        newStones.push_back(stone.second);
+                        newStones.push_back(newStone.value());
+                    }
+                    else {
+                        newStones.push_back(stone.second);
                     }
                 }
-                for (int64_t j = stones.size() - 1; j > -1; j--) {
-                    for (int64_t k = j - 1; k > -1; k--) {
-                        if (stones[j].value == stones[k].value) {
-                            stones[k].count += stones[j].count;
-                            stones.erase(stones.begin() + j);
-                            break;
-                        }
+                stones = {};
+                for (auto& stone : newStones) {
+                    if (stones.contains(stone.value)) {
+                        stones[stone.value].count += stone.count;
+                    }
+                    else {
+                        stones[stone.value] = stone;
                     }
                 }
             }
 
-            return std::accumulate(stones.begin(), stones.end(), (uint64_t)0, [](uint64_t acc, const Stone& stone) {return acc + stone.count; });
+            return std::accumulate(
+                stones.begin(),
+                stones.end(),
+                (uint64_t)0,
+                [](uint64_t acc, const std::unordered_map<uint64_t, Stone>::value_type& stone) {
+                    return acc + stone.second.count;
+                }
+            );
         }
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<uint64_t>& input) {
