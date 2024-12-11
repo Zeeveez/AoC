@@ -57,6 +57,11 @@ int main()
     auto D10P2 = AoC2024::Day10::B(AoC::Helpers::ReadLines("./Day10.txt"));
     std::cout << "Day 10 - B (" << std::format("{:10.4f}", D10P2.second.count()) << "ms): " << D10P2.first << "\n";
 
+    auto D11P1 = AoC2024::Day11::A(AoC::Helpers::ReadTokens<uint64_t>("./Day11.txt"));
+    std::cout << "Day 11 - A (" << std::format("{:10.4f}", D11P1.second.count()) << "ms): " << D11P1.first << "\n";
+    auto D11P2 = AoC2024::Day11::B(AoC::Helpers::ReadTokens<uint64_t>("./Day11.txt"));
+    std::cout << "Day 11 - B (" << std::format("{:10.4f}", D11P2.second.count()) << "ms): " << D11P2.first << "\n";
+
     //auto D10P1 = AoC2022::Day10::A(AoC::Helpers::ReadTokens<std::string>("./Day10.txt"));
     //std::cout << "Day 10 - A (" << std::format("{:10.4f}", D10P1.second.count()) << "ms): " << D10P1.first << "\n";
     //auto D10P2 = AoC2022::Day10::B(AoC::Helpers::ReadTokens<std::string>("./Day10.txt"));
@@ -150,7 +155,7 @@ int main()
         + D08P1.second + D08P2.second
         + D09P1.second + D09P2.second
         + D10P1.second + D10P2.second
-        //+ D11P1.second + D11P2.second
+        + D11P1.second + D11P2.second
         //+ D12P1.second + D12P2.second
         //+ D13P1.second + D13P2.second
         //+ D14P1.second + D14P2.second

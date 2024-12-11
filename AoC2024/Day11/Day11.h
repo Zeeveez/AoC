@@ -5,31 +5,19 @@
 #include <vector>
 #include <chrono>
 #include <string>
-#include <queue>
-#include <functional>
 
-namespace AoC2022 {
+namespace AoC2024 {
     namespace Day11 {
-        class Monkey {
+        class Stone {
         public:
-            std::queue<uint64_t> items;
-            uint64_t testVal;
-            std::function<uint64_t(uint64_t)> op;
-            std::function<bool(uint64_t)> test;
-            std::function<void(std::vector<Monkey>&, uint64_t, bool)> throwItem;
-
-            void ParseItems(const std::string& line);
-            void ParseOperation(const std::string& line);
-            int ParseCondition(const std::string& line);
-            int ParseConditionMonkey(const std::string& line);
-            void ParseTest(const std::string& line);
-            void ParseThrow(const std::vector<std::string>& input, int i);
-
-            Monkey(const std::vector<std::string>& input, int i);
+            uint64_t value;
+            uint64_t count;
+            Stone(uint64_t value, uint64_t count);
+            std::optional<Stone> Iterate();
         };
-        std::vector<Monkey> ParseMonkeys(const std::vector<std::string> input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+        uint64_t Run(const std::vector<uint64_t>& input, int iterations);
+        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<uint64_t>& input);
+        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<uint64_t>& input);
     }
 }
 #endif
