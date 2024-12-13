@@ -1,123 +1,82 @@
 #include "Day13.h"
 
+#include <algorithm>
+#include <numeric>
+#include <regex>
 #include <iostream>
 
-namespace AoC2022 {
+namespace AoC2024 {
     namespace Day13 {
-        void Item::LoadData(std::string line, int& i) {
-            if (line[i] == '[') {
-                isValue = false;
-                items = {};
-                i++;
-                while (line[i] != ']') {
-                    items.push_back(Item(line, i));
-                    if (line[i] == ',') { i++; }
+        std::vector<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>> PreProcessInput(const std::vector<std::string>& input) {
+            std::vector<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>> cases = {};
+
+            static const std::regex are("Button A: X([\\+\\-]\\d+), Y([\\+\\-]\\d+)", std::regex::optimize);
+            static const std::regex bre("Button B: X([\\+\\-]\\d+), Y([\\+\\-]\\d+)", std::regex::optimize);
+            static const std::regex pre("Prize: X=(\\d+), Y=(\\d+)", std::regex::optimize);
+            for (int i = 0; i < input.size(); i += 4) {
+                std::smatch sm;
+                std::pair<uint64_t, uint64_t> acase;
+                std::string::const_iterator asearchStart(input[i].cbegin());
+                if (std::regex_search(asearchStart, input[i].cend(), sm, are)) {
+                    acase = { std::stoi(sm[1]), std::stoi(sm[2]) };
                 }
-                i++;
+                std::pair<uint64_t, uint64_t> bcase;
+                std::string::const_iterator bsearchStart(input[i + 1].cbegin());
+                if (std::regex_search(bsearchStart, input[i + 1].cend(), sm, bre)) {
+                    bcase = { std::stoi(sm[1]), std::stoi(sm[2]) };
+                }
+
+                std::pair<uint64_t, uint64_t> pcase;
+                std::string::const_iterator psearchStart(input[i + 2].cbegin());
+                if (std::regex_search(psearchStart, input[i + 2].cend(), sm, pre)) {
+                    pcase = { std::stoi(sm[1]), std::stoi(sm[2]) };
+                }
+                cases.push_back({ acase, bcase, pcase });
+            }
+            return cases;
+        }
+
+        uint64_t Solve(const std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>& testCase) {
+            uint64_t ax = std::get<0>(testCase).first;
+            uint64_t ay = std::get<0>(testCase).second;
+            uint64_t bx = std::get<1>(testCase).first;
+            uint64_t by = std::get<1>(testCase).second;
+            uint64_t tx = std::get<2>(testCase).first;
+            uint64_t ty = std::get<2>(testCase).second;
+
+            std::tuple<uint64_t, uint64_t, uint64_t> eq1 = { ax * ay, bx * ay, tx * ay };   // Multiply all by ax
+            std::tuple<uint64_t, uint64_t, uint64_t> eq2 = { ay * ax, by * ax, ty * ax };   // Multiply all by ay
+
+            std::pair<uint64_t, uint64_t> eqb;
+
+            // Take positive eq cause unsigned types
+            if (tx * ay > ty * ax) {
+                eqb = { bx * ay - by * ax, tx * ay - ty * ax };
             }
             else {
-                isValue = true;
-                value = 0;
-                while (line[i] != ',' && line[i] != ']') {
-                    value = value * 10 + line[i] - '0';
-                    i++;
-                }
+                eqb = { by * ax - bx * ay, ty * ax - tx * ay };
             }
-        }
-
-        Item::Item(int i) {
-            isValue = true;
-            value = i;
-            items = { };
-        }
-
-        Item::Item(std::vector<int> values) {
-            isValue = false;
-            this->value = 0;
-            for (auto& value : values) {
-                items.push_back(Item(value));
+            
+            // if non-0 remainder, invalid solution
+            if (eqb.second % eqb.first != 0) {
+                return 0;
             }
-        }
-
-        Item::Item(std::string line, int& i) {
-            LoadData(line, i);
-        }
-
-        Item::Item(std::string line) {
-            int i = 0;
-            LoadData(line, i);
-        }
-
-        bool operator<(const Item& l, const Item& r) {
-            if (l.isValue && r.isValue) { return l.value < r.value; }
-            if (l.isValue && !r.isValue) {
-                std::vector<int> data = { l.value };
-                return Item(data) < r;
-            }
-            if (!l.isValue && r.isValue) {
-                std::vector<int> data = { r.value };
-                return l < Item(data);
+            uint64_t b = eqb.second / eqb.first;
+            uint64_t a = (tx - b * bx) / ax;
+            if (a * ax + b * bx != tx) {
+                return 0;
             }
 
-            for (int i = 0; i < l.items.size() && i < r.items.size(); i++) {
-                if (l.items[i] < r.items[i]) { return true; }
-                if (l.items[i] != r.items[i]) { return false; }
-            }
-            return l.items.size() < r.items.size();
-        }
-        bool operator==(const Item& l, const Item& r) {
-            if (l.isValue && r.isValue) { return l.value == r.value; }
-            if (l.isValue && !r.isValue) {
-                std::vector<int> data = { l.value };
-                return Item(data) == r;
-            }
-            if (!l.isValue && r.isValue) {
-                std::vector<int> data = { r.value };
-                return l == Item(data);
-            }
-            if (l.items.size() != r.items.size()) { return false; }
-
-            for (int i = 0; i < l.items.size() && i < r.items.size(); i++) {
-                if (l.items[i] != r.items[i]) { return false; }
-            }
-            return true;
-        }
-        bool operator!=(const Item& l, const Item& r) {
-            return !(l == r);
-        }
-
-        void Item::Print() {
-            if (isValue) {
-                std::cout << value;
-            }
-            else {
-                std::cout << '[';
-                for (int i = 0; i < items.size(); i++) {
-                    if (i != 0) { std::cout << ','; }
-                    items[i].Print();
-                }
-                std::cout << ']';
-            }
-        }
-
-        std::vector<Item> PreProcessInput(const std::vector<std::string>& input) {
-            std::vector<Item> items = {};
-            for (int i = 0; i < input.size(); i++) {
-                if (input[i] == "") { continue; }
-                items.push_back(Item(input[i]));
-            }
-            return items;
+            return a * 3 + b;
         }
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
+            uint64_t res = 0;
 
-            auto items = PreProcessInput(input);
-            int res = 0;
-            for (int i = 0; i < items.size() / 2; i++) {
-                if (items[i * 2] < items[i * 2 + 1]) {
-                    res += i + 1;
-                }
+            auto cases = PreProcessInput(input);
+            for (auto& testCase : cases) {
+                res += Solve(testCase);
             }
 
             auto endtime = std::chrono::high_resolution_clock::now();
@@ -125,22 +84,18 @@ namespace AoC2022 {
         }
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-            auto starttime = std::chrono::high_resolution_clock::now();
+            auto startTime = std::chrono::high_resolution_clock::now();
+            uint64_t res = 0;
 
-            auto items = PreProcessInput(input);
-            auto dividers = PreProcessInput({ "[[2]]", "[[6]]" });
-            items.insert(items.end(), dividers.begin(), dividers.end());
-            std::sort(items.begin(), items.end());
-
-            int res = 1;
-            for (int i = 0; i < items.size(); i++) {
-                if (items[i] == dividers[0] || items[i] == dividers[1]) {
-                    res *= i + 1;
-                }
+            auto cases = PreProcessInput(input);
+            for (auto& testCase : cases) {
+                std::get<2>(testCase).first += 10000000000000;
+                std::get<2>(testCase).second += 10000000000000;
+                res += Solve(testCase);
             }
 
-            auto endtime = std::chrono::high_resolution_clock::now();
-            return { res, endtime - starttime };
+            auto endTime = std::chrono::high_resolution_clock::now();
+            return { res, endTime - startTime };
         }
     }
 }
