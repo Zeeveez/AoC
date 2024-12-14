@@ -2,7 +2,6 @@
 
 #include <regex>
 #include <iostream>
-#include <unordered_set>
 
 namespace AoC2024 {
     namespace Day14 {
@@ -30,24 +29,16 @@ namespace AoC2024 {
             return robots;
         }
 
-        void Run(std::vector<std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>>& robots, int64_t w, int64_t h, int64_t iter) {
-            for (auto& robot : robots) {
-                int64_t dx = robot.second.first < 0 ? w + robot.second.first : robot.second.first;
-                int64_t dy = robot.second.second < 0 ? h + robot.second.second : robot.second.second;
-                dx *= iter;
-                dy *= iter;
-                robot.first.first = (robot.first.first + dx) % w;
-                robot.first.second = (robot.first.second + dy) % h;
-            }
-        }
-
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
             auto robots = PreProcessInput(input);
             int w = 101;
             int h = 103;
-            Run(robots, w, h, 100);
+            for (auto& robot : robots) {
+                robot.first.first = (robot.first.first + (robot.second.first + w) * 100) % w;
+                robot.first.second = (robot.first.second + (robot.second.second + h) * 100) % h;
+            }
             int tl = 0;
             int tr = 0;
             int bl = 0;
@@ -80,41 +71,31 @@ namespace AoC2024 {
             int w = 101;
             int h = 103;
 
-            std::vector<std::vector<bool>> grid = {};
-            for (int y = 0; y < h; y++) {
-                grid.push_back({});
-                for (int x = 0; x < w; x++) {
-                    grid.back().push_back(false);
-                }
-            }
-
             uint64_t res = 0;
             while (true) {
-                Run(robots, w, h, 1);
                 res++;
-                for (int y = 0; y < h; y++) {
-                    for (int x = 0; x < w; x++) {
-                        grid[y][x] = false;
-                    }
-                }
-                for (auto& robot : robots) {
-                    grid[robot.first.second][robot.first.first] = true;
-                }
 
-                std::unordered_set<int> seen = {};
-                for (int y = 3; y < h - 3; y++) {
-                    for (int x = 3; x < w - 3; x++) {
-                        if (grid[y][x]
-                            && grid[y - 1][x] && grid[y - 2][x] && grid[y - 3][x]
-                            && grid[y + 1][x] && grid[y + 2][x] && grid[y + 3][x]
-                            && grid[y][x - 1] && grid[y][x - 2] && grid[y][x - 3]
-                            && grid[y][x + 1] && grid[y][x + 2] && grid[y][x + 3]) {
-                            goto found;
-                        }
-                    }
+                int64_t avgX = 0;
+                int64_t avgY = 0;
+                for (auto& robot : robots) {
+                    robot.first.first = (robot.first.first + robot.second.first + w) % w;
+                    robot.first.second = (robot.first.second + robot.second.second + h) % h;
+                    avgX += robot.first.first;
+                    avgY += robot.first.second;
+                }
+                avgX /= robots.size();
+                avgY /= robots.size();
+
+                int64_t avgDistance = 0; // manhattan
+                for (auto& robot : robots) {
+                    avgDistance += std::abs(robot.first.first + robot.first.second - avgX - avgY);
+                }
+                avgDistance /= robots.size();
+
+                if (avgDistance < 20) {
+                    break;
                 }
             }
-        found:;
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
