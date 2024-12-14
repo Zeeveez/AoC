@@ -62,6 +62,21 @@ int main()
     auto D11P2 = AoC2024::Day11::B(AoC::Helpers::ReadTokens<uint64_t>("./Day11.txt"));
     std::cout << "Day 11 - B (" << std::format("{:10.4f}", D11P2.second.count()) << "ms): " << D11P2.first << "\n";
 
+    auto D12P1 = AoC2024::Day12::A(AoC::Helpers::ReadLines("./Day12.txt"));
+    std::cout << "Day 12 - A (" << std::format("{:10.4f}", D12P1.second.count()) << "ms): " << D12P1.first << "\n";
+    auto D12P2 = AoC2024::Day12::B(AoC::Helpers::ReadLines("./Day12.txt"));
+    std::cout << "Day 12 - B (" << std::format("{:10.4f}", D12P2.second.count()) << "ms): " << D12P2.first << "\n";
+
+    auto D13P1 = AoC2024::Day13::A(AoC::Helpers::ReadLines("./Day13.txt"));
+    std::cout << "Day 13 - A (" << std::format("{:10.4f}", D13P1.second.count()) << "ms): " << D13P1.first << "\n";
+    auto D13P2 = AoC2024::Day13::B(AoC::Helpers::ReadLines("./Day13.txt"));
+    std::cout << "Day 13 - B (" << std::format("{:10.4f}", D13P2.second.count()) << "ms): " << D13P2.first << "\n";
+
+    auto D14P1 = AoC2024::Day14::A(AoC::Helpers::ReadLines("./Day14.txt"));
+    std::cout << "Day 14 - A (" << std::format("{:10.4f}", D14P1.second.count()) << "ms): " << D14P1.first << "\n";
+    auto D14P2 = AoC2024::Day14::B(AoC::Helpers::ReadLines("./Day14.txt"));
+    std::cout << "Day 14 - B (" << std::format("{:10.4f}", D14P2.second.count()) << "ms): " << D14P2.first << "\n";
+
     //auto D10P1 = AoC2022::Day10::A(AoC::Helpers::ReadTokens<std::string>("./Day10.txt"));
     //std::cout << "Day 10 - A (" << std::format("{:10.4f}", D10P1.second.count()) << "ms): " << D10P1.first << "\n";
     //auto D10P2 = AoC2022::Day10::B(AoC::Helpers::ReadTokens<std::string>("./Day10.txt"));
@@ -156,7 +171,7 @@ int main()
         + D09P1.second + D09P2.second
         + D10P1.second + D10P2.second
         + D11P1.second + D11P2.second
-        //+ D12P1.second + D12P2.second
+        + D12P1.second + D12P2.second
         //+ D13P1.second + D13P2.second
         //+ D14P1.second + D14P2.second
         //+ D15P1.second + D15P2.second

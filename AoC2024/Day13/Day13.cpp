@@ -1,6 +1,5 @@
 #include "Day13.h"
 
-
 namespace AoC2024 {
     namespace Day13 {
         std::vector<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>> PreProcessInput(const std::vector<std::string>& input) {

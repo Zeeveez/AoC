@@ -1,88 +1,73 @@
 #include "Day14.h"
 
-namespace AoC2022 {
+#include <regex>
+#include <iostream>
+#include <unordered_set>
+
+namespace AoC2024 {
     namespace Day14 {
-        std::vector<std::vector<std::pair<int, int>>> PreProcessInput(const std::vector<std::string>& input) {
-            std::vector<std::vector<std::pair<int, int>>> data = {};
+        std::vector<std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>> PreProcessInput(const std::vector<std::string>& input) {
+            std::vector<std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>> robots = {};
+            static const std::regex re("p=(\\d+),(\\d+) v=(\\-?\\d+),(\\-?\\d+)", std::regex::optimize);
             for (auto& line : input) {
-                data.push_back({});
-                for (int i = 0; i < line.length(); i += 3) {
-                    int a = 0;
-                    int b = 0;
-                    while (line[i] != ',') { a = a * 10 + line[i] - '0'; i++; } i++;
-                    while (line[i] != ' ' && i < line.length()) { b = b * 10 + line[i] - '0'; i++; } i++;
-                    data[data.size() - 1].push_back({ a, b });
+
+                std::smatch sm;
+
+                if (std::regex_search(line, sm, re)) {
+                    robots.push_back(
+                        {
+                            {
+                            std::stoi(sm[1]),
+                            std::stoi(sm[2]),
+                            },{
+                            std::stoi(sm[3]),
+                            std::stoi(sm[4])
+                            }
+                        }
+                    );
                 }
             }
-            return data;
+            return robots;
         }
 
-        void DrawLine(std::vector<std::vector<State>>& grid, std::pair<int, int> p1, std::pair<int, int> p2) {
-            auto& [x1, y1] = p1;
-            auto& [x2, y2] = p2;
-
-            grid[x1][y1] = State::ROCK;
-            for (int x = std::min(x1, x2); x < std::max(x1, x2); x++) {
-                grid[x][y1] = State::ROCK;
-            }
-            for (int y = std::min(y1, y2); y < std::max(y1, y2); y++) {
-                grid[x1][y] = State::ROCK;
-            }
-            grid[x2][y2] = State::ROCK;
-        }
-
-        std::vector<std::vector<State>> GenerateGrid(const std::vector<std::vector<std::pair<int, int>>> lines) {
-            std::vector<std::vector<State>> grid = {};
-            for (int x = 0; x < 1000; x++) {
-                grid.push_back({});
-                for (int y = 0; y < 1000; y++) { grid[x].push_back(State::AIR); }
-            }
-
-            for (auto& line : lines) {
-                for (int i = 0; i < line.size() - 1; i++) {
-                    DrawLine(grid, line[i], line[i + 1]);
-                }
-            }
-
-            return grid;
-        }
-
-        bool ApplySand(std::vector<std::vector<State>>& grid, int x, int y) {
-            while (true) {
-                if (y + 1 >= grid[x].size()) {
-                    return false;
-                }
-                if (grid[x][y + 1] == State::AIR) {
-                    y++; continue;
-                }
-                if (grid[x - 1][y + 1] == State::AIR) {
-                    x--; y++; continue;
-                }
-                if (grid[x + 1][y + 1] == State::AIR) {
-                    x++; y++; continue;
-                }
-                if (grid[x - 1][y + 1] != State::AIR && grid[x][y + 1] != State::AIR && grid[x + 1][y + 1] != State::AIR) {
-                    grid[x][y] = State::SAND;
-                    return true;
-                }
+        void Run(std::vector<std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>>& robots, int64_t w, int64_t h, int64_t iter) {
+            for (auto& robot : robots) {
+                int64_t dx = robot.second.first < 0 ? w + robot.second.first : robot.second.first;
+                int64_t dy = robot.second.second < 0 ? h + robot.second.second : robot.second.second;
+                dx *= iter;
+                dy *= iter;
+                robot.first.first = (robot.first.first + dx) % w;
+                robot.first.second = (robot.first.second + dy) % h;
             }
         }
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto lines = PreProcessInput(input);
-            auto grid = GenerateGrid(lines);
-
-            int res = 0;
-            while (true) {
-                if (ApplySand(grid, 500, 0)) {
-                    res++;
+            auto robots = PreProcessInput(input);
+            int w = 101;
+            int h = 103;
+            Run(robots, w, h, 100);
+            int tl = 0;
+            int tr = 0;
+            int bl = 0;
+            int br = 0;
+            for (auto& robot : robots) {
+                if (robot.first.first < w / 2 && robot.first.second < h / 2) {
+                    tl++;
                 }
-                else {
-                    break;
+                else if (robot.first.first > w / 2 && robot.first.second < h / 2) {
+                    tr++;
+                }
+                if (robot.first.first < w / 2 && robot.first.second > h / 2) {
+                    bl++;
+                }
+                else if (robot.first.first > w / 2 && robot.first.second > h / 2) {
+                    br++;
                 }
             }
+
+            uint64_t res = tl * tr * bl * br;
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
@@ -91,30 +76,45 @@ namespace AoC2022 {
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto lines = PreProcessInput(input);
-            auto grid = GenerateGrid(lines);
-            int maxY = 0;
-            for (int x = 0; x < grid.size(); x++) {
-                for (int y = 0; y < grid[x].size(); y++) {
-                    if (grid[x][y] == State::ROCK) {
-                        maxY = std::max(maxY, y);
-                    }
-                }
-            }
-            DrawLine(grid, { 0, maxY + 2 }, { grid.size() - 1, maxY + 2 });
+            auto robots = PreProcessInput(input);
+            int w = 101;
+            int h = 103;
 
-            int res = 0;
-            while (true) {
-                if (ApplySand(grid, 500, 0)) {
-                    res++;
-                    if (grid[500][0] == State::SAND) {
-                        break;
-                    }
-                }
-                else {
-                    break;
+            std::vector<std::vector<bool>> grid = {};
+            for (int y = 0; y < h; y++) {
+                grid.push_back({});
+                for (int x = 0; x < w; x++) {
+                    grid.back().push_back(false);
                 }
             }
+
+            uint64_t res = 0;
+            while (true) {
+                Run(robots, w, h, 1);
+                res++;
+                for (int y = 0; y < h; y++) {
+                    for (int x = 0; x < w; x++) {
+                        grid[y][x] = false;
+                    }
+                }
+                for (auto& robot : robots) {
+                    grid[robot.first.second][robot.first.first] = true;
+                }
+
+                std::unordered_set<int> seen = {};
+                for (int y = 3; y < h - 3; y++) {
+                    for (int x = 3; x < w - 3; x++) {
+                        if (grid[y][x]
+                            && grid[y - 1][x] && grid[y - 2][x] && grid[y - 3][x]
+                            && grid[y + 1][x] && grid[y + 2][x] && grid[y + 3][x]
+                            && grid[y][x - 1] && grid[y][x - 2] && grid[y][x - 3]
+                            && grid[y][x + 1] && grid[y][x + 2] && grid[y][x + 3]) {
+                            goto found;
+                        }
+                    }
+                }
+            }
+        found:;
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
