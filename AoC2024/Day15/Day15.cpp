@@ -71,7 +71,7 @@ namespace AoC2024 {
             if (map[y + dy][x + dx] == '#') { return false; }
             if (MoveA(map, x + dx, y + dy, dx, dy, _)) {
                 map[y + dy * 2][x + dx * 2] = map[y + dy][x + dx];
-                map[y + dy][x + dx] = map[y][x];
+                map[y + dy][x + dx] = '.';
                 return true;
             }
             return false;
