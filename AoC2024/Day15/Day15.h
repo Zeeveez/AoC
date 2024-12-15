@@ -10,7 +10,7 @@ namespace AoC2024 {
     namespace Day15 {
         std::tuple<std::vector<std::vector<char>>, std::string, std::pair<int, int>> PreProcessInputA(const std::vector<std::string>& input);
         std::tuple<std::vector<std::vector<char>>, std::string, std::pair<int, int>> PreProcessInputB(const std::vector<std::string>& input);
-        void MoveA(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int>& pos);
+        bool MoveA(std::vector<std::vector<char>>& map, int x, int y, int dx, int dy);
         bool CanMove(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int> pos);
         void PushB(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int> pos);
         void MoveB(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int>& pos);

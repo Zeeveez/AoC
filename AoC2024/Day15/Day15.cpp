@@ -68,26 +68,15 @@ namespace AoC2024 {
             return { map, moves, pos };
         }
 
-        void MoveA(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int>& pos) {
-            int i = 1;
-            while (true) {
-                if (map[pos.second + dy * i][pos.first + dx * i] == '#') {
-                    return;
-                }
-                if (map[pos.second + dy * i][pos.first + dx * i] == 'O') {
-                    i++;
-                    continue;
-                }
-
-                // found '.'
-                for (int j = i; j > 0; j--) {
-                    map[pos.second + dy * j][pos.first + dx * j] = 'O';
-                }
-                map[pos.second + dy][pos.first + dx] = '.';
-                pos.first += dx;
-                pos.second += dy;
-                return;
+        bool MoveA(std::vector<std::vector<char>>& map, int x, int y, int dx, int dy) {
+            if (map[y + dy][x + dx] == '.') { return true; }
+            if (map[y + dy][x + dx] == '#') { return false; }
+            if (MoveA(map, x + dx, y + dy, dx, dy)) {
+                map[y + dy * 2][x + dx * 2] = map[y + dy][x + dx];
+                map[y + dy][x + dx] = map[y][x];
+                return true;
             }
+            return false;
         }
 
         bool CanMove(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int> pos) {
@@ -153,7 +142,7 @@ namespace AoC2024 {
                     map[pos.second + dy * 2][pos.first + dx] = ']';
                     map[pos.second + dy * 2][pos.first + dx - 1] = '[';
                     map[pos.second + dy][pos.first + dx] = '.';
-                    map[pos.second + dy][pos.first + dx -1] = '.';
+                    map[pos.second + dy][pos.first + dx - 1] = '.';
                 }
             }
 
@@ -171,21 +160,35 @@ namespace AoC2024 {
             auto starttime = std::chrono::high_resolution_clock::now();
 
             auto [map, moves, pos] = PreProcessInputA(input);
+            auto [x, y] = pos;
+
             for (auto& move : moves) {
+                int dx = 0;
+                int dy = 0;
                 switch (move) {
                 case '^':
-                    MoveA(map, 0, -1, pos);
+                    dy = -1;
                     break;
                 case '>':
-                    MoveA(map, 1, 0, pos);
+                    dx = 1;
                     break;
                 case 'v':
-                    MoveA(map, 0, 1, pos);
+                    dy = 1;
                     break;
                 case '<':
-                    MoveA(map, -1, 0, pos);
+                    dx = -1;
                     break;
                 }
+                MoveA(map, x, y, dx, dy);
+                if (map[y + dy][x + dx] == '.') { x += dx; y += dy; }
+
+                //std::cout << "\n\n";
+                //for (int ay = 0; ay < map.size(); ay++) {
+                //    for (int ax = 0; ax < map[y].size(); ax++) {
+                //        std::cout << (ax == x && ay == y ? '@' : map[ay][ax]);
+                //    }
+                //    std::cout << "\n";
+                //}
             }
 
             uint64_t res = 0;
