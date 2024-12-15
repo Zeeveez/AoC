@@ -1,7 +1,5 @@
 #include "Day15.h"
 
-#include <iostream>
-
 namespace AoC2024 {
     namespace Day15 {
         std::tuple<std::vector<std::vector<char>>, std::string, std::pair<int, int>> PreProcessInputA(const std::vector<std::string>& input) {
@@ -68,10 +66,10 @@ namespace AoC2024 {
             return { map, moves, pos };
         }
 
-        bool MoveA(std::vector<std::vector<char>>& map, int x, int y, int dx, int dy) {
+        bool MoveA(std::vector<std::vector<char>>& map, int x, int y, int dx, int dy, bool _) {
             if (map[y + dy][x + dx] == '.') { return true; }
             if (map[y + dy][x + dx] == '#') { return false; }
-            if (MoveA(map, x + dx, y + dy, dx, dy)) {
+            if (MoveA(map, x + dx, y + dy, dx, dy, _)) {
                 map[y + dy * 2][x + dx * 2] = map[y + dy][x + dx];
                 map[y + dy][x + dx] = map[y][x];
                 return true;
@@ -79,126 +77,61 @@ namespace AoC2024 {
             return false;
         }
 
-        bool CanMove(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int> pos) {
-            if (map[pos.second + dy][pos.first + dx] == '.') {
+        bool MoveB(std::vector<std::vector<char>>& map, int x, int y, int dx, int dy, bool yMoveTest) {
+            if (map[y + dy][x + dx] == '.') { return true; }
+            if (map[y + dy][x + dx] == '#') { return false; }
+            if (dx) { return MoveA(map, x, y, dx, dy, yMoveTest); }
+
+            int offset = -1 + (map[y + dy][x + dx] == '[') * 2;
+            if (MoveB(map, x + dx, y + dy, dx, dy, yMoveTest) && MoveB(map, x + dx + offset, y + dy, dx, dy, yMoveTest)) {
+                if (!yMoveTest) {
+                    map[y + dy * 2][x + dx * 2] = map[y + dy][x + dx];
+                    map[y + dy * 2][x + dx * 2 + offset] = map[y + dy][x + dx + offset];
+                    map[y + dy][x + dx] = '.';
+                    map[y + dy][x + dx + offset] = '.';
+                }
                 return true;
             }
-            if (map[pos.second + dy][pos.first + dx] == '#') {
-                return false;
-            }
-
-            if (map[pos.second + dy][pos.first + dx] == '[' && dy) {
-                return CanMove(map, dx, dy, { pos.first + dx, pos.second + dy })
-                    && CanMove(map, dx, dy, { pos.first + dx + 1, pos.second + dy });
-            }
-            if (map[pos.second + dy][pos.first + dx] == ']' && dy) {
-                return CanMove(map, dx, dy, { pos.first + dx, pos.second + dy })
-                    && CanMove(map, dx, dy, { pos.first + dx - 1, pos.second + dy });
-            }
-
-            for (int i = 1; i < 1000; i++) {
-                if (map[pos.second + dy * i][pos.first + dx * i] == '.') {
-                    return true;
-                }
-                if (map[pos.second + dy * i][pos.first + dx * i] != '[' && map[pos.second + dy * i][pos.first + dx * i] != ']') {
-                    return false;
-                }
-            }
+            return false;
         }
 
-        void PushB(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int> pos) {
-            if (dx) {
-                for (int i = 1; i < 1000; i++) {
-                    if (map[pos.second + dy * i][pos.first + dx * i] == '.') {
-                        for (int j = i; j > 0; j--) {
-                            map[pos.second + dy * j][pos.first + dx * j] = map[pos.second + dy * (j - 1)][pos.first + dx * (j - 1)];
-                        }
-                        pos.first += dx;
-                        pos.second += dy;
-                        return;
+        uint64_t Score(std::vector<std::vector<char>>& map, char target) {
+            uint64_t res = 0;
+            for (int y = 0; y < map.size(); y++) {
+                for (int x = 0; x < map[y].size(); x++) {
+                    if (map[y][x] == target) {
+                        res += 100 * y + x;
                     }
                 }
             }
-            else {
-                if (map[pos.second + dy][pos.first + dx] == '[') {
-                    if (map[pos.second + dy * 2][pos.first + dx] != '.') {
-                        PushB(map, dx, dy, { pos.first + dx, pos.second + dy });
-                    }
-                    if (map[pos.second + dy * 2][pos.first + dx + 1] != '.') {
-                        PushB(map, dx, dy, { pos.first + dx + 1, pos.second + dy });
-                    }
-                    map[pos.second + dy * 2][pos.first + dx] = '[';
-                    map[pos.second + dy * 2][pos.first + dx + 1] = ']';
-                    map[pos.second + dy][pos.first + dx] = '.';
-                    map[pos.second + dy][pos.first + dx + 1] = '.';
-                }
-                if (map[pos.second + dy][pos.first + dx] == ']') {
-                    if (map[pos.second + dy * 2][pos.first + dx] != '.') {
-                        PushB(map, dx, dy, { pos.first + dx, pos.second + dy });
-                    }
-                    if (map[pos.second + dy * 2][pos.first + dx - 1] != '.') {
-                        PushB(map, dx, dy, { pos.first + dx - 1, pos.second + dy });
-                    }
-                    map[pos.second + dy * 2][pos.first + dx] = ']';
-                    map[pos.second + dy * 2][pos.first + dx - 1] = '[';
-                    map[pos.second + dy][pos.first + dx] = '.';
-                    map[pos.second + dy][pos.first + dx - 1] = '.';
-                }
-            }
-
+            return res;
         }
 
-        void MoveB(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int>& pos) {
-            if (CanMove(map, dx, dy, pos)) {
-                PushB(map, dx, dy, pos);
-                pos.first += dx;
-                pos.second += dy;
+        uint64_t Run(
+            std::function<std::tuple<std::vector<std::vector<char>>, std::string, std::pair<int, int>>(const std::vector<std::string>& input)> parseFunc,
+            std::function<bool(std::vector<std::vector<char>>&, int, int, int, int, bool)> moveFunc,
+            const std::vector<std::string>& input,
+            char target
+        ) {
+            auto [map, moves, pos] = parseFunc(input);
+            auto [x, y] = pos;
+
+            for (auto& move : moves) {
+                int dx = move == '<' ? -1 : move == '>' ? 1 : 0;
+                int dy = move == '^' ? -1 : move == 'v' ? 1 : 0;
+                if (moveFunc(map, x, y, dx, dy, true)) {
+                    moveFunc(map, x, y, dx, dy, false);
+                }
+                if (map[y + dy][x + dx] == '.') { x += dx; y += dy; }
             }
+
+            return Score(map, target);
         }
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto [map, moves, pos] = PreProcessInputA(input);
-            auto [x, y] = pos;
-
-            for (auto& move : moves) {
-                int dx = 0;
-                int dy = 0;
-                switch (move) {
-                case '^':
-                    dy = -1;
-                    break;
-                case '>':
-                    dx = 1;
-                    break;
-                case 'v':
-                    dy = 1;
-                    break;
-                case '<':
-                    dx = -1;
-                    break;
-                }
-                MoveA(map, x, y, dx, dy);
-                if (map[y + dy][x + dx] == '.') { x += dx; y += dy; }
-
-                //std::cout << "\n\n";
-                //for (int ay = 0; ay < map.size(); ay++) {
-                //    for (int ax = 0; ax < map[y].size(); ax++) {
-                //        std::cout << (ax == x && ay == y ? '@' : map[ay][ax]);
-                //    }
-                //    std::cout << "\n";
-                //}
-            }
-
-            uint64_t res = 0;
-            for (int y = 0; y < map.size(); y++) {
-                for (int x = 0; x < map[y].size(); x++) {
-                    if (map[y][x] == 'O') {
-                        res += 100 * y + x;
-                    }
-                }
-            }
+            uint64_t res = Run(PreProcessInputA, MoveA, input, 'O');
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
@@ -207,32 +140,7 @@ namespace AoC2024 {
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto [map, moves, pos] = PreProcessInputB(input);
-            for (auto& move : moves) {
-                switch (move) {
-                case '^':
-                    MoveB(map, 0, -1, pos);
-                    break;
-                case '>':
-                    MoveB(map, 1, 0, pos);
-                    break;
-                case 'v':
-                    MoveB(map, 0, 1, pos);
-                    break;
-                case '<':
-                    MoveB(map, -1, 0, pos);
-                    break;
-                }
-            }
-
-            uint64_t res = 0;
-            for (int y = 0; y < map.size(); y++) {
-                for (int x = 0; x < map[y].size(); x++) {
-                    if (map[y][x] == '[') {
-                        res += 100 * y + x;
-                    }
-                }
-            }
+            uint64_t res = Run(PreProcessInputB, MoveB, input, '[');
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
