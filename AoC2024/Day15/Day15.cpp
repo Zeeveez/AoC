@@ -1,92 +1,199 @@
 #include "Day15.h"
 
-#include <regex>
+#include <iostream>
 
-namespace AoC2022 {
+namespace AoC2024 {
     namespace Day15 {
-        std::vector<std::pair<std::pair<int, int>, std::pair<int, int>>> PreProcessInput(const std::vector<std::string>& input) {
-            std::vector<std::pair<std::pair<int, int>, std::pair<int, int>>> sensors = {};
+        std::tuple<std::vector<std::vector<char>>, std::string, std::pair<int, int>> PreProcessInputA(const std::vector<std::string>& input) {
+            std::vector<std::vector<char>> map = {};
+            std::pair<int, int> pos;
+            int line = 0;
+            while (input[line].length()) {
+                map.push_back({});
+                for (auto& c : input[line]) {
+                    if (c == '@') {
+                        map.back().push_back('.');
+                        pos = { map.back().size() - 1, map.size() - 1 };
+                    }
+                    else {
+                        map.back().push_back(c);
+                    }
+                }
+                line++;
+            }
 
-            for (auto& line : input) {
-                static const std::regex re("Sensor at x=(\\-?\\d+), y=(\\-?\\d+): closest beacon is at x=(\\-?\\d+), y=(\\-?\\d+)", std::regex::optimize);
-                std::smatch sm;
+            std::string moves;
+            while (line < input.size()) {
+                moves += input[line++];
+            }
 
-                if (std::regex_search(line, sm, re)) {
-                    sensors.push_back(
-                        {
-                            {
-                                std::stoi(sm[1]),
-                                std::stoi(sm[2])
-                            },
-                            {
-                                std::stoi(sm[3]),
-                                std::stoi(sm[4])
-                            }
+            return { map, moves, pos };
+        }
+
+        std::tuple<std::vector<std::vector<char>>, std::string, std::pair<int, int>> PreProcessInputB(const std::vector<std::string>& input) {
+            std::vector<std::vector<char>> map = {};
+            std::pair<int, int> pos;
+            int line = 0;
+            while (input[line].length()) {
+                map.push_back({});
+                for (auto& c : input[line]) {
+                    switch (c) {
+                    case '#':
+                        map.back().push_back('#');
+                        map.back().push_back('#');
+                        break;
+                    case 'O':
+                        map.back().push_back('[');
+                        map.back().push_back(']');
+                        break;
+                    case '.':
+                        map.back().push_back('.');
+                        map.back().push_back('.');
+                        break;
+                    case '@':
+                        map.back().push_back('.');
+                        pos = { map.back().size() - 1, map.size() - 1 };
+                        map.back().push_back('.');
+                        break;
+                    }
+                }
+                line++;
+            }
+
+            std::string moves;
+            while (line < input.size()) {
+                moves += input[line++];
+            }
+
+            return { map, moves, pos };
+        }
+
+        void MoveA(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int>& pos) {
+            int i = 1;
+            while (true) {
+                if (map[pos.second + dy * i][pos.first + dx * i] == '#') {
+                    return;
+                }
+                if (map[pos.second + dy * i][pos.first + dx * i] == 'O') {
+                    i++;
+                    continue;
+                }
+
+                // found '.'
+                for (int j = i; j > 0; j--) {
+                    map[pos.second + dy * j][pos.first + dx * j] = 'O';
+                }
+                map[pos.second + dy][pos.first + dx] = '.';
+                pos.first += dx;
+                pos.second += dy;
+                return;
+            }
+        }
+
+        bool CanMove(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int> pos) {
+            if (map[pos.second + dy][pos.first + dx] == '.') {
+                return true;
+            }
+            if (map[pos.second + dy][pos.first + dx] == '#') {
+                return false;
+            }
+
+            if (map[pos.second + dy][pos.first + dx] == '[' && dy) {
+                return CanMove(map, dx, dy, { pos.first + dx, pos.second + dy })
+                    && CanMove(map, dx, dy, { pos.first + dx + 1, pos.second + dy });
+            }
+            if (map[pos.second + dy][pos.first + dx] == ']' && dy) {
+                return CanMove(map, dx, dy, { pos.first + dx, pos.second + dy })
+                    && CanMove(map, dx, dy, { pos.first + dx - 1, pos.second + dy });
+            }
+
+            for (int i = 1; i < 1000; i++) {
+                if (map[pos.second + dy * i][pos.first + dx * i] == '.') {
+                    return true;
+                }
+                if (map[pos.second + dy * i][pos.first + dx * i] != '[' && map[pos.second + dy * i][pos.first + dx * i] != ']') {
+                    return false;
+                }
+            }
+        }
+
+        void PushB(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int> pos) {
+            if (dx) {
+                for (int i = 1; i < 1000; i++) {
+                    if (map[pos.second + dy * i][pos.first + dx * i] == '.') {
+                        for (int j = i; j > 0; j--) {
+                            map[pos.second + dy * j][pos.first + dx * j] = map[pos.second + dy * (j - 1)][pos.first + dx * (j - 1)];
                         }
-                    );
+                        pos.first += dx;
+                        pos.second += dy;
+                        return;
+                    }
+                }
+            }
+            else {
+                if (map[pos.second + dy][pos.first + dx] == '[') {
+                    if (map[pos.second + dy * 2][pos.first + dx] != '.') {
+                        PushB(map, dx, dy, { pos.first + dx, pos.second + dy });
+                    }
+                    if (map[pos.second + dy * 2][pos.first + dx + 1] != '.') {
+                        PushB(map, dx, dy, { pos.first + dx + 1, pos.second + dy });
+                    }
+                    map[pos.second + dy * 2][pos.first + dx] = '[';
+                    map[pos.second + dy * 2][pos.first + dx + 1] = ']';
+                    map[pos.second + dy][pos.first + dx] = '.';
+                    map[pos.second + dy][pos.first + dx + 1] = '.';
+                }
+                if (map[pos.second + dy][pos.first + dx] == ']') {
+                    if (map[pos.second + dy * 2][pos.first + dx] != '.') {
+                        PushB(map, dx, dy, { pos.first + dx, pos.second + dy });
+                    }
+                    if (map[pos.second + dy * 2][pos.first + dx - 1] != '.') {
+                        PushB(map, dx, dy, { pos.first + dx - 1, pos.second + dy });
+                    }
+                    map[pos.second + dy * 2][pos.first + dx] = ']';
+                    map[pos.second + dy * 2][pos.first + dx - 1] = '[';
+                    map[pos.second + dy][pos.first + dx] = '.';
+                    map[pos.second + dy][pos.first + dx -1] = '.';
                 }
             }
 
-            return sensors;
         }
 
-        int ManhattanDistance(const std::pair<int, int> a, const std::pair<int, int> b) {
-            return std::abs(a.first - b.first) + std::abs(a.second - b.second);
-        }
-
-        std::vector<std::pair<int, int>> GetPossiblePositions(const std::pair<int, int> sensor, const std::pair<int, int> beacon) {
-            std::vector<std::pair<int, int>> positions = {};
-            int distance = ManhattanDistance(sensor, beacon) + 1;
-            for (int x = -distance, y = 0; x <= 0; x++, y++) {
-                positions.push_back(
-                    {
-                        sensor.first + x,
-                        sensor.second + y
-                    });
-                positions.push_back(
-                    {
-                        sensor.first + x,
-                        sensor.second - y
-                    });
+        void MoveB(std::vector<std::vector<char>>& map, int dx, int dy, std::pair<int, int>& pos) {
+            if (CanMove(map, dx, dy, pos)) {
+                PushB(map, dx, dy, pos);
+                pos.first += dx;
+                pos.second += dy;
             }
-            for (int x = 0, y = distance; x <= distance; x++, y--) {
-                positions.push_back(
-                    {
-                        sensor.first + x,
-                        sensor.second + y
-                    });
-                positions.push_back(
-                    {
-                        sensor.first + x,
-                        sensor.second - y
-                    });
-            }
-            return positions;
         }
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto sensors = PreProcessInput(input);
-            int res = 0;
-            for (int x = -10000000; x < 10000000; x++) {
-                std::pair<int, int> pos = { x, 2000000 };
-                bool canPlace = true;
-                for (auto& sensor : sensors) {
-                    if (ManhattanDistance(sensor.first, pos) <= ManhattanDistance(sensor.first, sensor.second)) {
-                        canPlace = false;
-                        break;
-                    }
+            auto [map, moves, pos] = PreProcessInputA(input);
+            for (auto& move : moves) {
+                switch (move) {
+                case '^':
+                    MoveA(map, 0, -1, pos);
+                    break;
+                case '>':
+                    MoveA(map, 1, 0, pos);
+                    break;
+                case 'v':
+                    MoveA(map, 0, 1, pos);
+                    break;
+                case '<':
+                    MoveA(map, -1, 0, pos);
+                    break;
                 }
-                for (auto& sensor : sensors) {
-                    if (sensor.second.first == x && sensor.second.second == 2000000) {
-                        canPlace = true;
-                        break;
-                    }
-                }
+            }
 
-                if (!canPlace) {
-                    res++;
+            uint64_t res = 0;
+            for (int y = 0; y < map.size(); y++) {
+                for (int x = 0; x < map[y].size(); x++) {
+                    if (map[y][x] == 'O') {
+                        res += 100 * y + x;
+                    }
                 }
             }
 
@@ -97,27 +204,32 @@ namespace AoC2022 {
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto sensorBeaconPairs = PreProcessInput(input);
-            uint64_t res = 0;
+            auto [map, moves, pos] = PreProcessInputB(input);
+            for (auto& move : moves) {
+                switch (move) {
+                case '^':
+                    MoveB(map, 0, -1, pos);
+                    break;
+                case '>':
+                    MoveB(map, 1, 0, pos);
+                    break;
+                case 'v':
+                    MoveB(map, 0, 1, pos);
+                    break;
+                case '<':
+                    MoveB(map, -1, 0, pos);
+                    break;
+                }
+            }
 
-            for (auto& sensor : sensorBeaconPairs) {
-                auto positions = GetPossiblePositions(sensor.first, sensor.second);
-                for (auto& pos : positions) {
-                    bool canPlace = true;
-                    if (pos.first < 0 || pos.first > 4000000 || pos.second < 0 || pos.second > 4000000) { continue; }
-                    for (auto& sensor : sensorBeaconPairs) {
-                        if (ManhattanDistance(sensor.first, pos) <= ManhattanDistance(sensor.first, sensor.second)) {
-                            canPlace = false;
-                            break;
-                        }
-                    }
-                    if (canPlace) {
-                        res = pos.first * (uint64_t)4000000 + pos.second;
-                        goto done;
+            uint64_t res = 0;
+            for (int y = 0; y < map.size(); y++) {
+                for (int x = 0; x < map[y].size(); x++) {
+                    if (map[y][x] == '[') {
+                        res += 100 * y + x;
                     }
                 }
             }
-            done:;
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
