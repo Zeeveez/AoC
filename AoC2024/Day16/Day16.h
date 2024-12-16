@@ -7,7 +7,7 @@
 #include <chrono>
 #include <string>
 
-namespace AoC2022 {
+namespace AoC2024 {
     namespace Day16 {
         std::pair<std::vector<int>, std::unordered_map<int, std::vector<int>>> PreProcessInput(const std::vector<std::string>& input);
 

@@ -2,135 +2,142 @@
 
 #include <regex>
 #include <queue>
-#include <set>
+#include <unordered_set>
+#include <iostream>
 
-namespace AoC2022 {
+namespace AoC2024 {
     namespace Day16 {
-        std::pair<std::vector<int>, std::unordered_map<int, std::vector<int>>> PreProcessInput(const std::vector<std::string>& input) {
-            std::vector<int> flowRates = { };
-            flowRates.resize(input.size());
-            std::unordered_map<int, int> valveMappings = { { 0, 0 } };
-            std::unordered_map<int, std::vector<int>> corridors = {};
+        std::tuple<int, int, int, int> GetStartAndEnd(const std::vector<std::string>& input) {
+            int startX = 0;
+            int startY = 0;
+            int endX = 0;
+            int endY = 0;
 
-            for (auto& line : input) {
-                std::string::const_iterator searchStart(line.cbegin());
-                const std::regex valveRe("([A-Z][A-Z])");
-                const std::regex flowRe("(\\d+)");
-                std::smatch sm;
-
-                std::regex_search(line, sm, flowRe);
-                int flowRate = std::stoi(sm[1]);
-
-                int firstValve = -1;
-                while (std::regex_search(searchStart, line.cend(), sm, valveRe)) {
-                    int valve = (sm[1].str()[0] - 'A') * 26 + (sm[1].str()[1] - 'A');
-                    if (!valveMappings.contains(valve)) {
-                        valveMappings[valve] = valveMappings.size();
+            for (int y = 0; y < input.size(); y++) {
+                for (int x = 0; x < input[y].size(); x++) {
+                    if (input[y][x] == 'S') {
+                        startX = x;
+                        startY = y;
                     }
-
-                    int valveIdx = valveMappings[valve];
-
-                    if (firstValve == -1) {
-                        firstValve = valveIdx;
-                        corridors[valveIdx] = {};
-                        flowRates[valveIdx] = flowRate;
-                    }
-                    else {
-                        corridors[firstValve].push_back(valveIdx);
-                    }
-                    searchStart = sm.suffix().first;
-                }
-            }
-
-            return { flowRates, corridors };
-        }
-
-        int GetDistance(const std::unordered_map<int, std::vector<int>>& corridors, int from, int to) {
-            std::set<int> visited = { from };
-            std::queue<std::pair<int, int>> queue = {};
-            for (auto& corridor : corridors.at(from)) {
-                queue.push({ corridor, 1 });
-            }
-            int distance = 0;
-            while (!queue.empty()) {
-                auto [at, cost] = queue.front(); queue.pop();
-                if (at == to) {
-                    return cost;
-                }
-                visited.insert(at);
-                for (auto& corridor : corridors.at(at)) {
-                    if (!visited.contains(corridor)) {
-                        queue.push({ corridor, cost + 1 });
+                    if (input[y][x] == 'E') {
+                        endX = x;
+                        endY = y;
                     }
                 }
             }
+
+            return { startX, startY, endX, endY };
         }
 
-        std::vector<std::unordered_map<int, int>> GetValveRoutes(const std::vector<int>& flowRates, const std::unordered_map<int, std::vector<int>>& corridors) {
-            std::vector<std::unordered_map<int, int>> weightedCorridors = {};
-            weightedCorridors.resize(flowRates.size());
-            for (int from = 0; from < flowRates.size(); from++) {
-                if (from == 0 || flowRates[from] != 0) {
-                    for (int to = 0; to < flowRates.size(); to++) {
-                        if (from != to && flowRates[to] != 0) {
-                            weightedCorridors[from][to] = GetDistance(corridors, from, to);
-                        }
+        void BestPath(const std::vector<std::string>& input, int x, int y, int dx, int dy, int tx, int ty, std::vector<int>& seen, std::vector<std::vector<uint64_t>>& scores, uint64_t score, uint64_t& bestScore) {
+
+            if (score > bestScore) {
+                return;
+            }
+            if (score > scores[(dx > 0) * 2 + (dy > 0)][y * input.size() + x]) {
+                return;
+            }
+            scores[(dx > 0) * 2 + (dy > 0)][y * input.size() + x] = score;
+            if (input[y][x] == '#') {
+                return;
+            }
+
+            if (seen[y * input.size() + x]) {
+                return;
+            }
+            if (x == tx && y == ty) {
+                bestScore = std::min(score, bestScore);
+                return;
+            }
+
+
+            seen[y * input.size() + x] = true;
+            if (dx == 1) {
+                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scores, score + 1, bestScore);
+                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scores, score + 1001, bestScore);
+                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scores, score + 1001, bestScore);
+            }
+            else if (dx == -1) {
+                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scores, score + 1, bestScore);
+                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scores, score + 1001, bestScore);
+                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scores, score + 1001, bestScore);
+            }
+            else if (dy == 1) {
+                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scores, score + 1001, bestScore);
+                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scores, score + 1001, bestScore);
+                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scores, score + 1, bestScore);
+            }
+            else if (dy == -1) {
+                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scores, score + 1001, bestScore);
+                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scores, score + 1001, bestScore);
+                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scores, score + 1, bestScore);
+            }
+            seen[y * input.size() + x] = false;
+            return;
+        }
+
+        void BestTiles(const std::vector<std::string>& input, int x, int y, int dx, int dy, int tx, int ty, std::vector<int>& seen, std::vector<std::vector<uint64_t>>& scores, uint64_t score, uint64_t bestScore, std::unordered_set<int>& bestTiles) {
+
+            if (score > bestScore) {
+                return;
+            }
+            if (score > scores[(dx > 0) * 2 + (dy > 0)][y * input.size() + x]) {
+                return;
+            }
+            if (input[y][x] == '#') {
+                return;
+            }
+
+            if (seen[y * input.size() + x]) {
+                return;
+            }
+            if (x == tx && y == ty && score == bestScore) {
+                for (size_t i = 0; i < seen.size(); i++) {
+                    if (seen[i]) {
+                        bestTiles.insert(i);
                     }
                 }
-            }
-            return weightedCorridors;
-        }
-
-        int RunSimulations(const std::vector<int>& flowRates, const std::vector<std::unordered_map<int, int>>& corridors, uint64_t visited, int location, int timeLeft) {
-            if (timeLeft <= 1) { return 0; }
-            if (location && (visited & ((uint64_t)1 << location))) { return 0; }
-
-            int score = (timeLeft - 1) * flowRates.at(location);
-
-            int maxPath = 0;
-            for (auto& corridor : corridors.at(location)) {
-                auto& [dest, cost] = corridor;
-                maxPath = std::max(maxPath, RunSimulations(flowRates, corridors, visited | ((uint64_t)1 << location), dest, timeLeft - cost - 1));
+                return;
             }
 
-            return score + maxPath;
-        }
 
-        void RunSimulationsAsPair(const std::vector<int>& flowRates, const std::vector<std::unordered_map<int, int>>& corridors, std::unordered_map<uint64_t, int>& visitedScores, uint64_t visited, int location, int timeLeft, int runningScore, int& maxScore) {
-            if (timeLeft <= 0) { return; }
-            if (visited & ((uint64_t)1 << location)) { return; }
-            uint64_t newVisited = visited | ((uint64_t)1 << location);
-
-            runningScore += (timeLeft - 1) * flowRates.at(location);
-            if (!visitedScores.contains(newVisited)) {
-                // Increased time by 1 to account for method which opens valve AA (which has 0 flowrate)
-                visitedScores[newVisited] = RunSimulations(flowRates, corridors, newVisited, 0, 26 + 1);
+            seen[y * input.size() + x] = true;
+            if (dx == 1) {
+                BestTiles(input, x + 1, y, 1, 0, tx, ty, seen, scores, score + 1, bestScore, bestTiles);
+                BestTiles(input, x, y + 1, 0, 1, tx, ty, seen, scores, score + 1001, bestScore, bestTiles);
+                BestTiles(input, x, y - 1, 0, -1, tx, ty, seen, scores, score + 1001, bestScore, bestTiles);
             }
-            maxScore = std::max(maxScore, runningScore + visitedScores[newVisited]);
-
-            for (auto& corridor : corridors.at(location)) {
-                int dest = corridor.first;
-                int cost = corridor.second;
-                RunSimulationsAsPair(flowRates, corridors, visitedScores, newVisited, dest, timeLeft - cost - 1, runningScore, maxScore);
+            else if (dx == -1) {
+                BestTiles(input, x - 1, y, -1, 0, tx, ty, seen, scores, score + 1, bestScore, bestTiles);
+                BestTiles(input, x, y + 1, 0, 1, tx, ty, seen, scores, score + 1001, bestScore, bestTiles);
+                BestTiles(input, x, y - 1, 0, -1, tx, ty, seen, scores, score + 1001, bestScore, bestTiles);
             }
-        }
-
-        int RunSimulationsAsPair(const std::vector<int>& flowRates, const std::vector<std::unordered_map<int, int>>& corridors, int location, int timeLeft) {
-            std::unordered_map<uint64_t, int> visitedScores = {};
-            uint64_t visited = 0;
-            int maxScore = 0;
-            RunSimulationsAsPair(flowRates, corridors, visitedScores, visited, location, timeLeft + 1, 0, maxScore);
-            return maxScore;
+            else if (dy == 1) {
+                BestTiles(input, x + 1, y, 1, 0, tx, ty, seen, scores, score + 1001, bestScore, bestTiles);
+                BestTiles(input, x - 1, y, -1, 0, tx, ty, seen, scores, score + 1001, bestScore, bestTiles);
+                BestTiles(input, x, y + 1, 0, 1, tx, ty, seen, scores, score + 1, bestScore, bestTiles);
+            }
+            else if (dy == -1) {
+                BestTiles(input, x + 1, y, 1, 0, tx, ty, seen, scores, score + 1001, bestScore, bestTiles);
+                BestTiles(input, x - 1, y, -1, 0, tx, ty, seen, scores, score + 1001, bestScore, bestTiles);
+                BestTiles(input, x, y - 1, 0, -1, tx, ty, seen, scores, score + 1, bestScore, bestTiles);
+            }
+            seen[y * input.size() + x] = false;
+            return;
         }
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto [flowRates, corridors] = PreProcessInput(input);
-            auto weightedCorridors = GetValveRoutes(flowRates, corridors);
-
-            // Increased time by 1 to account for method which opens valve AA (which has 0 flowrate)
-            int res = RunSimulations(flowRates, weightedCorridors, 0, 0, 30 + 1);
+            auto [sx, sy, ex, ey] = GetStartAndEnd(input);
+            std::vector<int> seen(input.size() * input[0].size(), false);
+            std::vector<std::vector<uint64_t>> scores = {};
+            for (int i = 0; i < 4; i++) {
+                std::vector<uint64_t> s(input.size() * input[0].size(), std::numeric_limits<uint64_t>::max());
+                scores.push_back(s);
+            }
+            uint64_t res = std::numeric_limits<uint64_t>::max();
+            BestPath(input, sx, sy, 1, 0, ex, ey, seen, scores, 0, res);
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
@@ -139,11 +146,20 @@ namespace AoC2022 {
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto [flowRates, corridors] = PreProcessInput(input);
-            auto weightedCorridors = GetValveRoutes(flowRates, corridors);
+            auto [sx, sy, ex, ey] = GetStartAndEnd(input);
+            std::vector<int> seen(input.size() * input[0].size(), false);
+            std::vector<std::vector<uint64_t>> scores = {};
+            for (int i = 0; i < 4; i++) {
+                std::vector<uint64_t> s(input.size() * input[0].size(), std::numeric_limits<uint64_t>::max());
+                scores.push_back(s);
+            }
+            uint64_t bestScore = std::numeric_limits<uint64_t>::max();
+            BestPath(input, sx, sy, 1, 0, ex, ey, seen, scores, 0, bestScore);
 
-            // Increased time by 1 to account for method which opens valve AA (which has 0 flowrate)
-            int res = RunSimulationsAsPair(flowRates, weightedCorridors, 0, 26);
+            std::unordered_set<int> bestTiles = {};
+            BestTiles(input, sx, sy, 1, 0, ex, ey, seen, scores, 0, bestScore, bestTiles);
+
+            int res = bestTiles.size() + 1; // count end
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
