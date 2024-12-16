@@ -56,7 +56,7 @@ namespace AoC2024 {
                 tilePathScores
             );
 
-            int tilesOnBests = std::count(tilePathScores.begin(), tilePathScores.end(), bestScore) + 1;
+            int tilesOnBests = std::count(tilePathScores.begin(), tilePathScores.end(), bestScore) + 1; // include end
 
             return { bestScore, tilesOnBests };
         }
