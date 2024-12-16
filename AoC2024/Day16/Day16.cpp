@@ -1,10 +1,5 @@
 #include "Day16.h"
 
-#include <regex>
-#include <queue>
-#include <unordered_set>
-#include <iostream>
-
 namespace AoC2024 {
     namespace Day16 {
         std::tuple<int, int, int, int> GetStartAndEnd(const std::vector<std::string>& input) {
@@ -29,7 +24,7 @@ namespace AoC2024 {
             return { startX, startY, endX, endY };
         }
 
-        void BestPath(const std::vector<std::string>& input, int x, int y, int dx, int dy, int tx, int ty, std::vector<int>& seen, std::vector<std::vector<uint64_t>>& scoresToTiles, uint64_t score, uint64_t& bestScore, std::vector<uint64_t>& tileScores) {
+        void BestPath(const std::vector<std::string>& input, int x, int y, int dx, int dy, int tx, int ty, std::vector<int>& seen, std::vector<std::vector<uint64_t>>& scoresToTiles, uint64_t score, uint64_t& bestScore, std::vector<uint64_t>& tilePathScores) {
             if (score > bestScore) {
                 return;
             }
@@ -51,7 +46,7 @@ namespace AoC2024 {
                 if (score == bestScore) {
                     for (size_t i = 0; i < seen.size(); i++) {
                         if (seen[i]) {
-                            tileScores[i] = bestScore;
+                            tilePathScores[i] = bestScore;
                         }
                     }
                 }
@@ -61,24 +56,24 @@ namespace AoC2024 {
 
             seen[y * input.size() + x] = true;
             if (dx == 1) {
-                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scoresToTiles, score + 1, bestScore, tileScores);
-                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tileScores);
-                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tileScores);
+                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scoresToTiles, score + 1, bestScore, tilePathScores);
+                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
+                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
             }
             else if (dx == -1) {
-                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scoresToTiles, score + 1, bestScore, tileScores);
-                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tileScores);
-                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tileScores);
+                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scoresToTiles, score + 1, bestScore, tilePathScores);
+                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
+                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
             }
             else if (dy == 1) {
-                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tileScores);
-                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tileScores);
-                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scoresToTiles, score + 1, bestScore, tileScores);
+                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
+                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
+                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scoresToTiles, score + 1, bestScore, tilePathScores);
             }
             else if (dy == -1) {
-                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tileScores);
-                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tileScores);
-                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scoresToTiles, score + 1, bestScore, tileScores);
+                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
+                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
+                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scoresToTiles, score + 1, bestScore, tilePathScores);
             }
             seen[y * input.size() + x] = false;
             return;
@@ -94,11 +89,11 @@ namespace AoC2024 {
             }
 
             uint64_t bestScore = std::numeric_limits<uint64_t>::max();
-            std::vector<uint64_t> tileScores(input.size() * input[0].size(), std::numeric_limits<uint64_t>::max());
-            BestPath(input, sx, sy, 1, 0, ex, ey, seen, scoresToTiles, 0, bestScore, tileScores);
+            std::vector<uint64_t> tilePathScores(input.size() * input[0].size(), std::numeric_limits<uint64_t>::max());
+            BestPath(input, sx, sy, 1, 0, ex, ey, seen, scoresToTiles, 0, bestScore, tilePathScores);
 
             int tilesOnBests = 1; // count end
-            for (auto& t : tileScores) {
+            for (auto& t : tilePathScores) {
                 if (t == bestScore) {
                     tilesOnBests++;
                 }
