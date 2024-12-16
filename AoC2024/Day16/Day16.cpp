@@ -25,29 +25,26 @@ namespace AoC2024 {
         }
 
         void BestPath(const std::vector<std::string>& input, int x, int y, int dx, int dy, int tx, int ty, std::vector<int>& seen, std::vector<std::vector<uint64_t>>& scoresToTiles, uint64_t score, uint64_t& bestScore, std::vector<uint64_t>& tilePathScores) {
+            if (input[y][x] == '#') {
+                return;
+            }
             if (score > bestScore) {
                 return;
             }
+            if (seen[y * input.size() + x]) {
+                return;
+            }
+
             if (score > scoresToTiles[(dx > 0) * 2 + (dy > 0)][y * input.size() + x]) {
                 return;
             }
             scoresToTiles[(dx > 0) * 2 + (dy > 0)][y * input.size() + x] = score;
-            if (input[y][x] == '#') {
-                return;
-            }
 
-            if (seen[y * input.size() + x]) {
-                return;
-            }
             if (x == tx && y == ty) {
-                if (score < bestScore) {
-                    bestScore = score;
-                }
-                if (score == bestScore) {
-                    for (size_t i = 0; i < seen.size(); i++) {
-                        if (seen[i]) {
-                            tilePathScores[i] = bestScore;
-                        }
+                bestScore = score;
+                for (size_t i = 0; i < seen.size(); i++) {
+                    if (seen[i]) {
+                        tilePathScores[i] = bestScore;
                     }
                 }
                 return;
