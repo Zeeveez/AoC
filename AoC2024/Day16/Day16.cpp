@@ -2,45 +2,15 @@
 
 namespace AoC2024 {
     namespace Day16 {
-        std::tuple<int, int, int, int> GetStartAndEnd(const std::vector<std::string>& input) {
-            int startX = 0;
-            int startY = 0;
-            int endX = 0;
-            int endY = 0;
+        void BestPath(const std::vector<std::string>& input, int size, int x, int y, int dx, int dy, std::vector<int>& seen, std::vector<uint64_t>& scoresToTiles, uint64_t score, uint64_t& bestScore, std::vector<uint64_t>& tilePathScores) {
+            int tileIdx = y * size + x;
+            if (seen[tileIdx]) { return; }
 
-            for (int y = 0; y < input.size(); y++) {
-                for (int x = 0; x < input[y].size(); x++) {
-                    if (input[y][x] == 'S') {
-                        startX = x;
-                        startY = y;
-                    }
-                    if (input[y][x] == 'E') {
-                        endX = x;
-                        endY = y;
-                    }
-                }
-            }
+            int dirIdx = (dx > 0) * 2 + (dy > 0);
+            if (score > scoresToTiles[tileIdx * 4 + dirIdx]) { return; }
+            scoresToTiles[tileIdx * 4 + dirIdx] = score;
 
-            return { startX, startY, endX, endY };
-        }
-
-        void BestPath(const std::vector<std::string>& input, int x, int y, int dx, int dy, int tx, int ty, std::vector<int>& seen, std::vector<std::vector<uint64_t>>& scoresToTiles, uint64_t score, uint64_t& bestScore, std::vector<uint64_t>& tilePathScores) {
-            if (input[y][x] == '#') {
-                return;
-            }
-            if (score > bestScore) {
-                return;
-            }
-            if (seen[y * input.size() + x]) {
-                return;
-            }
-
-            if (score > scoresToTiles[(dx > 0) * 2 + (dy > 0)][y * input.size() + x]) {
-                return;
-            }
-            scoresToTiles[(dx > 0) * 2 + (dy > 0)][y * input.size() + x] = score;
-
-            if (x == tx && y == ty) {
+            if (x == size - 2 && y == 1) {  // Destination == top right inside wall
                 bestScore = score;
                 for (size_t i = 0; i < seen.size(); i++) {
                     if (seen[i]) {
@@ -50,39 +20,43 @@ namespace AoC2024 {
                 return;
             }
 
-
-            seen[y * input.size() + x] = true;
+            seen[tileIdx] = true;
             for (int ndx = -1; ndx < 2; ndx += 2) {
-                if (ndx == -dx) { continue; }
-                BestPath(input, x + ndx, y, ndx, 0, tx, ty, seen, scoresToTiles, score + (dy ? 1001 : 1), bestScore, tilePathScores);
+                if (ndx == -dx) { continue; }   // No backtracking
+                if (input[y][x + ndx] == '#') { continue; }
+                if (score + (std::abs(dy) * 1000 + 1) > bestScore) { continue; }
+                BestPath(input, size, x + ndx, y, ndx, 0, seen, scoresToTiles, score + (std::abs(dy) * 1000 + 1), bestScore, tilePathScores);
             }
             for (int ndy = -1; ndy < 2; ndy += 2) {
-                if (ndy == -dy) { continue; }
-                BestPath(input, x, y + ndy, 0, ndy, tx, ty, seen, scoresToTiles, score + (dx ? 1001 : 1), bestScore, tilePathScores);
+                if (ndy == -dy) { continue; }   // No backtracking
+                if (input[y + ndy][x] == '#') { continue; }
+                if (score + (std::abs(dx) * 1000 + 1) > bestScore) { continue; }
+                BestPath(input, size, x, y + ndy, 0, ndy, seen, scoresToTiles, score + (std::abs(dx) * 1000 + 1), bestScore, tilePathScores);
             }
-            seen[y * input.size() + x] = false;
-            return;
+            seen[tileIdx] = false;
         }
 
         std::pair<uint64_t, uint64_t> Run(const std::vector<std::string>& input) {
-            auto [sx, sy, ex, ey] = GetStartAndEnd(input);
-            std::vector<int> seen(input.size() * input[0].size(), false);
-            std::vector<std::vector<uint64_t>> scoresToTiles = {};
-            for (int i = 0; i < 4; i++) {
-                std::vector<uint64_t> s(input.size() * input[0].size(), std::numeric_limits<uint64_t>::max());
-                scoresToTiles.push_back(s);
-            }
+            int size = input.size();
+            std::vector<int> seen(size * size, false);
+            std::vector<uint64_t> scoresToTiles(size * size * 4, std::numeric_limits<uint64_t>::max());
 
             uint64_t bestScore = std::numeric_limits<uint64_t>::max();
-            std::vector<uint64_t> tilePathScores(input.size() * input[0].size(), std::numeric_limits<uint64_t>::max());
-            BestPath(input, sx, sy, 1, 0, ex, ey, seen, scoresToTiles, 0, bestScore, tilePathScores);
+            std::vector<uint64_t> tilePathScores(size * size, std::numeric_limits<uint64_t>::max());
+            BestPath(
+                input,
+                size,       // map size
+                1,          // start x == bottom left inside wall
+                size - 2,   // start y == bottom left inside wall
+                1, 0,       // start facing east
+                seen,
+                scoresToTiles,
+                0,
+                bestScore,
+                tilePathScores
+            );
 
-            int tilesOnBests = 1; // count end
-            for (auto& t : tilePathScores) {
-                if (t == bestScore) {
-                    tilesOnBests++;
-                }
-            }
+            int tilesOnBests = std::count(tilePathScores.begin(), tilePathScores.end(), bestScore) + 1;
 
             return { bestScore, tilesOnBests };
         }
