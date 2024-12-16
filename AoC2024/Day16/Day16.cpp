@@ -20,19 +20,24 @@ namespace AoC2024 {
                 return;
             }
 
+            int skippedTileIdx = tileIdx - dy * size - dx;
             seen[tileIdx] = true;
+            seen[skippedTileIdx] = true;
             for (int ndx = -1; ndx < 2; ndx += 2) {
                 if (ndx == -dx) { continue; }   // No backtracking
                 if (input[y][x + ndx] == '#') { continue; }
-                if (score + (std::abs(dy) * 1000 + 1) > bestScore) { continue; }
-                BestPath(input, size, x + ndx, y, ndx, 0, seen, scoresToTiles, score + (std::abs(dy) * 1000 + 1), bestScore, tilePathScores);
+                // 2's for actual movement and scoring because walls have thickness
+                if (score + (std::abs(dy) * 1000 + 2) > bestScore) { continue; }
+                BestPath(input, size, x + ndx * 2, y, ndx, 0, seen, scoresToTiles, score + (std::abs(dy) * 1000 + 2), bestScore, tilePathScores);
             }
             for (int ndy = -1; ndy < 2; ndy += 2) {
                 if (ndy == -dy) { continue; }   // No backtracking
                 if (input[y + ndy][x] == '#') { continue; }
-                if (score + (std::abs(dx) * 1000 + 1) > bestScore) { continue; }
-                BestPath(input, size, x, y + ndy, 0, ndy, seen, scoresToTiles, score + (std::abs(dx) * 1000 + 1), bestScore, tilePathScores);
+                // 2's for actual movement and scoring because walls have thickness
+                if (score + (std::abs(dx) * 1000 + 2) > bestScore) { continue; }
+                BestPath(input, size, x, y + ndy * 2, 0, ndy, seen, scoresToTiles, score + (std::abs(dx) * 1000 + 2), bestScore, tilePathScores);
             }
+            seen[skippedTileIdx] = false;
             seen[tileIdx] = false;
         }
 
