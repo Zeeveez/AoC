@@ -55,25 +55,13 @@ namespace AoC2024 {
 
 
             seen[y * input.size() + x] = true;
-            if (dx == 1) {
-                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scoresToTiles, score + 1, bestScore, tilePathScores);
-                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
-                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
+            for (int ndx = -1; ndx < 2; ndx += 2) {
+                if (ndx == -dx) { continue; }
+                BestPath(input, x + ndx, y, ndx, 0, tx, ty, seen, scoresToTiles, score + (dy ? 1001 : 1), bestScore, tilePathScores);
             }
-            else if (dx == -1) {
-                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scoresToTiles, score + 1, bestScore, tilePathScores);
-                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
-                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
-            }
-            else if (dy == 1) {
-                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
-                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
-                BestPath(input, x, y + 1, 0, 1, tx, ty, seen, scoresToTiles, score + 1, bestScore, tilePathScores);
-            }
-            else if (dy == -1) {
-                BestPath(input, x + 1, y, 1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
-                BestPath(input, x - 1, y, -1, 0, tx, ty, seen, scoresToTiles, score + 1001, bestScore, tilePathScores);
-                BestPath(input, x, y - 1, 0, -1, tx, ty, seen, scoresToTiles, score + 1, bestScore, tilePathScores);
+            for (int ndy = -1; ndy < 2; ndy += 2) {
+                if (ndy == -dy) { continue; }
+                BestPath(input, x, y + ndy, 0, ndy, tx, ty, seen, scoresToTiles, score + (dx ? 1001 : 1), bestScore, tilePathScores);
             }
             seen[y * input.size() + x] = false;
             return;
