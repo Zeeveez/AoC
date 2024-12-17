@@ -66,44 +66,50 @@ namespace AoC2024 {
 
             std::set<std::pair<int, int>> seen = {};
 
+            std::set<std::pair<int, int>> dirs = {
+                { 0, -1 },
+                { 0, 1 },
+                { 1, 0 },
+                { -1, 0 }
+            };
+
             uint64_t res = 0;
             for (int y = 0; y < input.size(); y++) {
                 for (int x = 0; x < input[y].size(); x++) {
                     if (!seen.contains({ x, y })) {
                         auto shape = GetShape(input, x, y, seen);
 
-                        // Shamelessly stolen from hyperneutrino while I figure out how tf it works, thanks hyperneutrino:
-                        // https://github.com/hyperneutrino/advent-of-code/blob/main/2024/day12p2.py
-                        std::set<std::pair<float, float>> ccs;
-                        for (auto& cell : shape) {
-                            ccs.insert({ cell.first - 0.5, cell.second - 0.5 });
-                            ccs.insert({ cell.first + 0.5, cell.second - 0.5 });
-                            ccs.insert({ cell.first + 0.5, cell.second + 0.5 });
-                            ccs.insert({ cell.first - 0.5, cell.second + 0.5 });
-                        }
+                        uint64_t edges = 0;
+                        for (auto& dir : dirs) {
+                            std::set<std::tuple<int, int>> seenInDir = {};
+                            std::pair<int, int> perpDir1 = { dir.first ? 0 : -1, dir.second ? 0 : -1 };
+                            std::pair<int, int> perpDir2 = { dir.first ? 0 : 1, dir.second ? 0 : 1 };
 
-                        uint64_t corners = 0;
-                        for (auto& cc : ccs) {
-                            int c = 0;
-                            int n = 0;
-                            if (shape.contains({ cc.first - 0.5, cc.second - 0.5 })) { c++; n += 8; }
-                            if (shape.contains({ cc.first + 0.5, cc.second - 0.5 })) { c++; n += 4; }
-                            if (shape.contains({ cc.first + 0.5, cc.second + 0.5 })) { c++; n += 2; }
-                            if (shape.contains({ cc.first - 0.5, cc.second + 0.5 })) { c++; n++; }
-                            if (c == 1) {
-                                corners++;
-                            }
-                            else if (c == 2) {
-                                if (n == 10 || n == 5) {
-                                    corners += 2;
+                            for (auto& cell : shape) {
+                                if (seenInDir.contains(cell)) { continue; }
+                                int sx = cell.first;
+                                int sy = cell.second;
+                                seenInDir.insert({ sx, sy });
+
+                                // Make sure at edge in given direction
+                                if (shape.contains({ sx + dir.first, sy + dir.second })) { continue; }
+
+                                edges++;
+                                // Follow along edge marking as visited
+                                for(int i = 0;; i++){
+                                    if(!shape.contains({ sx + perpDir1.first * i, sy + perpDir1.second * i })){ break; }
+                                    if(shape.contains({ sx + perpDir1.first * i + dir.first, sy + perpDir1.second * i + dir.second })){ break; }
+                                    seenInDir.insert({ sx + perpDir1.first * i, sy + perpDir1.second * i });
+                                }
+                                for (int i = 0;; i++) {
+                                    if (!shape.contains({ sx + perpDir2.first * i, sy + perpDir2.second * i })) { break; }
+                                    if (shape.contains({ sx + perpDir2.first * i + dir.first, sy + perpDir2.second * i + dir.second })) { break; }
+                                    seenInDir.insert({ sx + perpDir2.first * i, sy + perpDir2.second * i });
                                 }
                             }
-                            else if (c == 3) {
-                                corners++;
-                            }
                         }
 
-                        res += shape.size() * corners;
+                        res += shape.size() * edges;
                     }
                 }
             }
