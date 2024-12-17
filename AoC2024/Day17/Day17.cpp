@@ -136,7 +136,7 @@ namespace AoC2024 {
             return { {}, {} };
         }
 
-        std::pair<uint64_t, std::vector<uint64_t>> FindCycle(std::vector<uint64_t> state, std::vector<int> prog, int progTarget, uint64_t initA, std::vector<uint64_t>& increments) {
+        std::pair<std::vector<uint64_t>, std::vector<uint64_t>> FindCycle(std::vector<uint64_t> state, std::vector<int> prog, int progTarget, uint64_t initA, std::vector<uint64_t>& increments) {
             std::vector<uint64_t> cycle = {};
             int incrementIdx = 0;
             uint64_t startA = initA;
@@ -157,7 +157,7 @@ namespace AoC2024 {
                             }
                             auto [prelude, cycles] = ExtractCycle(cycle);
                             if (cycles.size()) {
-                                return { initA + std::accumulate(prelude.begin(), prelude.end(), (uint64_t)0), cycles };
+                                return { prelude, cycles };
                             }
                             else {
                                 cycle.push_back(startA - prevStartA);
@@ -184,8 +184,8 @@ namespace AoC2024 {
             uint64_t initValue = 0;
             std::vector<uint64_t> increments = { 1 };
             for (int i = 0; i < prog.size(); i++) {
-                auto [start, cycles] = FindCycle(origReg, prog, i, initValue, increments);
-                initValue = start;
+                auto [prelude, cycles] = FindCycle(origReg, prog, i, initValue, increments);
+                initValue += std::accumulate(prelude.begin(), prelude.end(), (uint64_t)0);
                 increments = cycles;
             }
 
