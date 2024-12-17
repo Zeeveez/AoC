@@ -50,10 +50,9 @@ namespace AoC2024 {
             std::vector<uint64_t> tilePathScores(size * size, std::numeric_limits<uint64_t>::max());
             BestPath(
                 input,
-                size,       // map size
-                1,          // start x == bottom left inside wall
-                size - 2,   // start y == bottom left inside wall
-                1, 0,       // start facing east
+                size,           // map size
+                1, size - 2,    // start y == bottom left inside wall
+                1, 0,           // start facing east
                 seen,
                 scoresToTiles,
                 0,

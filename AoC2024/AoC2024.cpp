@@ -87,6 +87,11 @@ int main()
     auto D16P2 = AoC2024::Day16::B(AoC::Helpers::ReadLines("./Day16.txt"));
     std::cout << "Day 16 - B (" << std::format("{:10.4f}", D16P2.second.count()) << "ms): " << D16P2.first << "\n";
 
+    auto D17P1 = AoC2024::Day17::A(AoC::Helpers::ReadLines("./Day17.txt"));
+    std::cout << "Day 17 - A (" << std::format("{:10.4f}", D17P1.second.count()) << "ms): " << D17P1.first << "\n";
+    auto D17P2 = AoC2024::Day17::B(AoC::Helpers::ReadLines("./Day17.txt"));
+    std::cout << "Day 17 - B (" << std::format("{:10.4f}", D17P2.second.count()) << "ms): " << D17P2.first << "\n";
+
     auto endTime = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> duration = endTime - startTime;
 
@@ -106,7 +111,7 @@ int main()
         + D14P1.second + D14P2.second
         + D15P1.second + D15P2.second
         + D16P1.second + D16P2.second
-        //+ D17P1.second + D17P2.second
+        + D17P1.second + D17P2.second
         //+ D18P1.second + D18P2.second
         //+ D19P1.second + D19P2.second
         //+ D20P1.second + D20P2.second
