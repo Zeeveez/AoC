@@ -155,7 +155,7 @@ namespace AoC2024 {
                             if (output != prog[progTarget]) {
                                 break;
                             }
-                            auto [prelude, cycles] = FindCycle(cycle);
+                            auto [prelude, cycles] = ExtractCycle(cycle);
                             if (cycles.size()) {
                                 return { initA + std::accumulate(prelude.begin(), prelude.end(), (uint64_t)0), cycles };
                             }
