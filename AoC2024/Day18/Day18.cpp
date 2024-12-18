@@ -1,52 +1,42 @@
 #include "Day18.h"
 
-#include <regex>
-#include <unordered_set>
-#include <queue>
+#include <sstream>
 #include <set>
-#include <iostream>
+#include <queue>
 
 namespace AoC2024 {
     namespace Day18 {
-        std::vector<std::pair<uint64_t, uint64_t>> PreProcessInput(const std::vector<std::string>& input) {
-            std::vector<std::pair<uint64_t, uint64_t>> coords = {};
+        std::vector<std::pair<int, int>> dirs = {
+            { 0, 1 },
+            { 0, -1 },
+            { -1, 0 },
+            { 1, 0 },
+        };
 
-            static const std::regex re("(\\d+),(\\d+)", std::regex::optimize);
+        std::vector<std::pair<int, int>> PreProcessInput(const std::vector<std::string>& input) {
+            std::vector<std::pair<int, int>> coords = {};
+
             for (auto& line : input) {
-                std::string::const_iterator searchStart(line.cbegin());
-                std::smatch sm;
-                while (std::regex_search(searchStart, line.cend(), sm, re)) {
-                    coords.push_back(
-                        {
-                            std::stoi(sm[1]),
-                            std::stoi(sm[2])
-                        }
-                    );
-                    searchStart = sm.suffix().first;
-                }
+                std::stringstream ss(line);
+                std::string x;
+                std::string y;
+                std::getline(ss, x, ',');
+                std::getline(ss, y, ',');
+                coords.push_back(
+                    {
+                        std::stoi(x),
+                        std::stoi(y)
+                    }
+                );
             }
             return coords;
         }
 
-        int Simulate(const std::vector<std::string>& input, int size, int simulate) {
-            std::unordered_set<uint64_t> memory = {};
-            auto coords = PreProcessInput(input);
-            size_t i = 0;
-            for (int i = 0; i < simulate; i++) {
-                memory.insert(coords[i].second * size + coords[i].first);
-            }
-
-            std::vector<std::pair<int, int>> dirs = {
-                {0,1},
-                {0,-1},
-                {1,0},
-                {-1,0}
-            };
-
+        int Simulate(const std::vector<int>& memory, int size, int timePassed) {
             std::set<std::tuple<int, int>> seen = {};
-            std::queue<std::tuple<int, int, uint64_t>> queue = {};
+            std::queue<std::tuple<int, int, int>> queue = {};
             queue.push({ 0,0,0 });
-            uint64_t res = 0;
+            int res = 0;
 
             while (!queue.empty()) {
                 auto [x, y, time] = queue.front(); queue.pop();
@@ -59,7 +49,7 @@ namespace AoC2024 {
 
                 for (auto& dir : dirs) {
                     if (x + dir.first < 0 || x + dir.first >= size || y + dir.second < 0 || y + dir.second >= size) { continue; }
-                    if (!memory.contains((y + dir.second) * size + x + dir.first)) {
+                    if (memory[(y + dir.second) * size + x + dir.first] >= timePassed) {
                         queue.push({ x + dir.first, y + dir.second, time + 1 });
                     }
                 }
@@ -67,11 +57,24 @@ namespace AoC2024 {
             return -1;
         }
 
+        std::vector<int> GetMemory(const std::vector<std::string>& input, int size) {
+            auto coords = PreProcessInput(input);
+            std::vector<int> memory(size * size, std::numeric_limits<int>::max());
+            for (size_t i = 0; i < coords.size(); i++) {
+                memory[coords[i].second * size + coords[i].first] = i;
+            }
+            return memory;
+        }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
+
+        std::pair<int, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto res = Simulate(input, 71, 1024);
+            int size = 71;
+            int timePassed = 1024;
+
+            auto memory = GetMemory(input, size);
+            auto res = Simulate(memory, size, timePassed);
 
             auto endtime = std::chrono::high_resolution_clock::now();
             return { res, endtime - starttime };
@@ -79,14 +82,17 @@ namespace AoC2024 {
 
         std::pair<std::string, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
-            auto coords = PreProcessInput(input);
 
-            std::string res = "";
-            int lb = 1024;
-            int ub = coords.size() - 1;
+            int size = 71;
+            int timePassed = 1024;
+
+            auto memory = GetMemory(input, size);
+
+            int lb = timePassed;
+            int ub = input.size() - 1;
 
             while (lb != ub) {
-                if (Simulate(input, 71, (ub + lb) / 2) == -1) {
+                if (Simulate(memory, size, (ub + lb) / 2) == -1) {
                     ub = (ub + lb) / 2 - 1;
                 }
                 else {
@@ -94,10 +100,8 @@ namespace AoC2024 {
                 }
             }
 
-            res = std::to_string(coords[lb - 1].first) + ',' + std::to_string(coords[lb - 1].second);
-
             auto endtime = std::chrono::high_resolution_clock::now();
-            return { res, endtime - starttime };
+            return { input[lb - 1], endtime - starttime };
         }
     }
 }
