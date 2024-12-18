@@ -3,6 +3,8 @@
 #include <sstream>
 #include <set>
 #include <queue>
+#include <algorithm>
+#include <ranges>
 
 namespace AoC2024 {
     namespace Day18 {
@@ -71,7 +73,7 @@ namespace AoC2024 {
             auto starttime = std::chrono::high_resolution_clock::now();
 
             int size = 71;
-            int timePassed = 1024;
+            size_t timePassed = 1024;
 
             auto memory = GetMemory(input, size);
             auto res = Simulate(memory, size, timePassed);
@@ -84,24 +86,14 @@ namespace AoC2024 {
             auto starttime = std::chrono::high_resolution_clock::now();
 
             int size = 71;
-            int timePassed = 1024;
+            size_t timePassed = 1024;
 
             auto memory = GetMemory(input, size);
-
-            int lb = timePassed;
-            int ub = input.size() - 1;
-
-            while (lb != ub) {
-                if (Simulate(memory, size, (ub + lb) / 2) == -1) {
-                    ub = (ub + lb) / 2 - 1;
-                }
-                else {
-                    lb = (ub + lb) / 2 + 1;
-                }
-            }
+            auto idxSequence = std::views::iota(timePassed, input.size());
+            auto v = std::partition_point(idxSequence.begin(), idxSequence.end(), [&memory, &size](std::size_t i) { return Simulate(memory, size, i) != -1; });
 
             auto endtime = std::chrono::high_resolution_clock::now();
-            return { input[lb - 1], endtime - starttime };
+            return { input[*v - 1], endtime - starttime };
         }
     }
 }
