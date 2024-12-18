@@ -1,126 +1,103 @@
 #include "Day18.h"
 
 #include <regex>
+#include <unordered_set>
 #include <queue>
-#include <tuple>
 #include <set>
+#include <iostream>
 
-namespace AoC2022 {
+namespace AoC2024 {
     namespace Day18 {
-        static std::vector<std::tuple<int, int, int>> neighbours = {
-            { 0, 0, 1 },
-            { 0, 0, -1 },
-            { 0, 1, 0 },
-            { 0, -1, 0 },
-            { 1, 0, 0 },
-            { -1, 0, 0 },
-        };
+        std::vector<std::pair<uint64_t, uint64_t>> PreProcessInput(const std::vector<std::string>& input) {
+            std::vector<std::pair<uint64_t, uint64_t>> coords = {};
 
-        std::vector<std::vector<std::vector<State>>> PreProcessInput(const std::vector<std::string>& input) {
-            std::vector<std::vector<std::vector<State>>> droplet = {};
-            for (int x = 0; x < 25; x++) {
-                droplet.push_back({});
-                for (int y = 0; y < 25; y++) {
-                    droplet[x].push_back({});
-                    for (int z = 0; z < 25; z++) {
-                        droplet[x][y].push_back(State::EMPTY);
-                    }
-                }
-            }
-
+            static const std::regex re("(\\d+),(\\d+)", std::regex::optimize);
             for (auto& line : input) {
-                const std::regex cubeRe("(\\d+),(\\d+),(\\d+)");
+                std::string::const_iterator searchStart(line.cbegin());
                 std::smatch sm;
-                std::regex_search(line, sm, cubeRe);
-                int x = std::stoi(sm[1]);
-                int y = std::stoi(sm[2]);
-                int z = std::stoi(sm[3]);
-
-                while (!droplet.size() > x) { droplet.push_back({}); }
-                while (!droplet[x].size() > y) { droplet.push_back({}); }
-                while (!droplet[x][y].size() > z) { droplet.push_back({}); }
-                droplet[x + 1][y + 1][z + 1] = State::POPULATED;
-            }
-
-            return droplet;
-        }
-
-        bool IsInternalPocket(std::vector<std::vector<std::vector<State>>>& droplet, std::unordered_map<int, bool>& checkedPockets, int x, int y, int z) {
-            if (checkedPockets.contains(x * 10000 + y * 100 + z)) { return checkedPockets[x * 10000 + y * 100 + z]; }
-
-            std::queue<std::tuple<int, int, int>> toCheck = { };
-            toCheck.push({ x, y, z });
-            if (x == 3 && y == 3 && z == 6) {
-                int t = 1;
-            }
-            std::set<int> checked = {};
-            while (!toCheck.empty()) {
-                auto [px, py, pz] = toCheck.front(); toCheck.pop();
-                if (px < 0 || px >= droplet.size() || py < 0 || py >= droplet[px].size() || pz < 0 || pz >= droplet[px][py].size()) {
-                    for (auto& checkedCell : checked) {
-                        checkedPockets[checkedCell] = false;
-                    }
-                    return false;
-                }
-                if (droplet[px][py][pz] != State::EMPTY) { continue; }
-                if (checked.contains(px * 10000 + py * 100 + pz)) { continue; }
-                checked.insert(px * 10000 + py * 100 + pz);
-                for (auto& neighour : neighbours) {
-                    auto& [dx, dy, dz] = neighour;
-                    toCheck.push({ px + dx, py + dy, pz + dz });
-                }
-            }
-            for (auto& checkedCell : checked) {
-                checkedPockets[checkedCell] = true;
-            }
-            return true;
-        }
-
-        int Run(const std::vector<std::string>& input, bool ignorePockets) {
-            auto droplet = PreProcessInput(input);
-
-            int surfaceArea = 0;
-            std::queue<std::tuple<int, int, int>> toCheck = {};
-            for (int x = 0; x < 25; x++) {
-                for (int y = 0; y < 25; y++) {
-                    for (int z = 0; z < 25; z++) {
-                        if (droplet[x][y][z] == State::POPULATED) {
-                            toCheck.push({ x, y, z });
+                while (std::regex_search(searchStart, line.cend(), sm, re)) {
+                    coords.push_back(
+                        {
+                            std::stoi(sm[1]),
+                            std::stoi(sm[2])
                         }
-                    }
+                    );
+                    searchStart = sm.suffix().first;
                 }
             }
-
-            std::unordered_map<int, bool> checkedPockets = {};
-            while (!toCheck.empty()) {
-                auto& [x, y, z] = toCheck.front(); toCheck.pop();
-                for (auto& neighour : neighbours) {
-                    auto& [dx, dy, dz] = neighour;
-                    if (droplet[x + dx][y + dy][z + dz] == State::EMPTY && (ignorePockets || !IsInternalPocket(droplet, checkedPockets, x + dx, y + dy, z + dz))) {
-                        surfaceArea++;
-                    }
-                }
-            }
-
-            return surfaceArea;
+            return coords;
         }
+
+        int Simulate(const std::vector<std::string>& input, int size, int simulate) {
+            std::unordered_set<uint64_t> memory = {};
+            auto coords = PreProcessInput(input);
+            size_t i = 0;
+            for (int i = 0; i < simulate; i++) {
+                memory.insert(coords[i].second * size + coords[i].first);
+            }
+
+            std::vector<std::pair<int, int>> dirs = {
+                {0,1},
+                {0,-1},
+                {1,0},
+                {-1,0}
+            };
+
+            std::set<std::tuple<int, int>> seen = {};
+            std::queue<std::tuple<int, int, uint64_t>> queue = {};
+            queue.push({ 0,0,0 });
+            uint64_t res = 0;
+
+            while (!queue.empty()) {
+                auto [x, y, time] = queue.front(); queue.pop();
+                if (seen.contains({ x, y })) { continue; }
+                seen.insert({ x, y });
+
+                if (x == size - 1 && y == size - 1) {
+                    return time;
+                }
+
+                for (auto& dir : dirs) {
+                    if (x + dir.first < 0 || x + dir.first >= size || y + dir.second < 0 || y + dir.second >= size) { continue; }
+                    if (!memory.contains((y + dir.second) * size + x + dir.first)) {
+                        queue.push({ x + dir.first, y + dir.second, time + 1 });
+                    }
+                }
+            }
+            return -1;
+        }
+
 
         std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
 
-            int surfaceArea = Run(input, true);
+            auto res = Simulate(input, 71, 1024);
 
             auto endtime = std::chrono::high_resolution_clock::now();
-            return { surfaceArea, endtime - starttime };
+            return { res, endtime - starttime };
         }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
+        std::pair<std::string, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
             auto starttime = std::chrono::high_resolution_clock::now();
+            auto coords = PreProcessInput(input);
 
-            int surfaceArea = Run(input, false);
+            std::string res = "";
+            int lb = 1024;
+            int ub = coords.size() - 1;
+
+            while (lb != ub) {
+                if (Simulate(input, 71, (ub + lb) / 2) == -1) {
+                    ub = (ub + lb) / 2 - 1;
+                }
+                else {
+                    lb = (ub + lb) / 2 + 1;
+                }
+            }
+
+            res = std::to_string(coords[lb - 1].first) + ',' + std::to_string(coords[lb - 1].second);
 
             auto endtime = std::chrono::high_resolution_clock::now();
-            return { surfaceArea, endtime - starttime };
+            return { res, endtime - starttime };
         }
     }
 }

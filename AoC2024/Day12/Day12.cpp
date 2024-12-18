@@ -2,9 +2,6 @@
 
 #include <queue>
 #include <set>
-#include <unordered_map>
-#include <iostream>
-#include <algorithm>
 
 namespace AoC2024 {
     namespace Day12 {
