@@ -1,18 +1,33 @@
-#ifndef DAY06_H
-#define DAY06_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <tuple>
+#include <cstdint>
 #include <unordered_set>
 
+#include "../Day/Day.h"
+
 namespace AoC2024 {
-    namespace Day06 {
+    class Day06 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day06() : Day() {
+            dayNo = 6;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::vector<char> map = {};
+
         std::vector<char> MakeFlat(const std::vector<std::string>& input);
         std::pair<int, std::unordered_set<int>> GetStartAndPath(const std::vector<char>& map);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+    };
 }
-#endif
