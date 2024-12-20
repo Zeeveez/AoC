@@ -1,6 +1,5 @@
 #include "Day20.h"
 
-#include <set>
 #include <queue>
 
 namespace AoC2024 {
@@ -53,20 +52,16 @@ namespace AoC2024 {
 
         std::vector<int> GetDistancesFromPoint(const std::vector<std::string>& input, int x, int y) {
             std::vector<int> distances(input.size() * input.size(), std::numeric_limits<int>::max());
-            std::set<std::tuple<int, int>> seen = {};
             std::queue<std::tuple<int, int, int>> queue = {};
             queue.push({ x, y, 0 });
 
             while (!queue.empty()) {
                 auto [x, y, steps] = queue.front(); queue.pop();
-                if (seen.contains({ x, y })) { continue; }
-                seen.insert({ x, y });
-
-                distances[y * input.size() + x] = std::min(distances[y * input.size() + x], steps);
+                if (distances[y * input.size() + x] != std::numeric_limits<int>::max()) { continue; }
+                distances[y * input.size() + x] = steps;
 
                 for (auto& [dx, dy] : dirs) {
                     if (input[y + dy][x + dx] == '#') { continue; }
-
                     queue.push({ x + dx, y + dy, steps + 1 });
                 }
             }
