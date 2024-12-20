@@ -29,7 +29,7 @@ namespace AoC2024 {
                 for (int x = 0; x < size; x++) {
                     int tileIdx = y * size + x;
 
-                    // Target not on path
+                    // Start not on path
                     if (distancesToEnd[tileIdx] == std::numeric_limits<int>::max()) { continue; }
 
                     for (int dy = -maxCheatLength; dy <= maxCheatLength; dy++) {
