@@ -32,9 +32,10 @@ namespace AoC2024 {
                     // Start not on path
                     if (distancesToEnd[tileIdx] == std::numeric_limits<int>::max()) { continue; }
 
-                    for (int dy = -maxCheatLength; dy <= maxCheatLength; dy++) {
-                        for (int dx = -(maxCheatLength - std::abs(dy)); dx <= (maxCheatLength - std::abs(dy)); dx++) {
-                            if (x + dx < 0 || x + dx >= size || y + dy < 0 || y + dy >= size) { continue; }
+                    for (int dy = std::max(-maxCheatLength, -y); dy <= maxCheatLength; dy++) {
+                        if(y + dy >= size) { break;}
+                        for (int dx = std::max(-(maxCheatLength - std::abs(dy)), -x); dx <= (maxCheatLength - std::abs(dy)); dx++) {
+                            if (x + dx >= size) { break; }
                             int targetTileIdx = (y + dy) * size + x + dx;
 
                             // Target not on path
