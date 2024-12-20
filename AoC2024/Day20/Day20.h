@@ -15,6 +15,7 @@ namespace AoC2024 {
         void B() override;
 
         Day20() : Day() {
+            dayNo = 20;
             Load();
             Parse();
             A();
