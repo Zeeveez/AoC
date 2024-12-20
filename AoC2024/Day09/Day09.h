@@ -1,15 +1,28 @@
-#ifndef DAY09_H
-#define DAY09_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <tuple>
+#include <cstdint>
+
+#include "../Day/Day.h"
 
 namespace AoC2024 {
-    namespace Day09 {
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::string input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::string input);
-    }
+    class Day09 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day09() : Day() {
+            dayNo = 9;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::string input = {};
+    };
 }
-#endif

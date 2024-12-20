@@ -1,7 +1,4 @@
-﻿// AoC2015.cpp : Defines the entry point for the application.
-//
-
-#include "AoC2024.h"
+﻿#include "AoC2024.h"
 
 int main()
 {
@@ -15,7 +12,7 @@ int main()
     std::cout << AoC2024::Day06();
     std::cout << AoC2024::Day07();
     std::cout << AoC2024::Day08();
-    //std::cout << AoC2024::Day09();
+    std::cout << AoC2024::Day09();
     //std::cout << AoC2024::Day10();
     //std::cout << AoC2024::Day11();
     //std::cout << AoC2024::Day12();
