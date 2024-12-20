@@ -1,16 +1,31 @@
-#ifndef DAY12_H
-#define DAY12_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <tuple>
+#include <cstdint>
+#include <set>
+
+#include "../Day/Day.h"
 
 namespace AoC2024 {
-    namespace Day12 {
-        int Traverse(const std::vector<std::string>& input, int startX, int startY, bool uniquePeaksOnly = true);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+    class Day12 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day12() : Day() {
+            dayNo = 12;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::string> input = {};
+
+        std::set<std::pair<int, int>> GetShape(int x, int y, std::set<std::pair<int, int>>& seen);
+    };
 }
-#endif

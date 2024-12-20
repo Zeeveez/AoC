@@ -15,7 +15,7 @@ int main()
     std::cout << AoC2024::Day09();
     std::cout << AoC2024::Day10();
     std::cout << AoC2024::Day11();
-    //std::cout << AoC2024::Day12();
+    std::cout << AoC2024::Day12();
     //std::cout << AoC2024::Day13();
     //std::cout << AoC2024::Day14();
     //std::cout << AoC2024::Day15();
