@@ -1,13 +1,14 @@
-#ifndef DAY11_H
-#define DAY11_H
-
+#pragma once
 #include <cstdint>
+#include <optional>
 #include <vector>
-#include <chrono>
 #include <string>
 
+#include "../Day/Day.h"
+
 namespace AoC2024 {
-    namespace Day11 {
+    class Day11 : public AoC::Day {
+    private:
         class Stone {
         public:
             uint64_t value;
@@ -16,9 +17,24 @@ namespace AoC2024 {
             Stone(uint64_t value, uint64_t count);
             std::optional<Stone> Iterate();
         };
-        uint64_t Run(const std::vector<uint64_t>& input, int iterations);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<uint64_t>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<uint64_t>& input);
-    }
+
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day11() : Day() {
+            dayNo = 11;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<uint64_t> input = {};
+
+        uint64_t Run(int iterations);
+    };
 }
-#endif
