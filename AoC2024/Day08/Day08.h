@@ -1,22 +1,36 @@
-#ifndef DAY08_H
-#define DAY08_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <tuple>
+#include <cstdint>
 #include <unordered_map>
 #include <functional>
 
+#include "../Day/Day.h"
+
 namespace AoC2024 {
-    namespace Day08 {
-        std::unordered_map<char, std::vector<std::pair<int, int>>> GetNodes(const std::vector<std::string>& input);
-        void AddAntinodesA(const std::pair<int, int>& a, const std::pair<int, int>& b, std::vector<std::string>& grid);
-        void AddAntinodesB(const std::pair<int, int>& a, const std::pair<int, int>& b, std::vector<std::string>& grid);
+    class Day08 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day08() : Day() {
+            dayNo = 8;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::unordered_map<char, std::vector<std::pair<int, int>>> nodes = {};
+
+        static void AddAntinodesA(const std::pair<int, int>& a, const std::pair<int, int>& b, std::vector<std::string>& grid);
+        static void AddAntinodesB(const std::pair<int, int>& a, const std::pair<int, int>& b, std::vector<std::string>& grid);
         uint64_t CountAntinodes(const std::vector<std::string>& grid);
-        uint64_t Run(std::vector<std::string> input, std::function<void(std::pair<int, int> a, std::pair<int, int> b, std::vector<std::string>& grid)> antinodeFunc);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+        uint64_t Run(std::function<void(const std::pair<int, int>&, const std::pair<int, int>&, std::vector<std::string>&)> antinodeFunc);
+    };
 }
-#endif
