@@ -92,36 +92,9 @@ int main()
     std::cout << "Day 19 - B (" << std::format("{:10.4f}", D19P2.second.count()) << "ms): " << D19P2.first << "\n";
 
     std::cout << AoC2024::Day20(20);
-    //std::visit([](const auto& v) { std::cout << v << "\n"; }, D20P2.first);
 
     auto endTime = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> duration = endTime - startTime;
-
-    //auto total = D01P1.second + D01P2.second
-    //    + D02P1.second + D02P2.second
-    //    + D03P1.second + D03P2.second
-    //    + D04P1.second + D04P2.second
-    //    + D05P1.second + D05P2.second
-    //    + D06P1.second + D06P2.second
-    //    + D07P1.second + D07P2.second
-    //    + D08P1.second + D08P2.second
-    //    + D09P1.second + D09P2.second
-    //    + D10P1.second + D10P2.second
-    //    + D11P1.second + D11P2.second
-    //    + D12P1.second + D12P2.second
-    //    + D13P1.second + D13P2.second
-    //    + D14P1.second + D14P2.second
-    //    + D15P1.second + D15P2.second
-    //    + D16P1.second + D16P2.second
-    //    + D17P1.second + D17P2.second
-    //    + D18P1.second + D18P2.second
-     //   + D19P1.second + D19P2.second
-        //+ D21P1.second + D21P2.second
-        //+ D22P1.second + D22P2.second
-        //+ D23P1.second + D23P2.second
-        //+ D24P1.second + D24P2.second
-        //+ D25P1.second + D25P2.second
-        ;
 
     //std::cout << "\nTotal Time: " << std::format("{:10.4f}", total.count()) << "ms\n";
     std::cout << "Total Time (w/ I/O): " << std::format("{:10.4f}", duration.count()) << "ms\n";
