@@ -1,20 +1,39 @@
-#ifndef DAY18_H
-#define DAY18_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <cstdint>
+
+#include "../Day/Day.h"
 
 namespace AoC2024 {
-    namespace Day18 {
-        std::vector<std::pair<int, int>> PreProcessInput(const std::vector<std::string>& input);
+    class Day18 : public AoC::Day {
+    private:
+        std::vector<std::pair<int, int>> dirs = {
+            { 0, 1 },
+            { 0, -1 },
+            { -1, 0 },
+            { 1, 0 },
+        };
 
-        int Simulate(const std::vector<int>& memory, int size, int timePassed);
-        std::vector<int> GetMemory(const std::vector<std::string>& input, int size);
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
-        std::pair<int, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<std::string, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+        Day18() : Day() {
+            dayNo = 18;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::vector<std::pair<int, int>> coords = {};
+        std::vector<int> memory = {};
+
+        uint64_t Simulate(int size, int timePassed);
+    };
 }
-#endif
