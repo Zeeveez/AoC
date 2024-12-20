@@ -1,15 +1,26 @@
-#ifndef DAY24_H
-#define DAY24_H
+#pragma once
+#include "../Day/Day.h"
 
-#include <cstdint>
 #include <vector>
-#include <chrono>
 #include <string>
 
-namespace AoC2022 {
-    namespace Day24 {
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+namespace AoC2024 {
+    class Day24 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day24() : Day() {
+            dayNo = 24;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::string> input = {};
+    };
 }
-#endif

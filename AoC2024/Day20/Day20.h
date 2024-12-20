@@ -1,6 +1,4 @@
-#ifndef DAY20_H
-#define DAY20_H
-
+#pragma once
 #include "../Day/Day.h"
 
 #include <vector>
@@ -31,4 +29,3 @@ namespace AoC2024 {
         uint64_t Run(const std::vector<std::string>& input, int maxCheatLength);
     };
 }
-#endif

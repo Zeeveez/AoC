@@ -1,25 +1,30 @@
 #include "Day24.h"
+#include "../../Helpers/Helpers.h"
 
-#include <iostream>
+namespace AoC2024 {
+    void Day24::Load() {
+        input = AoC::Helpers::ReadLines("./Day24.txt");
+    }
 
-namespace AoC2022 {
-    namespace Day24 {
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-            auto starttime = std::chrono::high_resolution_clock::now();
+    void Day24::Parse() {
+        // No parsing required
+    }
 
-            int res = 0;
+    void Day24::A() {
+        auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto endtime = std::chrono::high_resolution_clock::now();
-            return { res, endtime - starttime };
-        }
+        uint64_t res = -1;
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-            auto starttime = std::chrono::high_resolution_clock::now();
+        auto endtime = std::chrono::high_resolution_clock::now();
+        partAResult = { res, endtime - starttime };
+    }
 
-            int res = 0;
+    void Day24::B() {
+        auto starttime = std::chrono::high_resolution_clock::now();
 
-            auto endtime = std::chrono::high_resolution_clock::now();
-            return { res, endtime - starttime };
-        }
+        uint64_t res = -1;
+
+        auto endtime = std::chrono::high_resolution_clock::now();
+        partBResult = { res, endtime - starttime };
     }
 }

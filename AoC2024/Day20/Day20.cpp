@@ -1,7 +1,8 @@
-#include "Day20.h"
-#include "../../Helpers/Helpers.h"
-
 #include <queue>
+
+#include "Day20.h"
+
+#include "../../Helpers/Helpers.h"
 
 namespace AoC2024 {
     std::vector<std::pair<int, int>> dirs = {

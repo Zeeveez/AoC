@@ -1,30 +1,26 @@
-#ifndef DAY23_H
-#define DAY23_H
+#pragma once
+#include "../Day/Day.h"
 
-#include <cstdint>
 #include <vector>
-#include <chrono>
 #include <string>
-#include <unordered_map>
-#include <set>
 
-namespace AoC2022 {
-    namespace Day23 {
-        enum Dir {
-            NORTH,
-            SOUTH,
-            WEST,
-            EAST,
-            ALL
-        };
-        std::unordered_map<int, std::set<int>> PreProcessInput(const std::vector<std::string>& input);
+namespace AoC2024 {
+    class Day23 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
-        int CountNeighbours(const std::unordered_map<int, std::set<int>>& map, int x, int y, Dir dir = ALL);
-        bool Step(std::unordered_map<int, std::set<int>>& map, int cycle);
-        int Score(const std::unordered_map<int, std::set<int>>& map);
+        Day23() : Day() {
+            dayNo = 23;
+            Load();
+            Parse();
+            A();
+            B();
+        }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+    private:
+        std::vector<std::string> input = {};
+    };
 }
-#endif

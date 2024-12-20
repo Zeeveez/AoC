@@ -24,6 +24,11 @@ int main()
     std::cout << AoC2024::Day18();
     std::cout << AoC2024::Day19();
     std::cout << AoC2024::Day20();
+    std::cout << AoC2024::Day21();
+    std::cout << AoC2024::Day22();
+    std::cout << AoC2024::Day23();
+    std::cout << AoC2024::Day24();
+    std::cout << AoC2024::Day25();
 
     auto endTime = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> duration = endTime - startTime;
