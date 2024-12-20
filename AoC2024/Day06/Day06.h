@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <string>
-#include <tuple>
 #include <cstdint>
 #include <unordered_set>
 
@@ -27,7 +26,6 @@ namespace AoC2024 {
         std::vector<std::string> input = {};
         std::vector<char> map = {};
 
-        std::vector<char> MakeFlat(const std::vector<std::string>& input);
         std::pair<int, std::unordered_set<int>> GetStartAndPath(const std::vector<char>& map);
     };
 }

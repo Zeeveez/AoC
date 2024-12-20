@@ -1,17 +1,31 @@
-#ifndef DAY13_H
-#define DAY13_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <tuple>
+#include <cstdint>
+
+#include "../Day/Day.h"
 
 namespace AoC2024 {
-    namespace Day13 {
-        std::vector<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>> PreProcessInput(const std::vector<std::string>& input);
+    class Day13 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day13() : Day() {
+            dayNo = 13;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::vector<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>> testCases;
+
         uint64_t Solve(const std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>& testCase);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+    };
 }
-#endif
