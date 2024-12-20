@@ -1,17 +1,26 @@
-#ifndef DAY01_H
-#define DAY01_H
+#pragma once
 
-#include <cstdint>
 #include <vector>
-#include <chrono>
-#include <string>
+#include <cstdint>
+
+#include "../Day/Day.h"
 
 namespace AoC2024 {
-    namespace Day01 {
-        uint64_t ProcessA(const std::vector<std::vector<uint64_t>>& input);
-        uint64_t ProcessB(const std::vector<std::vector<uint64_t>>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::vector<uint64_t>>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::vector<uint64_t>>& input);
-    }
+    class Day01 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day01(int dayNo) : Day(dayNo) {
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::vector<uint64_t>> input = {};
+    };
 }
-#endif

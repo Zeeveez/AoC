@@ -1,19 +1,27 @@
-#ifndef DAY02_H
-#define DAY02_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
-#include <string>
+#include <cstdint>
+
+#include "../Day/Day.h"
 
 namespace AoC2024 {
-    namespace Day02 {
-        bool IsSafe(const std::vector<uint64_t>& line, int ignoreIdx = -1);
+    class Day02 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
-        uint64_t ProcessA(const std::vector<std::vector<uint64_t>>& input);
-        uint64_t ProcessB(const std::vector<std::vector<uint64_t>>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::vector<uint64_t>>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::vector<uint64_t>>& input);
-    }
+        Day02(int dayNo) : Day(dayNo) {
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::vector<uint64_t>> input = {};
+
+        bool IsSafe(const std::vector<uint64_t>& line, int ignoreIdx = -1);
+    };
 }
-#endif

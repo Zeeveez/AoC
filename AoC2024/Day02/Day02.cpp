@@ -1,69 +1,63 @@
+#include <chrono>
+#include <cmath>
+
 #include "Day02.h"
 
-#include <algorithm>
-#include <numeric>
+#include "../../Helpers/Helpers.h"
 
 namespace AoC2024 {
-    namespace Day02 {
-        bool IsSafe(const std::vector<uint64_t>& line, int ignoreIdx) {
-            uint64_t lastVal = ignoreIdx == 0 ? line[1] : line[0];
-            int diff = 0;
-            for (size_t i = ignoreIdx == 0 ? 2 : 1; i < line.size(); i++) {
-                if (i == ignoreIdx) { continue; }
-                int newDiff = line[i] - lastVal;
-                lastVal = line[i];
+    void Day02::Load() {
+        input = AoC::Helpers::ReadTokenGrid<uint64_t>("./Day02.txt");
+    }
 
-                if (std::abs(newDiff) == 0 || std::abs(newDiff) > 3) { return false; }
-                if (diff != 0 && (diff > 0 && newDiff < 0 || diff < 0 && newDiff > 0)) {
-                    return false;
-                }
+    void Day02::Parse() {
+        // No parsing required
+    }
 
-                diff = newDiff;
-            }
-            return true;
+    void Day02::A() {
+        auto startTime = std::chrono::high_resolution_clock::now();
+
+        uint64_t res = 0;
+        for (auto& line : input) {
+            res += IsSafe(line) ? 1 : 0;
         }
 
-        uint64_t ProcessA(const std::vector<std::vector<uint64_t>>& input) {
-            uint64_t res = 0;
-            for (auto& line : input) {
-                res += IsSafe(line) ? 1 : 0;
-            }
-            return res;
-        }
+        auto endTime = std::chrono::high_resolution_clock::now();
+        partAResult = { res, endTime - startTime };
+    }
 
-        uint64_t ProcessB(const std::vector<std::vector<uint64_t>>& input) {
-            uint64_t res = 0;
-            for (auto& line : input) {
-                for (int i = -1; i < (int)line.size(); i++) {
-                    if (IsSafe(line, i)) {
-                        res += 1;
-                        break;
-                    }
+    void Day02::B() {
+        auto startTime = std::chrono::high_resolution_clock::now();
 
-                    if (i == line.size() - 1) {
-                        int x = 1;
-                    }
+        uint64_t res = 0;
+        for (auto& line : input) {
+            for (int i = -1; i < (int)line.size(); i++) {
+                if (IsSafe(line, i)) {
+                    res += 1;
+                    break;
                 }
             }
-            return res;
         }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::vector<uint64_t>>& input) {
-            auto starttime = std::chrono::high_resolution_clock::now();
+        auto endTime = std::chrono::high_resolution_clock::now();
+        partBResult = { res, endTime - startTime };
+    }
 
-            auto res = ProcessA(input);
+    bool Day02::IsSafe(const std::vector<uint64_t>& line, int ignoreIdx) {
+        uint64_t lastVal = ignoreIdx == 0 ? line[1] : line[0];
+        int diff = 0;
+        for (size_t i = ignoreIdx == 0 ? 2 : 1; i < line.size(); i++) {
+            if (i == ignoreIdx) { continue; }
+            int newDiff = line[i] - lastVal;
+            lastVal = line[i];
 
-            auto endtime = std::chrono::high_resolution_clock::now();
-            return { res, endtime - starttime };
+            if (std::abs(newDiff) == 0 || std::abs(newDiff) > 3) { return false; }
+            if (diff != 0 && (diff > 0 && newDiff < 0 || diff < 0 && newDiff > 0)) {
+                return false;
+            }
+
+            diff = newDiff;
         }
-
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::vector<uint64_t>>& input) {
-            auto startTime = std::chrono::high_resolution_clock::now();
-
-            auto res = ProcessB(input);
-
-            auto endTime = std::chrono::high_resolution_clock::now();
-            return { res, endTime - startTime };
-        }
+        return true;
     }
 }
