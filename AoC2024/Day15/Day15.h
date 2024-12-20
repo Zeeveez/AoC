@@ -1,31 +1,48 @@
-#ifndef DAY15_H
-#define DAY15_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <cstdint>
 #include <functional>
 
+#include "../Day/Day.h"
+
 namespace AoC2024 {
-    namespace Day15 {
-        std::tuple<std::vector<std::vector<char>>, std::string, std::pair<int, int>> PreProcessInputA(const std::vector<std::string>& input);
-        std::tuple<std::vector<std::vector<char>>, std::string, std::pair<int, int>> PreProcessInputB(const std::vector<std::string>& input);
-        
-        bool MoveA(std::vector<std::vector<char>>& map, int x, int y, int dx, int dy, bool _);
-        bool MoveB(std::vector<std::vector<char>>& map, int x, int y, int dx, int dy, bool yMoveTest);
-        
-        uint64_t Score(std::vector<std::vector<char>>& map, char target);
+    class Day15 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day15() : Day() {
+            dayNo = 15;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::string> input = {};
+
+        std::vector<std::vector<char>> mapA = {};
+        std::pair<int, int> posA = { 0, 0 };
+
+        std::vector<std::vector<char>> mapB = {};
+        std::pair<int, int> posB = { 0, 0 };
+
+        std::string moves = "";
+
+        static bool MoveA(std::vector<std::vector<char>>& map, int x, int y, int dx, int dy, bool _);
+        static bool MoveB(std::vector<std::vector<char>>& map, int x, int y, int dx, int dy, bool yMoveTest);
+
+        uint64_t Score(const std::vector<std::vector<char>>& map, char target);
 
         uint64_t Run(
-            std::function<std::tuple<std::vector<std::vector<char>>, std::string, std::pair<int, int>>(const std::vector<std::string>& input)> parseFunc,
+            std::vector<std::vector<char>> map,
+            std::pair<int, int> pos,
             std::function<bool(std::vector<std::vector<char>>&, int, int, int, int, bool)> moveFunc,
-            const std::vector<std::string>& input,
             char target
         );
-        
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+    };
 }
-#endif

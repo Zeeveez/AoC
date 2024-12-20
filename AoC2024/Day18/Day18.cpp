@@ -1,8 +1,8 @@
 #include <sstream>
 #include <set>
 #include <queue>
-#include <algorithm>
 #include <ranges>
+#include <algorithm>
 
 #include "Day18.h"
 
