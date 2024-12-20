@@ -22,7 +22,7 @@ int main()
     std::cout << AoC2024::Day16();
     std::cout << AoC2024::Day17();
     //std::cout << AoC2024::Day18();
-    //std::cout << AoC2024::Day19();
+    std::cout << AoC2024::Day19();
     std::cout << AoC2024::Day20();
 
     auto endTime = std::chrono::high_resolution_clock::now();
