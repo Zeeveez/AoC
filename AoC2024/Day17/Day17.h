@@ -1,20 +1,33 @@
-#ifndef DAY17_H
-#define DAY17_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <cstdint>
+
+#include "../Day/Day.h"
 
 namespace AoC2024 {
-    namespace Day17 {
-        std::tuple<std::vector<uint64_t>, std::vector<int>> PreProcessInput(const std::vector<std::string>& input);
-        
-        std::pair<std::string, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
+    class Day17 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
+        Day17() : Day() {
+            dayNo = 17;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::vector<uint64_t> registers = {};
+        std::vector<int> program = {};
+
+        int Tick(std::vector<uint64_t>& regs, int& ip);
         std::pair<std::vector<uint64_t>, std::vector<uint64_t>> ExtractCycle(std::vector<uint64_t>& maybeCycle);
-        std::pair<std::vector<uint64_t>, std::vector<uint64_t>> FindCycle(std::vector<uint64_t> state, std::vector<int> prog, int progTarget, uint64_t initA, std::vector<uint64_t>& increments);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+        std::pair<std::vector<uint64_t>, std::vector<uint64_t>> FindCycle(std::vector<uint64_t> state, int progTarget, uint64_t initA, std::vector<uint64_t>& increments);
+    };
 }
-#endif
