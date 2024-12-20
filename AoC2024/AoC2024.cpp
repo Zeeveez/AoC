@@ -7,91 +7,26 @@ int main()
 {
     auto startTime = std::chrono::high_resolution_clock::now();
 
-    std::cout << AoC2024::Day01(1);
-    std::cout << AoC2024::Day02(2);
-    std::cout << AoC2024::Day03(3);
-
-    auto D04P1 = AoC2024::Day04::A(AoC::Helpers::ReadLines("./Day04.txt"));
-    std::cout << "Day 04 - A (" << std::format("{:10.4f}", D04P1.second.count()) << "ms): " << D04P1.first << "\n";
-    auto D04P2 = AoC2024::Day04::B(AoC::Helpers::ReadLines("./Day04.txt"));
-    std::cout << "Day 04 - B (" << std::format("{:10.4f}", D04P2.second.count()) << "ms): " << D04P2.first << "\n";
-
-    auto D05P1 = AoC2024::Day05::A(AoC::Helpers::ReadLines("./Day05.txt"));
-    std::cout << "Day 05 - A (" << std::format("{:10.4f}", D05P1.second.count()) << "ms): " << D05P1.first << "\n";
-    auto D05P2 = AoC2024::Day05::B(AoC::Helpers::ReadLines("./Day05.txt"));
-    std::cout << "Day 05 - B (" << std::format("{:10.4f}", D05P2.second.count()) << "ms): " << D05P2.first << "\n";
-
-    auto D06P1 = AoC2024::Day06::A(AoC::Helpers::ReadLines("./Day06.txt"));
-    std::cout << "Day 06 - A (" << std::format("{:10.4f}", D06P1.second.count()) << "ms): " << D06P1.first << "\n";
-    auto D06P2 = AoC2024::Day06::B(AoC::Helpers::ReadLines("./Day06.txt"));
-    std::cout << "Day 06 - B (" << std::format("{:10.4f}", D06P2.second.count()) << "ms): " << D06P2.first << "\n";
-
-    auto D07P1 = AoC2024::Day07::A(AoC::Helpers::ReadLines("./Day07.txt"));
-    std::cout << "Day 07 - A (" << std::format("{:10.4f}", D07P1.second.count()) << "ms): " << D07P1.first << "\n";
-    auto D07P2 = AoC2024::Day07::B(AoC::Helpers::ReadLines("./Day07.txt"));
-    std::cout << "Day 07 - B (" << std::format("{:10.4f}", D07P2.second.count()) << "ms): " << D07P2.first << "\n";
-
-    auto D08P1 = AoC2024::Day08::A(AoC::Helpers::ReadLines("./Day08.txt"));
-    std::cout << "Day 08 - A (" << std::format("{:10.4f}", D08P1.second.count()) << "ms): " << D08P1.first << "\n";
-    auto D08P2 = AoC2024::Day08::B(AoC::Helpers::ReadLines("./Day08.txt"));
-    std::cout << "Day 08 - B (" << std::format("{:10.4f}", D08P2.second.count()) << "ms): " << D08P2.first << "\n";
-
-    auto D09P1 = AoC2024::Day09::A(AoC::Helpers::ReadToken<std::string>("./Day09.txt"));
-    std::cout << "Day 09 - A (" << std::format("{:10.4f}", D09P1.second.count()) << "ms): " << D09P1.first << "\n";
-    auto D09P2 = AoC2024::Day09::B(AoC::Helpers::ReadToken<std::string>("./Day09.txt"));
-    std::cout << "Day 09 - B (" << std::format("{:10.4f}", D09P2.second.count()) << "ms): " << D09P2.first << "\n";
-
-    auto D10P1 = AoC2024::Day10::A(AoC::Helpers::ReadLines("./Day10.txt"));
-    std::cout << "Day 10 - A (" << std::format("{:10.4f}", D10P1.second.count()) << "ms): " << D10P1.first << "\n";
-    auto D10P2 = AoC2024::Day10::B(AoC::Helpers::ReadLines("./Day10.txt"));
-    std::cout << "Day 10 - B (" << std::format("{:10.4f}", D10P2.second.count()) << "ms): " << D10P2.first << "\n";
-
-    auto D11P1 = AoC2024::Day11::A(AoC::Helpers::ReadTokens<uint64_t>("./Day11.txt"));
-    std::cout << "Day 11 - A (" << std::format("{:10.4f}", D11P1.second.count()) << "ms): " << D11P1.first << "\n";
-    auto D11P2 = AoC2024::Day11::B(AoC::Helpers::ReadTokens<uint64_t>("./Day11.txt"));
-    std::cout << "Day 11 - B (" << std::format("{:10.4f}", D11P2.second.count()) << "ms): " << D11P2.first << "\n";
-
-    auto D12P1 = AoC2024::Day12::A(AoC::Helpers::ReadLines("./Day12.txt"));
-    std::cout << "Day 12 - A (" << std::format("{:10.4f}", D12P1.second.count()) << "ms): " << D12P1.first << "\n";
-    auto D12P2 = AoC2024::Day12::B(AoC::Helpers::ReadLines("./Day12.txt"));
-    std::cout << "Day 12 - B (" << std::format("{:10.4f}", D12P2.second.count()) << "ms): " << D12P2.first << "\n";
-
-    auto D13P1 = AoC2024::Day13::A(AoC::Helpers::ReadLines("./Day13.txt"));
-    std::cout << "Day 13 - A (" << std::format("{:10.4f}", D13P1.second.count()) << "ms): " << D13P1.first << "\n";
-    auto D13P2 = AoC2024::Day13::B(AoC::Helpers::ReadLines("./Day13.txt"));
-    std::cout << "Day 13 - B (" << std::format("{:10.4f}", D13P2.second.count()) << "ms): " << D13P2.first << "\n";
-
-    auto D14P1 = AoC2024::Day14::A(AoC::Helpers::ReadLines("./Day14.txt"));
-    std::cout << "Day 14 - A (" << std::format("{:10.4f}", D14P1.second.count()) << "ms): " << D14P1.first << "\n";
-    auto D14P2 = AoC2024::Day14::B(AoC::Helpers::ReadLines("./Day14.txt"));
-    std::cout << "Day 14 - B (" << std::format("{:10.4f}", D14P2.second.count()) << "ms): " << D14P2.first << "\n";
-
-    auto D15P1 = AoC2024::Day15::A(AoC::Helpers::ReadLines("./Day15.txt"));
-    std::cout << "Day 15 - A (" << std::format("{:10.4f}", D15P1.second.count()) << "ms): " << D15P1.first << "\n";
-    auto D15P2 = AoC2024::Day15::B(AoC::Helpers::ReadLines("./Day15.txt"));
-    std::cout << "Day 15 - B (" << std::format("{:10.4f}", D15P2.second.count()) << "ms): " << D15P2.first << "\n";
-
-    auto D16P1 = AoC2024::Day16::A(AoC::Helpers::ReadLines("./Day16.txt"));
-    std::cout << "Day 16 - A (" << std::format("{:10.4f}", D16P1.second.count()) << "ms): " << D16P1.first << "\n";
-    auto D16P2 = AoC2024::Day16::B(AoC::Helpers::ReadLines("./Day16.txt"));
-    std::cout << "Day 16 - B (" << std::format("{:10.4f}", D16P2.second.count()) << "ms): " << D16P2.first << "\n";
-
-    auto D17P1 = AoC2024::Day17::A(AoC::Helpers::ReadLines("./Day17.txt"));
-    std::cout << "Day 17 - A (" << std::format("{:10.4f}", D17P1.second.count()) << "ms): " << D17P1.first << "\n";
-    auto D17P2 = AoC2024::Day17::B(AoC::Helpers::ReadLines("./Day17.txt"));
-    std::cout << "Day 17 - B (" << std::format("{:10.4f}", D17P2.second.count()) << "ms): " << D17P2.first << "\n";
-
-    auto D18P1 = AoC2024::Day18::A(AoC::Helpers::ReadLines("./Day18.txt"));
-    std::cout << "Day 18 - A (" << std::format("{:10.4f}", D18P1.second.count()) << "ms): " << D18P1.first << "\n";
-    auto D18P2 = AoC2024::Day18::B(AoC::Helpers::ReadLines("./Day18.txt"));
-    std::cout << "Day 18 - B (" << std::format("{:10.4f}", D18P2.second.count()) << "ms): " << D18P2.first << "\n";
-
-    auto D19P1 = AoC2024::Day19::A(AoC::Helpers::ReadLines("./Day19.txt"));
-    std::cout << "Day 19 - A (" << std::format("{:10.4f}", D19P1.second.count()) << "ms): " << D19P1.first << "\n";
-    auto D19P2 = AoC2024::Day19::B(AoC::Helpers::ReadLines("./Day19.txt"));
-    std::cout << "Day 19 - B (" << std::format("{:10.4f}", D19P2.second.count()) << "ms): " << D19P2.first << "\n";
-
-    std::cout << AoC2024::Day20(20);
+    std::cout << AoC2024::Day01();
+    std::cout << AoC2024::Day02();
+    std::cout << AoC2024::Day03();
+    std::cout << AoC2024::Day04();
+    //std::cout << AoC2024::Day05();
+    //std::cout << AoC2024::Day06();
+    //std::cout << AoC2024::Day07();
+    //std::cout << AoC2024::Day08();
+    //std::cout << AoC2024::Day09();
+    //std::cout << AoC2024::Day10();
+    //std::cout << AoC2024::Day11();
+    //std::cout << AoC2024::Day12();
+    //std::cout << AoC2024::Day13();
+    //std::cout << AoC2024::Day14();
+    //std::cout << AoC2024::Day15();
+    //std::cout << AoC2024::Day16();
+    //std::cout << AoC2024::Day17();
+    //std::cout << AoC2024::Day18();
+    //std::cout << AoC2024::Day19();
+    std::cout << AoC2024::Day20();
 
     auto endTime = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> duration = endTime - startTime;

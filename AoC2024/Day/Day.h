@@ -15,7 +15,7 @@ namespace AoC {
         PartResult partAResult;
         PartResult partBResult;
 
-        Day(int dayNo);
+        Day();
         virtual void Load() = 0;
         virtual void Parse() = 0;
         virtual void A() = 0;

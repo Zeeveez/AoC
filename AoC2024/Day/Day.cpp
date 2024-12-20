@@ -5,7 +5,7 @@
 #include "Day.h"
 
 namespace AoC {
-    Day::Day(int dayNo) : dayNo(dayNo) {}
+    Day::Day() {}
 
     std::ostream& operator<<(std::ostream& stream, const Day& day)
     {

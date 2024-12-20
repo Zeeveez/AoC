@@ -13,7 +13,8 @@ namespace AoC2024 {
         void A() override;
         void B() override;
 
-        Day01(int dayNo) : Day(dayNo) {
+        Day01() : Day() {
+            dayNo = 1;
             Load();
             Parse();
             A();

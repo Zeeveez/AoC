@@ -1,16 +1,30 @@
-#ifndef DAY04_H
-#define DAY04_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <tuple>
+#include <cstdint>
+
+#include "../Day/Day.h"
 
 namespace AoC2024 {
-    namespace Day04 {
-        bool Check(const std::vector<std::string>& input, int x, int y, int sx, int sy, std::string target);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+    class Day04 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day04() : Day() {
+            dayNo = 4;
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::string> input = {};
+
+        bool Check(int x, int y, int sx, int sy, std::string target);
+    };
 }
-#endif
