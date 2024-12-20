@@ -1,4 +1,3 @@
-#include <chrono>
 #include <cmath>
 
 #include "Day02.h"

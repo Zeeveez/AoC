@@ -9,11 +9,7 @@ int main()
 
     std::cout << AoC2024::Day01(1);
     std::cout << AoC2024::Day02(2);
-
-    auto D03P1 = AoC2024::Day03::A(AoC::Helpers::ReadLines("./Day03.txt"));
-    std::cout << "Day 03 - A (" << std::format("{:10.4f}", D03P1.second.count()) << "ms): " << D03P1.first << "\n";
-    auto D03P2 = AoC2024::Day03::B(AoC::Helpers::ReadLines("./Day03.txt"));
-    std::cout << "Day 03 - B (" << std::format("{:10.4f}", D03P2.second.count()) << "ms): " << D03P2.first << "\n";
+    std::cout << AoC2024::Day03(3);
 
     auto D04P1 = AoC2024::Day04::A(AoC::Helpers::ReadLines("./Day04.txt"));
     std::cout << "Day 04 - A (" << std::format("{:10.4f}", D04P1.second.count()) << "ms): " << D04P1.first << "\n";

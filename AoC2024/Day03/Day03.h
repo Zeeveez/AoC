@@ -1,19 +1,28 @@
-#ifndef DAY03_H
-#define DAY03_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <tuple>
+#include <cstdint>
+
+#include "../Day/Day.h"
 
 namespace AoC2024 {
-    namespace Day03 {
-        std::vector<std::tuple<std::string, int, int>> PreProcessInput(const std::vector<std::string>& input);
+    class Day03 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
-        uint64_t ProcessA(const std::vector<std::string>& input);
-        uint64_t ProcessB(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+        Day03(int dayNo) : Day(dayNo) {
+            Load();
+            Parse();
+            A();
+            B();
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::vector<std::tuple<std::string, int, int>> instructions = {};
+    };
 }
-#endif
