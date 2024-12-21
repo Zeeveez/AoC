@@ -22,5 +22,7 @@ namespace AoC2024 {
 
     private:
         std::vector<std::string> input = {};
+
+        uint64_t ShortestSequence(char pos, std::string sequence, int depth, int maxDepth);
     };
 }
