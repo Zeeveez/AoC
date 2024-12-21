@@ -179,7 +179,7 @@ namespace AoC2024 {
             minLength = std::min(minLength, subsequence.length() + ShortestSequence('A', subsequence + 'A', depth + 1, maxDepth) + ShortestSequence(sequence[0], sequence.substr(1), depth, maxDepth));
         }
 
-        memory[{pos, sequence,depth,maxDepth}] = minLength;
+        memory[{pos, sequence, depth, maxDepth}] = minLength;
 
         return minLength;
     }
