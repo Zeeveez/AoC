@@ -10,14 +10,14 @@ namespace AoC2024 {
         // No parsing required
     }
 
-    int32_t Step(int32_t n) {
-        int32_t n64 = n << 6;
+    uint32_t Step(uint32_t n) {
+        uint32_t n64 = n << 6;
         n ^= n64;
         n &= 0xffffff;
-        int32_t nd32 = n >> 5;
+        uint32_t nd32 = n >> 5;
         n ^= nd32;
         n &= 0xffffff;
-        int32_t n2048 = n << 11;
+        uint32_t n2048 = n << 11;
         n ^= n2048;
         n &= 0xffffff;
         return n;
@@ -38,7 +38,7 @@ namespace AoC2024 {
         std::vector<int32_t> scores(160000, 0);
         std::vector<int32_t> seenKeys(160000, -1);
         for (int i = 0; i < input.size(); i++) {
-            int32_t n = input[i];
+            uint32_t n = input[i];
             uint32_t key = 0;
             for (int j = 0; j < 2000; j++) {
                 int64_t last = n;
