@@ -3,28 +3,28 @@
 
 namespace AoC2024 {
     void Day22::Load() {
-        input = AoC::Helpers::ReadTokens<uint64_t>("./Day22.txt");
+        input = AoC::Helpers::ReadTokens<uint32_t>("./Day22.txt");
     }
 
     void Day22::Parse() {
         // No parsing required
     }
 
-    uint64_t Step(uint64_t n) {
-        uint64_t n64 = n << 6;
+    uint32_t Step(uint32_t n) {
+        uint32_t n64 = n << 6;
         n ^= n64;
         n &= 0xffffff;
-        uint64_t nd32 = n >> 5;
+        uint32_t nd32 = n >> 5;
         n ^= nd32;
         n &= 0xffffff;
-        uint64_t n2048 = n << 11;
+        uint32_t n2048 = n << 11;
         n ^= n2048;
         n &= 0xffffff;
         return n;
     }
 
     void Day22::A() {
-        uint64_t res = 0;
+        uint32_t res = 0;
         for (auto n : input) {
             for (int i = 0; i < 2000; i++) {
                 n = Step(n);
@@ -35,13 +35,13 @@ namespace AoC2024 {
     }
 
     void Day22::B() {
-        std::vector<uint64_t> scores(160000, 0);
-        std::vector<uint64_t> seenKeys(160000, -1);
+        std::vector<uint32_t> scores(160000, 0);
+        std::vector<int> seenKeys(160000, -1);
         for (int i = 0; i < input.size(); i++) {
-            uint64_t n = input[i];
-            uint64_t key = 0;
+            uint32_t n = input[i];
+            uint32_t key = 0;
             for (int j = 0; j < 2000; j++) {
-                uint64_t last = n;
+                uint32_t last = n;
                 n = Step(n);
                 key = key % 8000 * 20 + n % 10 - last % 10 + 10;
                 if (j > 3) {
