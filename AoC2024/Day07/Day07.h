@@ -3,7 +3,7 @@
 #include <string>
 #include <cstdint>
 
-#include "../Day/Day.h"
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2024 {
     class Day07 : public AoC::Day {

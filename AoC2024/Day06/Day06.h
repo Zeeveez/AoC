@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <unordered_set>
 
-#include "../Day/Day.h"
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2024 {
     class Day06 : public AoC::Day {

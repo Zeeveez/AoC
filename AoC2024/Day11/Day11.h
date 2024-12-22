@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "../Day/Day.h"
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2024 {
     class Day11 : public AoC::Day {

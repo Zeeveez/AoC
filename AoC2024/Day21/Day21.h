@@ -1,5 +1,5 @@
 #pragma once
-#include "../Day/Day.h"
+#include "../../AoC/Day/Day.h"
 
 #include <vector>
 #include <string>

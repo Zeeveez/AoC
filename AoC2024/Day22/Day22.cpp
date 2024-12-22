@@ -10,7 +10,7 @@ namespace AoC2024 {
         // No parsing required
     }
 
-    uint32_t Step(uint32_t n) {
+    uint32_t Day22::Step(uint32_t n) {
         uint32_t n64 = n << 6;
         n ^= n64;
         n &= 0xffffff;

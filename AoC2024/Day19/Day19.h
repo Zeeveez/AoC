@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <map>
 
-#include "../Day/Day.h"
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2024 {
     class Day19 : public AoC::Day {

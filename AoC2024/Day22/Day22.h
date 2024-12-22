@@ -1,5 +1,5 @@
 #pragma once
-#include "../Day/Day.h"
+#include "../../AoC/Day/Day.h"
 
 #include <vector>
 #include <string>
@@ -22,5 +22,7 @@ namespace AoC2024 {
 
     private:
         std::vector<std::uint32_t> input = {};
+
+        uint32_t Step(uint32_t n);
     };
 }

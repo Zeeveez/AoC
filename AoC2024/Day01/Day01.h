@@ -2,7 +2,7 @@
 #include <vector>
 #include <cstdint>
 
-#include "../Day/Day.h"
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2024 {
     class Day01 : public AoC::Day {
