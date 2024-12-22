@@ -15,7 +15,7 @@ namespace AoC2024 {
         Day21() : Day() {
             dayNo = 21;
             Load();
-            Parse();
+            ParseA();
             A();
             B();
         }

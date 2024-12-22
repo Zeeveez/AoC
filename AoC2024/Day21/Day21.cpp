@@ -170,9 +170,9 @@ namespace AoC2024 {
     uint64_t Day21::ShortestSequence(char pos, std::string sequence, int depth, int maxDepth) {
         if (depth == maxDepth) { return 0; }
         if (sequence.length() == 0) { return 0; }
-        if (memory.contains({ pos, sequence, depth, maxDepth })) {
-            return memory[{pos, sequence, depth, maxDepth}];
-        }
+
+        auto it = memory.find({ pos, sequence, depth, maxDepth });
+        if (it != memory.end()) { return it->second; }
         uint64_t minLength = std::numeric_limits<uint64_t>::max();
 
         for (auto& subsequence : (depth == 0 ? numericKeypad : directionalKeypad).at({ pos, sequence[0] })) {
