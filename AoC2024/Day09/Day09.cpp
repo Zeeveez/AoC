@@ -15,8 +15,6 @@ namespace AoC2024 {
     }
 
     void Day09::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         std::vector<std::pair<uint64_t, uint64_t>> files = {}; // ID, size
 
         for (int i = 0; i < input.size(); i++) {
@@ -44,13 +42,10 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = res;
     }
 
     void Day09::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         std::vector<std::pair<uint64_t, uint64_t>> files = {}; // ID, size
 
         for (int i = 0; i < input.size(); i++) {
@@ -81,7 +76,6 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = res;
     }
 }

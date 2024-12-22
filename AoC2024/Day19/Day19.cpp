@@ -20,8 +20,6 @@ namespace AoC2024 {
     }
 
     void Day19::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = 0;
         for (auto& design : designs) {
             if (IsValid(design)) {
@@ -29,21 +27,17 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = res;
     }
 
     void Day19::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         std::map<std::string, uint64_t> memory = {};
         uint64_t res = 0;
         for (auto& design : designs) {
             res += CountValid(memory, design);
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = res;
     }
 
     std::string Day19::Trim(const std::string& str) {

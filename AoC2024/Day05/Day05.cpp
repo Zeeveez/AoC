@@ -37,8 +37,6 @@ namespace AoC2024 {
     }
 
     void Day05::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = 0;
 
         for (auto& update : updates) {
@@ -57,13 +55,10 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = res;
     }
 
     void Day05::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = 0;
 
         for (auto& update : updates) {
@@ -89,7 +84,6 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = res;
     }
 }

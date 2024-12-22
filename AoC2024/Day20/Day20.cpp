@@ -21,24 +21,12 @@ namespace AoC2024 {
     }
 
     void Day20::A() {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = Run(input, 2);
-
-        auto endtime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endtime - starttime };
+        partAResult.first = Run(input, 2);
     }
 
     void Day20::B() {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = Run(input, 20);
-
-        auto endtime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endtime - starttime };
+        partBResult.first = Run(input, 20);
     }
-
-
 
     std::pair<int, int> Day20::FindEnd(const std::vector<std::string>& input) {
         for (int y = 0; y < input.size(); y++) {

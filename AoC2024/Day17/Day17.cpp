@@ -28,8 +28,6 @@ namespace AoC2024 {
     }
 
     void Day17::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         std::string res = "";
         auto registers = this->registers;
         int ip = 0;
@@ -42,13 +40,10 @@ namespace AoC2024 {
         }
         this->registers = registers;
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = res;
     }
 
     void Day17::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         std::vector<int> newProg;
 
         uint64_t initValue = 0;
@@ -59,8 +54,7 @@ namespace AoC2024 {
             increments = cycles;
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { initValue, endTime - startTime };
+        partBResult.first = initValue;
     }
 
     int Day17::Tick(std::vector<uint64_t>& regs, int& ip) {

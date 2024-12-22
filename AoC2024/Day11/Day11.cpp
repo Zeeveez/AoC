@@ -37,21 +37,11 @@ namespace AoC2024 {
     }
 
     void Day11::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = Run(25);
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = Run(25);
     }
 
     void Day11::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = Run(75);
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = Run(75);
     }
 
     uint64_t Day11::Run(int iterations) {

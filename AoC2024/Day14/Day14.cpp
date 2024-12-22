@@ -17,7 +17,8 @@ namespace AoC2024 {
             std::smatch sm;
 
             if (std::regex_search(line, sm, re)) {
-                robots.push_back({
+                robots.push_back(
+                    {
                         {
                             std::stoi(sm[1]),
                             std::stoi(sm[2]),
@@ -26,14 +27,13 @@ namespace AoC2024 {
                             std::stoi(sm[3]),
                             std::stoi(sm[4])
                         }
-                                 });
+                    }
+                );
             }
         }
     }
 
     void Day14::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         auto robots = this->robots;
 
         int w = 101;
@@ -64,13 +64,10 @@ namespace AoC2024 {
         }
 
         uint64_t res = tl * tr * bl * br;
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = res;
     }
 
     void Day14::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         auto robots = this->robots;
 
         int w = 101;
@@ -102,7 +99,6 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = res;
     }
 }

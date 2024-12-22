@@ -14,8 +14,6 @@ namespace AoC2024 {
     }
 
     void Day12::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         std::set<std::pair<int, int>> seen = {};
 
         uint64_t res = 0;
@@ -35,15 +33,11 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = res;
     }
 
     void Day12::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         std::set<std::pair<int, int>> seen = {};
-
         std::set<std::pair<int, int>> dirs = {
             { 0, -1 },
             { 0, 1 },
@@ -92,8 +86,7 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = res;
     }
 
     std::set<std::pair<int, int>> Day12::GetShape(int x, int y, std::set<std::pair<int, int>>& seen) {

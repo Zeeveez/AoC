@@ -15,8 +15,6 @@ namespace AoC2024 {
     }
 
     void Day10::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = 0;
         for (int y = 0; y < input.size(); y++) {
             for (int x = 0; x < input[y].size(); x++) {
@@ -26,13 +24,10 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = res;
     }
 
     void Day10::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = 0;
         for (int y = 0; y < input.size(); y++) {
             for (int x = 0; x < input[y].size(); x++) {
@@ -42,8 +37,7 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = res;
     }
 
     int Day10::Traverse(const std::vector<std::string>& input, int startX, int startY, bool uniquePeaksOnly) {

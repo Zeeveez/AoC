@@ -12,21 +12,13 @@ namespace AoC2024 {
     }
 
     void Day16::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         auto [bestScore, _] = Run();
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { bestScore, endTime - startTime };
+        partAResult.first = bestScore;
     }
 
     void Day16::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         auto [_, tilesOnBests] = Run();
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { tilesOnBests, endTime - startTime };
+        partBResult.first = tilesOnBests;
     }
 
     std::pair<uint64_t, uint64_t> Day16::Run() {

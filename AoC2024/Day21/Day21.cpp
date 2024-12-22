@@ -185,30 +185,22 @@ namespace AoC2024 {
     }
 
     void Day21::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = 0;
-
         for (auto& sequence : input) {
             auto shortestSequence = ShortestSequence('A', sequence, 0, 3) + sequence.length();  // Why add sequence length??????
             res += shortestSequence * std::stoi(sequence);
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = res;
     }
 
     void Day21::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = 0;
-
         for (auto& sequence : input) {
             auto shortestSequence = ShortestSequence('A', sequence, 0, 26) + sequence.length();  // Why add sequence length??????
             res += shortestSequence * std::stoi(sequence);
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = res;
     }
 }

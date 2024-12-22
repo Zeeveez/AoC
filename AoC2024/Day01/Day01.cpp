@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <algorithm>partAResult = { res, endtime - starttime };
 #include <numeric>
 
 #include "Day01.h"
@@ -15,8 +15,6 @@ namespace AoC2024 {
     }
 
     void Day01::A() {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
         std::vector<uint64_t> col1 = {};
         std::vector<uint64_t> col2 = {};
         for (auto& line : input) {
@@ -31,13 +29,10 @@ namespace AoC2024 {
             res += std::max(col1[i], col2[i]) - std::min(col1[i], col2[i]);
         }
 
-        auto endtime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endtime - starttime };
+        partAResult.first = res;
     }
 
     void Day01::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         std::vector<uint64_t> col1 = {};
         std::vector<uint64_t> col2 = {};
         for (auto& line : input) {
@@ -45,7 +40,7 @@ namespace AoC2024 {
             col2.push_back(line[1]);
         }
 
-        uint64_t res = std::accumulate(
+        partBResult.first = std::accumulate(
             col1.begin(),
             col1.end(),
             (uint64_t)0,
@@ -53,8 +48,5 @@ namespace AoC2024 {
                 return acc + v * std::count(col2.begin(), col2.end(), v);
             }
         );
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
     }
 }

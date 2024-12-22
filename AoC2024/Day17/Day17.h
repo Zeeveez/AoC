@@ -16,9 +16,9 @@ namespace AoC2024 {
         Day17() : Day() {
             dayNo = 17;
             Load();
-            Parse();
-            A();
-            B();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
         }
 
     private:

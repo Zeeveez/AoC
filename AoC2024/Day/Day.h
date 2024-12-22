@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <chrono>
 #include <ostream>
+#include <functional>
 
 namespace AoC {
     class Day {
@@ -11,16 +12,19 @@ namespace AoC {
         typedef std::variant<std::string, uint64_t> PuzzleResult;
         typedef std::pair<PuzzleResult, std::chrono::duration<double, std::milli>> PartResult;
 
-        int dayNo;
-        PartResult partAResult;
-        PartResult partBResult;
+        int dayNo = -1;
+        PartResult parseResult = { "TODO" , {std::chrono::duration<double, std::milli>(0) } };
+        PartResult partAResult = { "TODO" , {std::chrono::duration<double, std::milli>(0) } };
+        PartResult partBResult = { "TODO" , {std::chrono::duration<double, std::milli>(0) } };
 
         Day();
-        virtual void Load() = 0;
-        virtual void Parse() = 0;
-        virtual void A() = 0;
-        virtual void B() = 0;
+        virtual void Load() {};
+        virtual void Parse() {};
+        virtual void A() {};
+        virtual void B() {};
 
-        friend std::ostream& operator<<(std::ostream& stream, const Day& partResult);
+        std::chrono::duration<double, std::milli> TimeFunc(std::function<void()> f);
+
+        friend std::ostream& operator<<(std::ostream& stream, const Day& day);
     };
 }

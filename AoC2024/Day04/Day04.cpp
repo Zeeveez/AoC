@@ -15,7 +15,6 @@ namespace AoC2024 {
     }
 
     void Day04::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
         std::vector<std::pair<int, int>> steps = {
             { 1, 0 },
             { -1, 0 },
@@ -38,13 +37,10 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = res;
     }
 
     void Day04::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = 0;
         for (int y = 1; y < input.size() - 1; y++) {
             for (int x = 1; x < input.size() - 1; x++) {
@@ -60,8 +56,7 @@ namespace AoC2024 {
             }
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = res;
     }
 
 

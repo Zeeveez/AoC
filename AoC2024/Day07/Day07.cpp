@@ -23,21 +23,11 @@ namespace AoC2024 {
     }
 
     void Day07::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = Run();
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = Run();
     }
 
     void Day07::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = Run(true);
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = Run(true);
     }
 
     bool Day07::Valid(const std::vector<uint64_t>& eq, bool withConcat) {

@@ -52,21 +52,11 @@ namespace AoC2024 {
     }
 
     void Day15::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = Run(mapA, posA, MoveA, 'O');
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = Run(mapA, posA, MoveA, 'O');
     }
 
     void Day15::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = Run(mapB, posB, MoveB, '[');
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = Run(mapB, posB, MoveB, '[');
     }
 
     bool Day15::MoveA(std::vector<std::vector<char>>& map, int x, int y, int dx, int dy, bool _) {

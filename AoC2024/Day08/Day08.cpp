@@ -23,21 +23,11 @@ namespace AoC2024 {
     }
 
     void Day08::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = Run(AddAntinodesA);
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = Run(AddAntinodesA);
     }
 
     void Day08::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = Run(AddAntinodesB);
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = Run(AddAntinodesB);
     }
 
     void Day08::AddAntinodesA(const std::pair<int, int>& a, const std::pair<int, int>& b, std::vector<std::string>& grid) {

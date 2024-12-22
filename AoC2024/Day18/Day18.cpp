@@ -37,27 +37,20 @@ namespace AoC2024 {
     }
 
     void Day18::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         int size = 71;
         size_t timePassed = 1024;
-        auto res = Simulate(size, timePassed);
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = Simulate(size, timePassed);
     }
 
     void Day18::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         int size = 71;
         size_t timePassed = 1024;
 
         auto idxSequence = std::views::iota(timePassed, input.size());
         auto v = std::partition_point(idxSequence.begin(), idxSequence.end(), [&](std::size_t i) { return Simulate(size, i) != -1; });
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { input[*v - 1], endTime - startTime };
+        partBResult.first = input[*v - 1];
     }
 
     uint64_t Day18::Simulate(int size, int timePassed) {

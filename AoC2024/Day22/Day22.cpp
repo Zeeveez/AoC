@@ -11,20 +11,12 @@ namespace AoC2024 {
     }
 
     void Day22::A() {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = -1;
-
-        auto endtime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endtime - starttime };
+        //partAResult.first = res;
     }
 
     void Day22::B() {
-        auto starttime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = -1;
-
-        auto endtime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endtime - starttime };
+        //partBResult.first = res;
     }
 }

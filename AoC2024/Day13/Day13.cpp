@@ -27,20 +27,15 @@ namespace AoC2024 {
     }
 
     void Day13::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = 0;
         for (auto& testCase : testCases) {
             res += Solve(testCase);
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = res;
     }
 
     void Day13::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         uint64_t res = 0;
         for (auto& testCase : testCases) {
             std::get<2>(testCase).first += 10000000000000;
@@ -48,8 +43,7 @@ namespace AoC2024 {
             res += Solve(testCase);
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = res;
     }
 
     uint64_t Day13::Solve(const std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>& testCase) {

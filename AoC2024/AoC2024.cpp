@@ -2,37 +2,46 @@
 
 int main()
 {
-    auto startTime = std::chrono::high_resolution_clock::now();
+    std::vector<AoC::Day> days = {
+        AoC2024::Day01(),
+        AoC2024::Day02(),
+        AoC2024::Day03(),
+        AoC2024::Day04(),
+        AoC2024::Day05(),
+        AoC2024::Day06(),
+        AoC2024::Day07(),
+        AoC2024::Day08(),
+        AoC2024::Day09(),
+        AoC2024::Day10(),
+        AoC2024::Day11(),
+        AoC2024::Day12(),
+        AoC2024::Day13(),
+        AoC2024::Day14(),
+        AoC2024::Day15(),
+        AoC2024::Day16(),
+        AoC2024::Day17(),
+        AoC2024::Day18(),
+        AoC2024::Day19(),
+        AoC2024::Day20(),
+        AoC2024::Day21(),
+        AoC2024::Day22(),
+        AoC2024::Day23(),
+        AoC2024::Day24(),
+        AoC2024::Day25(),
+    };
 
-    //std::cout << AoC2024::Day01();
-    //std::cout << AoC2024::Day02();
-    //std::cout << AoC2024::Day03();
-    //std::cout << AoC2024::Day04();
-    //std::cout << AoC2024::Day05();
-    //std::cout << AoC2024::Day06();
-    //std::cout << AoC2024::Day07();
-    //std::cout << AoC2024::Day08();
-    //std::cout << AoC2024::Day09();
-    //std::cout << AoC2024::Day10();
-    //std::cout << AoC2024::Day11();
-    //std::cout << AoC2024::Day12();
-    //std::cout << AoC2024::Day13();
-    //std::cout << AoC2024::Day14();
-    //std::cout << AoC2024::Day15();
-    //std::cout << AoC2024::Day16();
-    //std::cout << AoC2024::Day17();
-    //std::cout << AoC2024::Day18();
-    //std::cout << AoC2024::Day19();
-    //std::cout << AoC2024::Day20();
-    std::cout << AoC2024::Day21();
-    //std::cout << AoC2024::Day22();
-    //std::cout << AoC2024::Day23();
-    //std::cout << AoC2024::Day24();
-    //std::cout << AoC2024::Day25();
+    std::chrono::duration<double, std::milli> totalATime = std::chrono::duration<double, std::milli>(0);
+    std::chrono::duration<double, std::milli> totalBTime = std::chrono::duration<double, std::milli>(0);
+    std::chrono::duration<double, std::milli> totalParseTime = std::chrono::duration<double, std::milli>(0);
+    for (auto& day : days) {
+        std::cout << day;
+        totalParseTime += day.parseResult.second;
+        totalATime += day.partAResult.second;
+        totalBTime += day.partBResult.second;
+    }
 
-    auto endTime = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> duration = endTime - startTime;
-
-    //std::cout << "\nTotal Time: " << std::format("{:10.4f}", total.count()) << "ms\n";
-    std::cout << "Total Time (w/ I/O): " << std::format("{:10.4f}", duration.count()) << "ms\n";
+    std::cout << "\n";
+    std::cout << "   Total A:  " << std::format("{:10.4f}", (totalATime + totalParseTime).count()) << "ms\n";
+    std::cout << "   Total B:  " << std::format("{:10.4f}", (totalBTime + totalParseTime).count()) << "ms\n";
+    std::cout << "     Total:  " << std::format("{:10.4f}", (totalATime + totalBTime + totalParseTime).count()) << "ms\n";
 }

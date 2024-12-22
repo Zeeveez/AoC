@@ -24,17 +24,10 @@ namespace AoC2024 {
     }
 
     void Day06::A() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t res = GetStartAndPath(map).second.size();
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partAResult = { res, endTime - startTime };
+        partAResult.first = GetStartAndPath(map).second.size();
     }
 
     void Day06::B() {
-        auto startTime = std::chrono::high_resolution_clock::now();
-
         std::vector<int> loops;
         int size = std::sqrt(map.size());
         loops.resize(size * size * 4, -1);
@@ -67,8 +60,7 @@ namespace AoC2024 {
             iter++;
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        partBResult = { res, endTime - startTime };
+        partBResult.first = res;
     }
 
     std::pair<int, std::unordered_set<int>> Day06::GetStartAndPath(const std::vector<char>& map) {
