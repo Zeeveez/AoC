@@ -9,7 +9,7 @@
 namespace AoC {
     class Day {
     public:
-        typedef std::variant<std::string, uint64_t> PuzzleResult;
+        typedef std::variant<std::string, uint64_t, int64_t> PuzzleResult;
         typedef std::pair<PuzzleResult, std::chrono::duration<double, std::milli>> PartResult;
 
         int dayNo = -1;

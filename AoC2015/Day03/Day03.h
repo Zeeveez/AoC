@@ -1,16 +1,29 @@
-#ifndef DAY03_H
-#define DAY03_H
-
-#include <functional>
-#include <vector>
+#pragma once
 #include <string>
-#include <chrono>
+#include <unordered_map>
+#include <functional>
+
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2015 {
-    namespace Day03 {
+    class Day03 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day03() : Day() {
+            dayNo = 3;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::string input = "";
+
         std::unordered_map<size_t, int> Solve(std::string input, std::function<bool(size_t)> indexCheck);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(std::string input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(std::string input);
-    }
+    };
 }
-#endif

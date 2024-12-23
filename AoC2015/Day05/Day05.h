@@ -1,20 +1,32 @@
-#ifndef DAY05_H
-#define DAY05_H
-
+#pragma once
 #include <vector>
 #include <string>
-#include <chrono>
+
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2015 {
-    namespace Day05 {
+    class Day05 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day05() : Day() {
+            dayNo = 5;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+
         inline bool VowelTest(const std::string& s);
         inline bool DoubleTest(const std::string& s);
         inline bool BadPairTest(const std::string& s);
         inline bool DoublePairTest(const std::string& s);
         inline bool DoubleGapTest(const std::string& s);
-
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+    };
 }
-#endif

@@ -1,15 +1,29 @@
-#ifndef DAY02_H
-#define DAY02_H
-
+#pragma once
 #include <vector>
 #include <string>
-#include <chrono>
+#include <cstdint>
+
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2015 {
-    namespace Day02 {
+    class Day02 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day02() : Day() {
+            dayNo = 2;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+
         std::tuple<uint64_t, uint64_t, uint64_t> ReadBox(std::string str);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+    };
 }
-#endif

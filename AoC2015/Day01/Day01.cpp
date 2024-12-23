@@ -1,32 +1,37 @@
+#include <algorithm>
+#include <numeric>
+
 #include "Day01.h"
 
+#include "../../Helpers/Helpers.h"
+
 namespace AoC2015 {
-    namespace Day01 {
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::string& input) {
-            auto starttime = std::chrono::high_resolution_clock::now();
+    void Day01::Load() {
+        input = AoC::Helpers::ReadToken<std::string>("./Day01.txt");
+    }
 
-            int64_t n = 0;
-            for (auto& c : input) {
-                n += c == '(' ? 1 : -1;
-            }
+    void Day01::Parse() {
+        // No parsing required
+    }
 
-            auto endtime = std::chrono::high_resolution_clock::now();
-            return { n, endtime - starttime };
+    void Day01::A() {
+        int64_t res = 0;
+        for (auto& c : input) {
+            res += c == '(' ? 1 : -1;
         }
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::string& input) {
-            auto startTime = std::chrono::high_resolution_clock::now();
+        partAResult.first = res;
+    }
 
-            int64_t n = 0;
-            uint64_t r = 0;
-            for (auto& c : input) {
-                r++;
-                n += c == '(' ? 1 : -1;
-                if (n < 0) { break; }
-            }
-
-            auto endTime = std::chrono::high_resolution_clock::now();
-            return { r, endTime - startTime };
+    void Day01::B() {
+        int64_t n = 0;
+        uint64_t res = 0;
+        for (auto& c : input) {
+            res++;
+            n += c == '(' ? 1 : -1;
+            if (n < 0) { break; }
         }
+
+        partBResult.first = res;
     }
 }

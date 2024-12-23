@@ -1,4 +1,4 @@
-#include <algorithm>partAResult = { res, endtime - starttime };
+#include <algorithm>
 #include <numeric>
 
 #include "Day01.h"

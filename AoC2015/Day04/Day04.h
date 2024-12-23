@@ -1,17 +1,30 @@
-#ifndef DAY04_H
-#define DAY04_H
-
-#include <vector>
+#pragma once
 #include <string>
-#include <chrono>
+#include <cstdint>
 #include <functional>
+#include <tuple>
+
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2015 {
-    namespace Day04 {
-        std::tuple<uint32_t, uint32_t, uint32_t, uint32_t> MD5(std::string);
+    class Day04 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day04() : Day() {
+            dayNo = 4;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::string input = "";
+
         uint64_t Test(std::string, std::function<bool(std::tuple<uint32_t, uint32_t, uint32_t, uint32_t>)> validityCheck);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::string& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::string& input);
-    }
+    };
 }
-#endif
