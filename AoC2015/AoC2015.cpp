@@ -6,12 +6,12 @@
 int main()
 {
     std::vector<AoC::Day> days = {
-        AoC2015::Day01(),
-        AoC2015::Day02(),
-        AoC2015::Day03(),
-        //AoC2015::Day04(),
-        AoC2015::Day05(),
-        AoC2015::Day06(),
+        //AoC2015::Day01(),
+        //AoC2015::Day02(),
+        //AoC2015::Day03(),
+        ////AoC2015::Day04(),
+        //AoC2015::Day05(),
+        //AoC2015::Day06(),
         AoC2015::Day07(),
         //AoC2015::Day08(),
         //AoC2015::Day09(),

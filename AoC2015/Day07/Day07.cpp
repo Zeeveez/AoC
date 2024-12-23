@@ -1,6 +1,6 @@
-#include <regex>
 
 #include <iostream>
+#include <stack>
 
 #include "Day07.h"
 
@@ -81,7 +81,7 @@ namespace AoC2015 {
         return id;
     }
 
-    void Day07::Part::AssignInputs(const std::unordered_map<int, Part>& parts) {
+    void Day07::Part::AssignInputs(std::unordered_map<int, Part>& parts) {
         if (inputPart1Id != -1) {
             input1 = &parts.at(inputPart1Id);
         }
@@ -90,31 +90,48 @@ namespace AoC2015 {
         }
     }
 
-    std::uint16_t Day07::Part::GetOutput() const {
-        auto v1 = inputPart1Id != -1 ? std::get<const Part*>(input1)->GetOutput() : std::get<std::uint16_t>(input1);
-        auto v2 = inputPart2Id != -1 ? std::get<const Part*>(input2)->GetOutput() : std::get<std::uint16_t>(input2);
+    void Day07::Part::CalculateOutput() {
+        auto v1 = inputPart1Id != -1 ? std::get<Part*>(input1)->output : std::get<std::uint16_t>(input1);
+        auto v2 = inputPart2Id != -1 ? std::get<Part*>(input2)->output : std::get<std::uint16_t>(input2);
 
         switch (type) {
         case Operator::AND:
-            return v1 & v2;
+            output = v1 & v2;
             break;
         case Operator::OR:
-            return v1 | v2;
+            output = v1 | v2;
             break;
         case Operator::LSHIFT:
-            return v1 << v2;
+            output = v1 << v2;
             break;
         case Operator::RSHIFT:
-            return v1 >> v2;
+            output = v1 >> v2;
             break;
         case Operator::NOT:
-            return ~v1;
+            output = ~v1;
             break;
         case Operator::NONE:
-            return v1;
+            output = v1;
             break;
         };
-        throw;
+        evaluated = true;
+    }
+
+    std::vector<Day07::Part*> Day07::Part::GetPreReqs() const {
+        std::vector<Part*> prereqs = {};
+        if (inputPart1Id != -1) {
+            auto preReq = std::get<Part*>(input1);
+            if (!preReq->evaluated) {
+                prereqs.push_back(preReq);
+            }
+        }
+        if (inputPart2Id != -1) {
+            auto preReq = std::get<Part*>(input2);
+            if (!preReq->evaluated) {
+                prereqs.push_back(preReq);
+            }
+        }
+        return prereqs;
     }
 
     void Day07::Load() {
@@ -132,7 +149,22 @@ namespace AoC2015 {
     }
 
     void Day07::A() {
-        uint64_t res = parts[Part::GetId("a")].GetOutput();
+        std::stack<Part*> prereqs = {};
+        prereqs.push(&parts[Part::GetId("c")]);
+        while (!prereqs.empty()) {
+            auto next = prereqs.top();
+            auto nextPreReqs = next->GetPreReqs();
+            if (nextPreReqs.size()) {
+                for (auto& nextPreReq : nextPreReqs) {
+                    prereqs.push(nextPreReq);
+                }
+            }
+            else {
+                next->CalculateOutput();
+                prereqs.pop();
+            }
+        }
+        uint64_t res = parts[Part::GetId("c")].output;
         partAResult.first = res;
     }
 

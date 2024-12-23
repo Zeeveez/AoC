@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 
 namespace AoC2024 {
     class Day23 : public AoC::Day {
@@ -22,5 +24,8 @@ namespace AoC2024 {
 
     private:
         std::vector<std::string> input = {};
+        std::unordered_map<int, std::unordered_set<int>> map = {};
+
+        std::string IDToString(int id);
     };
 }
