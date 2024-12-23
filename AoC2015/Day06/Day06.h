@@ -1,22 +1,35 @@
-#ifndef DAY06_H
-#define DAY06_H
-
+#pragma once
 #include <vector>
 #include <string>
-#include <cstdint>
-#include <chrono>
+#include <tuple>
+
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2015 {
-    namespace Day06 {
-        enum class Instruction {
+    class Day06 : public AoC::Day {
+    private:
+        enum class InstructionType {
             ON,
             OFF,
             TOGGLE
         };
-        std::vector<std::tuple<Instruction, int, int, int, int>> PreProcessInput(const std::vector<std::string>& input);
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
-    }
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day06() : Day() {
+            dayNo = 6;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::vector<std::tuple<InstructionType, int, int, int, int>> instructions = {};
+    };
 }
-#endif

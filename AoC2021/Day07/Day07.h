@@ -1,18 +1,29 @@
-#ifndef DAY07_H
-#define DAY07_H
-
+#pragma once
 #include <vector>
-#include <string>
 #include <cstdint>
 #include <functional>
-#include <chrono>
+
+#include "../../AoC/Day/Day.h"
 
 namespace AoC2021 {
-    namespace Day07 {
-        uint64_t Run(const std::vector<int>& input, const std::function<int(int, int)>& accFunc);
+    class Day07 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> A(const std::vector<int>& input);
-        std::pair<uint64_t, std::chrono::duration<double, std::milli>> B(const std::vector<int>& input);
-    }
+        Day07() : Day() {
+            dayNo = 7;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<int> input = {};
+
+        uint64_t Run(const std::vector<int>& input, const std::function<int(int, int)>& accFunc);
+    };
 }
-#endif

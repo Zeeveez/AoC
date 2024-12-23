@@ -5,6 +5,7 @@ cmake_minimum_required (VERSION 3.8)
 
 # Add source to this project's executable.
 add_executable (AoC2021 "AoC2021.cpp" "AoC2021.h" "../Helpers/Helpers.cpp" "../Helpers/Helpers.h"
+    "../AoC/Day/Day.cpp" "../AoC/Day/Day.h"
     "Day01/Day01.cpp" "Day01/Day01.h"
     "Day02/Day02.cpp" "Day02/Day02.h"
     "Day03/Day03.cpp" "Day03/Day03.h"

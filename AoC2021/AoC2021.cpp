@@ -35,10 +35,7 @@ int main()
     auto D06P2 = AoC2021::Day06::B(AoC::Helpers::ReadCommaDelimitedList("./Day06.txt"));
     std::cout << "Day 06 - B (" << std::format("{:10.4f}", D06P2.second.count()) << "ms): " << D06P2.first << "\n";
 
-    auto D07P1 = AoC2021::Day07::A(AoC::Helpers::ReadCommaDelimitedList("./Day07.txt"));
-    std::cout << "Day 07 - A (" << std::format("{:10.4f}", D07P1.second.count()) << "ms): " << D07P1.first << "\n";
-    auto D07P2 = AoC2021::Day07::B(AoC::Helpers::ReadCommaDelimitedList("./Day07.txt"));
-    std::cout << "Day 07 - B (" << std::format("{:10.4f}", D07P2.second.count()) << "ms): " << D07P2.first << "\n";
+    std::cout << AoC2021::Day07();
 
     auto D08P1 = AoC2021::Day08::A(AoC::Helpers::ReadTokens<std::string>("./Day08.txt"));
     std::cout << "Day 08 - A (" << std::format("{:10.4f}", D08P1.second.count()) << "ms): " << D08P1.first << "\n";
@@ -133,7 +130,7 @@ int main()
         + D04P1.second + D04P2.second
         + D05P1.second + D05P2.second
         + D06P1.second + D06P2.second
-        + D07P1.second + D07P2.second
+        //+ D07P1.second + D07P2.second
         + D08P1.second + D08P2.second
         + D09P1.second + D09P2.second
         + D10P1.second + D10P2.second

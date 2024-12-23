@@ -11,8 +11,8 @@ int main()
         AoC2015::Day03(),
         //AoC2015::Day04(),
         AoC2015::Day05(),
-        //AoC2015::Day06(),
-        //AoC2015::Day07(),
+        AoC2015::Day06(),
+        AoC2015::Day07(),
         //AoC2015::Day08(),
         //AoC2015::Day09(),
         //AoC2015::Day10(),
@@ -47,16 +47,6 @@ int main()
     std::cout << "   Total A:  " << std::format("{:10.4f}", (totalATime + totalParseTime).count()) << "ms\n";
     std::cout << "   Total B:  " << std::format("{:10.4f}", (totalBTime + totalParseTime).count()) << "ms\n";
     std::cout << "     Total:  " << std::format("{:10.4f}", (totalATime + totalBTime + totalParseTime).count()) << "ms\n";
-
-    auto D06P1 = AoC2015::Day06::A(AoC::Helpers::ReadLines("./Day06.txt"));
-    std::cout << "Day 06 - A (" << std::format("{:10.4f}", D06P1.second.count()) << "ms): " << D06P1.first << "\n";
-    auto D06P2 = AoC2015::Day06::B(AoC::Helpers::ReadLines("./Day06.txt"));
-    std::cout << "Day 06 - B (" << std::format("{:10.4f}", D06P2.second.count()) << "ms): " << D06P2.first << "\n";
-
-    //auto D07P1 = AoC2015::Day07::A(AoC::Helpers::ReadCommaDelimitedList("./Day07.txt"));
-    //std::cout << "Day 07 - A (" << std::format("{:10.4f}", D07P1.second.count()) << "ms): " << D07P1.first << "\n";
-    //auto D07P2 = AoC2015::Day07::B(AoC::Helpers::ReadCommaDelimitedList("./Day07.txt"));
-    //std::cout << "Day 07 - B (" << std::format("{:10.4f}", D07P2.second.count()) << "ms): " << D07P2.first << "\n";
 
     //auto D08P1 = AoC2015::Day08::A(AoC::Helpers::ReadTokens<std::string>("./Day08.txt"));
     //std::cout << "Day 08 - A (" << std::format("{:10.4f}", D08P1.second.count()) << "ms): " << D08P1.first << "\n";
