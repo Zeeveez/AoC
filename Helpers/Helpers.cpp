@@ -301,6 +301,17 @@ namespace AoC {
             return ss.str();
         }
 
+        std::vector<std::string> SplitString(std::string str, char sep) {
+            std::vector<std::string> values = {};
+            std::stringstream ss(str);
+            std::string substr;
+            while (std::getline(ss, substr, sep)) {
+                values.push_back(substr);
+            }
+
+            return values;
+        }
+
         std::vector<int> ReadCommaDelimitedList(std::string path) {
             std::fstream f(path);
             std::vector<int> v = {};

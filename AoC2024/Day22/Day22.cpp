@@ -24,7 +24,7 @@ namespace AoC2024 {
     }
 
     void Day22::A() {
-        uint32_t res = 0;
+        uint64_t res = 0;
         for (auto n : input) {
             for (int i = 0; i < 2000; i++) {
                 n = Step(n);

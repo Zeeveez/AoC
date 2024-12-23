@@ -1,1 +1,339 @@
-1101,1,29,67,1102,0,1,65,1008,65,35,66,1005,66,28,1,67,65,20,4,0,1001,65,1,65,1106,0,8,99,35,67,101,99,105,32,110,39,101,115,116,32,112,97,115,32,117,110,101,32,105,110,116,99,111,100,101,32,112,114,111,103,114,97,109,10,273,102,514,428,300,13,9,457,92,169,1654,471,479,178,158,124,354,83,705,30,80,199,632,31,840,580,1228,1597,151,1374,1665,469,43,1113,103,1,1456,132,2,618,423,824,789,145,485,585,543,694,1266,866,1276,726,680,1714,503,79,137,208,8,1447,455,33,1098,1346,1028,178,1095,21,19,52,668,29,382,1659,310,225,21,15,258,915,434,92,181,120,408,612,684,2,5,1507,127,746,203,66,4,82,440,1796,166,515,216,422,175,1643,240,100,178,375,487,134,599,581,38,101,19,882,1580,282,228,409,1124,409,255,1004,90,123,146,1130,461,84,9,1537,240,42,812,815,72,140,299,317,398,982,340,529,521,204,1137,895,912,313,27,540,638,403,188,163,133,34,1038,1597,440,200,275,2,1057,682,108,340,1096,361,2,242,464,392,432,334,955,145,275,605,858,173,375,435,3,3,784,396,324,1004,25,794,61,1358,752,31,563,23,407,886,870,501,1353,195,751,1407,10,874,31,33,589,124,403,205,225,40,1510,150,172,74,9,715,39,14,36,1775,29,1094,1007,199,4,26,301,878,751,538,33,102,109,297,236,119,195,431,34,179,827,6,204,91,594,65,255,1136,820,163,1508,388,680,968,1587,235,294,543,197,640,143,95,28,814,1053,827,167,54,606,0,823,3,340,619,195,31,216,330,287,382,676,392,5,1233,248,1000,323,872,234,316,4,112,663,113,1402,357,416,148,53,102,681,15,294,407,269,297,386,4,254,1666,454,139,1173,65,572,132,3,368,290,271,716,646,626,1727,411,196,181,1256,92,29,4,337,207,557,425,43,465,35,85,1218,241,936,247,94,1433,1002,400,624,88,1072,1048,370,101,264,78,379,27,65,672,1368,692,822,1020,317,472,1019,298,486,2,18,163,1304,994,952,455,454,661,1,473,561,313,92,425,218,29,49,618,790,615,347,462,169,275,247,1445,1880,225,1778,159,176,569,32,529,602,34,365,84,753,253,962,137,917,401,507,242,451,751,67,20,1208,411,226,829,317,283,219,154,683,30,1092,24,386,24,117,545,35,188,621,14,1453,24,892,330,337,754,407,481,906,643,552,864,808,360,704,118,368,297,1446,1348,104,1077,588,298,141,971,2,801,74,434,663,543,872,447,368,109,292,526,933,489,65,33,1061,1030,727,718,62,31,518,457,1569,815,422,187,211,1193,256,811,88,65,275,998,618,113,208,160,113,270,1085,295,20,161,117,134,1045,132,28,29,779,1108,24,801,240,184,414,79,335,98,486,195,100,302,574,561,353,8,260,1,540,584,410,1299,266,44,1120,877,252,377,849,83,547,637,827,298,1151,222,90,533,551,203,203,67,881,6,812,88,1314,178,169,576,885,767,278,1565,154,108,543,31,100,190,298,254,1478,594,644,957,177,20,1578,482,121,106,841,195,16,51,561,205,55,97,107,380,128,655,629,995,1424,1005,276,838,143,506,450,56,172,955,20,1045,253,436,1016,1106,68,540,807,265,405,301,539,1236,874,986,1092,274,1208,738,89,107,510,90,15,1402,313,712,35,222,494,125,113,290,259,274,214,70,1416,242,1312,1023,974,128,1787,91,13,992,84,673,185,375,385,0,285,135,116,105,26,103,929,733,567,294,174,82,1181,941,161,1242,387,20,882,1789,1164,1157,936,1110,1142,1308,657,931,29,603,1001,157,22,786,161,835,459,843,50,3,51,42,476,509,1214,733,1102,1011,0,832,1186,246,284,503,455,146,398,13,1109,106,90,511,1232,1837,580,285,86,1388,1199,195,225,742,194,1448,1732,309,1074,1380,251,1010,137,382,1367,490,1828,47,11,888,251,16,37,393,1407,233,5,814,780,850,22,1196,957,492,4,254,745,580,651,225,1072,872,323,618,24,303,79,7,75,11,15,65,449,205,103,836,150,111,424,786,194,1752,55,674,1469,1050,891,50,792,0,381,31,152,141,91,1521,420,18,779,450,68,929,122,106,7,142,185,355,768,581,1024,140,438,350,1838,815,977,23,663,324,30,7,408,461,40,108,203,459,530,69,120,177,962,162,1566,253,2,308,232,42,1564,1161,48,270,253,83,652,247,539,166,159,856,331,1701,970,1085,442,21,868,960,298,534,378,75,226,586,21,57,636,279,1112,63,1519,555,191,773,168,120,603,716,544,1546,378,418,149,138,1212,575,29,284,577,223,145,387,639,1204,154,613,48,116,307,341,716,3,831,987,629,1338,852,189,340,1213
+bn RSHIFT 2 -> bo
+lf RSHIFT 1 -> ly
+fo RSHIFT 3 -> fq
+cj OR cp -> cq
+fo OR fz -> ga
+t OR s -> u
+lx -> a
+NOT ax -> ay
+he RSHIFT 2 -> hf
+lf OR lq -> lr
+lr AND lt -> lu
+dy OR ej -> ek
+1 AND cx -> cy
+hb LSHIFT 1 -> hv
+1 AND bh -> bi
+ih AND ij -> ik
+c LSHIFT 1 -> t
+ea AND eb -> ed
+km OR kn -> ko
+NOT bw -> bx
+ci OR ct -> cu
+NOT p -> q
+lw OR lv -> lx
+NOT lo -> lp
+fp OR fv -> fw
+o AND q -> r
+dh AND dj -> dk
+ap LSHIFT 1 -> bj
+bk LSHIFT 1 -> ce
+NOT ii -> ij
+gh OR gi -> gj
+kk RSHIFT 1 -> ld
+lc LSHIFT 1 -> lw
+lb OR la -> lc
+1 AND am -> an
+gn AND gp -> gq
+lf RSHIFT 3 -> lh
+e OR f -> g
+lg AND lm -> lo
+ci RSHIFT 1 -> db
+cf LSHIFT 1 -> cz
+bn RSHIFT 1 -> cg
+et AND fe -> fg
+is OR it -> iu
+kw AND ky -> kz
+ck AND cl -> cn
+bj OR bi -> bk
+gj RSHIFT 1 -> hc
+iu AND jf -> jh
+NOT bs -> bt
+kk OR kv -> kw
+ks AND ku -> kv
+hz OR ik -> il
+b RSHIFT 1 -> v
+iu RSHIFT 1 -> jn
+fo RSHIFT 5 -> fr
+be AND bg -> bh
+ga AND gc -> gd
+hf OR hl -> hm
+ld OR le -> lf
+as RSHIFT 5 -> av
+fm OR fn -> fo
+hm AND ho -> hp
+lg OR lm -> ln
+NOT kx -> ky
+kk RSHIFT 3 -> km
+ek AND em -> en
+NOT ft -> fu
+NOT jh -> ji
+jn OR jo -> jp
+gj AND gu -> gw
+d AND j -> l
+et RSHIFT 1 -> fm
+jq OR jw -> jx
+ep OR eo -> eq
+lv LSHIFT 15 -> lz
+NOT ey -> ez
+jp RSHIFT 2 -> jq
+eg AND ei -> ej
+NOT dm -> dn
+jp AND ka -> kc
+as AND bd -> bf
+fk OR fj -> fl
+dw OR dx -> dy
+lj AND ll -> lm
+ec AND ee -> ef
+fq AND fr -> ft
+NOT kp -> kq
+ki OR kj -> kk
+cz OR cy -> da
+as RSHIFT 3 -> au
+an LSHIFT 15 -> ar
+fj LSHIFT 15 -> fn
+1 AND fi -> fj
+he RSHIFT 1 -> hx
+lf RSHIFT 2 -> lg
+kf LSHIFT 15 -> kj
+dz AND ef -> eh
+ib OR ic -> id
+lf RSHIFT 5 -> li
+bp OR bq -> br
+NOT gs -> gt
+fo RSHIFT 1 -> gh
+bz AND cb -> cc
+ea OR eb -> ec
+lf AND lq -> ls
+NOT l -> m
+hz RSHIFT 3 -> ib
+NOT di -> dj
+NOT lk -> ll
+jp RSHIFT 3 -> jr
+jp RSHIFT 5 -> js
+NOT bf -> bg
+s LSHIFT 15 -> w
+eq LSHIFT 1 -> fk
+jl OR jk -> jm
+hz AND ik -> im
+dz OR ef -> eg
+1 AND gy -> gz
+la LSHIFT 15 -> le
+br AND bt -> bu
+NOT cn -> co
+v OR w -> x
+d OR j -> k
+1 AND gd -> ge
+ia OR ig -> ih
+NOT go -> gp
+NOT ed -> ee
+jq AND jw -> jy
+et OR fe -> ff
+aw AND ay -> az
+ff AND fh -> fi
+ir LSHIFT 1 -> jl
+gg LSHIFT 1 -> ha
+x RSHIFT 2 -> y
+db OR dc -> dd
+bl OR bm -> bn
+ib AND ic -> ie
+x RSHIFT 3 -> z
+lh AND li -> lk
+ce OR cd -> cf
+NOT bb -> bc
+hi AND hk -> hl
+NOT gb -> gc
+1 AND r -> s
+fw AND fy -> fz
+fb AND fd -> fe
+1 AND en -> eo
+z OR aa -> ab
+bi LSHIFT 15 -> bm
+hg OR hh -> hi
+kh LSHIFT 1 -> lb
+cg OR ch -> ci
+1 AND kz -> la
+gf OR ge -> gg
+gj RSHIFT 2 -> gk
+dd RSHIFT 2 -> de
+NOT ls -> lt
+lh OR li -> lj
+jr OR js -> jt
+au AND av -> ax
+0 -> c
+he AND hp -> hr
+id AND if -> ig
+et RSHIFT 5 -> ew
+bp AND bq -> bs
+e AND f -> h
+ly OR lz -> ma
+1 AND lu -> lv
+NOT jd -> je
+ha OR gz -> hb
+dy RSHIFT 1 -> er
+iu RSHIFT 2 -> iv
+NOT hr -> hs
+as RSHIFT 1 -> bl
+kk RSHIFT 2 -> kl
+b AND n -> p
+ln AND lp -> lq
+cj AND cp -> cr
+dl AND dn -> do
+ci RSHIFT 2 -> cj
+as OR bd -> be
+ge LSHIFT 15 -> gi
+hz RSHIFT 5 -> ic
+dv LSHIFT 1 -> ep
+kl OR kr -> ks
+gj OR gu -> gv
+he RSHIFT 5 -> hh
+NOT fg -> fh
+hg AND hh -> hj
+b OR n -> o
+jk LSHIFT 15 -> jo
+gz LSHIFT 15 -> hd
+cy LSHIFT 15 -> dc
+kk RSHIFT 5 -> kn
+ci RSHIFT 3 -> ck
+at OR az -> ba
+iu RSHIFT 3 -> iw
+ko AND kq -> kr
+NOT eh -> ei
+aq OR ar -> as
+iy AND ja -> jb
+dd RSHIFT 3 -> df
+bn RSHIFT 3 -> bp
+1 AND cc -> cd
+at AND az -> bb
+x OR ai -> aj
+kk AND kv -> kx
+ao OR an -> ap
+dy RSHIFT 3 -> ea
+x RSHIFT 1 -> aq
+eu AND fa -> fc
+kl AND kr -> kt
+ia AND ig -> ii
+df AND dg -> di
+NOT fx -> fy
+k AND m -> n
+bn RSHIFT 5 -> bq
+km AND kn -> kp
+dt LSHIFT 15 -> dx
+hz RSHIFT 2 -> ia
+aj AND al -> am
+cd LSHIFT 15 -> ch
+hc OR hd -> he
+he RSHIFT 3 -> hg
+bn OR by -> bz
+NOT kt -> ku
+z AND aa -> ac
+NOT ak -> al
+cu AND cw -> cx
+NOT ie -> if
+dy RSHIFT 2 -> dz
+ip LSHIFT 15 -> it
+de OR dk -> dl
+au OR av -> aw
+jg AND ji -> jj
+ci AND ct -> cv
+dy RSHIFT 5 -> eb
+hx OR hy -> hz
+eu OR fa -> fb
+gj RSHIFT 3 -> gl
+fo AND fz -> gb
+1 AND jj -> jk
+jp OR ka -> kb
+de AND dk -> dm
+ex AND ez -> fa
+df OR dg -> dh
+iv OR jb -> jc
+x RSHIFT 5 -> aa
+NOT hj -> hk
+NOT im -> in
+fl LSHIFT 1 -> gf
+hu LSHIFT 15 -> hy
+iq OR ip -> ir
+iu RSHIFT 5 -> ix
+NOT fc -> fd
+NOT el -> em
+ck OR cl -> cm
+et RSHIFT 3 -> ev
+hw LSHIFT 1 -> iq
+ci RSHIFT 5 -> cl
+iv AND jb -> jd
+dd RSHIFT 5 -> dg
+as RSHIFT 2 -> at
+NOT jy -> jz
+af AND ah -> ai
+1 AND ds -> dt
+jx AND jz -> ka
+da LSHIFT 1 -> du
+fs AND fu -> fv
+jp RSHIFT 1 -> ki
+iw AND ix -> iz
+iw OR ix -> iy
+eo LSHIFT 15 -> es
+ev AND ew -> ey
+ba AND bc -> bd
+fp AND fv -> fx
+jc AND je -> jf
+et RSHIFT 2 -> eu
+kg OR kf -> kh
+iu OR jf -> jg
+er OR es -> et
+fo RSHIFT 2 -> fp
+NOT ca -> cb
+bv AND bx -> by
+u LSHIFT 1 -> ao
+cm AND co -> cp
+y OR ae -> af
+bn AND by -> ca
+1 AND ke -> kf
+jt AND jv -> jw
+fq OR fr -> fs
+dy AND ej -> el
+NOT kc -> kd
+ev OR ew -> ex
+dd OR do -> dp
+NOT cv -> cw
+gr AND gt -> gu
+dd RSHIFT 1 -> dw
+NOT gw -> gx
+NOT iz -> ja
+1 AND io -> ip
+NOT ag -> ah
+b RSHIFT 5 -> f
+NOT cr -> cs
+kb AND kd -> ke
+jr AND js -> ju
+cq AND cs -> ct
+il AND in -> io
+NOT ju -> jv
+du OR dt -> dv
+dd AND do -> dq
+b RSHIFT 2 -> d
+jm LSHIFT 1 -> kg
+NOT dq -> dr
+bo OR bu -> bv
+gk OR gq -> gr
+he OR hp -> hq
+NOT h -> i
+hf AND hl -> hn
+gv AND gx -> gy
+x AND ai -> ak
+bo AND bu -> bw
+hq AND hs -> ht
+hz RSHIFT 1 -> is
+gj RSHIFT 5 -> gm
+g AND i -> j
+gk AND gq -> gs
+dp AND dr -> ds
+b RSHIFT 3 -> e
+gl AND gm -> go
+gl OR gm -> gn
+y AND ae -> ag
+hv OR hu -> hw
+1674 -> b
+ab AND ad -> ae
+NOT ac -> ad
+1 AND ht -> hu
+NOT hn -> ho
