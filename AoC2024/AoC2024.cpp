@@ -25,8 +25,8 @@ int main()
         //AoC2024::Day20(),
         //AoC2024::Day21(),
         //AoC2024::Day22(),
-        AoC2024::Day23(),
-        //AoC2024::Day24(),
+        //AoC2024::Day23(),
+        AoC2024::Day24(),
         //AoC2024::Day25(),
     };
 

@@ -3,9 +3,27 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 namespace AoC2024 {
     class Day24 : public AoC::Day {
+    private:
+        struct Gate {
+            enum class Operator {
+                AND,
+                OR,
+                XOR
+            };
+            Operator type = Operator::AND;
+            std::string wire1 = "";
+            std::string wire2 = "";
+            std::string wire3 = "";
+
+            Gate() = default;
+            Gate(std::string def);
+            bool Process(std::map<std::string, int>& wires);
+        };
+
     public:
         void Load() override;
         void Parse() override;
@@ -22,5 +40,7 @@ namespace AoC2024 {
 
     private:
         std::vector<std::string> input = {};
+        std::map<std::string, int> wires = {};
+        std::vector<std::pair<Gate, bool>> gates = {};
     };
 }
