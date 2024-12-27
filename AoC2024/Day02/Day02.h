@@ -21,8 +21,8 @@ namespace AoC2024 {
         }
 
     private:
-        std::vector<std::vector<uint64_t>> input = {};
+        std::vector<std::vector<uint16_t>> input = {};
 
-        bool IsSafe(const std::vector<uint64_t>& line, int ignoreIdx = -1);
+        bool IsSafe(const std::vector<uint16_t>& line, int ignoreIdx = -1);
     };
 }

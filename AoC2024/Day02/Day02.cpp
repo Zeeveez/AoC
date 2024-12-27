@@ -6,7 +6,7 @@
 
 namespace AoC2024 {
     void Day02::Load() {
-        input = AoC::Helpers::ReadTokenGrid<uint64_t>("./Day02.txt");
+        input = AoC::Helpers::ReadTokenGrid<uint16_t>("./Day02.txt");
     }
 
     void Day02::Parse() {
@@ -14,20 +14,20 @@ namespace AoC2024 {
     }
 
     void Day02::A() {
-        uint64_t res = 0;
+        uint16_t res = 0;
         for (auto& line : input) {
-            res += IsSafe(line) ? 1 : 0;
+            res += IsSafe(line);
         }
 
         partAResult.first = res;
     }
 
     void Day02::B() {
-        uint64_t res = 0;
+        uint16_t res = 0;
         for (auto& line : input) {
-            for (int i = -1; i < (int)line.size(); i++) {
+            for (int i = 0; i < (int)line.size(); i++) {
                 if (IsSafe(line, i)) {
-                    res += 1;
+                    res++;
                     break;
                 }
             }
@@ -36,10 +36,10 @@ namespace AoC2024 {
         partBResult.first = res;
     }
 
-    bool Day02::IsSafe(const std::vector<uint64_t>& line, int ignoreIdx) {
-        uint64_t lastVal = ignoreIdx == 0 ? line[1] : line[0];
+    bool Day02::IsSafe(const std::vector<uint16_t>& line, int ignoreIdx) {
+        uint16_t lastVal = line[ignoreIdx == 0];
         int diff = 0;
-        for (size_t i = ignoreIdx == 0 ? 2 : 1; i < line.size(); i++) {
+        for (size_t i = (ignoreIdx == 0) + 1; i < line.size(); i++) {
             if (i == ignoreIdx) { continue; }
             int newDiff = line[i] - lastVal;
             lastVal = line[i];
