@@ -54,6 +54,19 @@ namespace AoC {
         }
 
 
+        template<typename T>
+        std::vector<std::vector<T>> Transpose(std::vector<std::vector<T>>& orig) {
+            std::vector<std::vector<T>> out = {};
+            out.resize(orig[0].size());
+            for (size_t i = 0; i < orig[0].size(); i++) {
+                out[i].resize(orig.size());
+                for (size_t j = 0; j < orig.size(); j++) {
+                    out[i][j] = orig[j][i];
+                }
+            }
+            return out;
+        }
+
         std::vector<std::string> SplitString(std::string str, char sep);
         std::vector<int> ReadCommaDelimitedList(std::string path);
     }

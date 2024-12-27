@@ -21,6 +21,6 @@ namespace AoC2024 {
         }
 
     private:
-        std::vector<std::vector<uint64_t>> input = {};
+        std::vector<std::vector<uint32_t>> input = {};
     };
 }
