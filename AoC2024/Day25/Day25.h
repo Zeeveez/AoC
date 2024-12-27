@@ -22,5 +22,7 @@ namespace AoC2024 {
 
     private:
         std::vector<std::string> input = {};
+        std::vector<uint64_t> keys = {};
+        std::vector<uint64_t> locks = {};
     };
 }

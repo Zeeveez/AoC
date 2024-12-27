@@ -26,8 +26,8 @@ int main()
         //AoC2024::Day21(),
         //AoC2024::Day22(),
         //AoC2024::Day23(),
-        AoC2024::Day24(),
-        //AoC2024::Day25(),
+        //AoC2024::Day24(),
+        AoC2024::Day25(),
     };
 
     std::chrono::duration<double, std::milli> totalATime = std::chrono::duration<double, std::milli>(0);
