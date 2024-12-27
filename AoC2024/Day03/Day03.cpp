@@ -1,5 +1,5 @@
-#include <regex>
 #include <numeric>
+#include <cstdint>
 
 #include "Day03.h"
 
@@ -11,21 +11,45 @@ namespace AoC2024 {
     }
 
     void Day03::Parse() {
-        static const std::regex re("(mul|do|don't)\\((\\d{1,3})?,?(\\d{1,3})?\\)", std::regex::optimize);
-
-        instructions = {};
-
         for (auto& line : input) {
-            std::string::const_iterator searchStart(line.cbegin());
-            std::smatch sm;
-            while (std::regex_search(searchStart, line.cend(), sm, re)) {
-                if (sm[1] == "mul" && sm[2].matched && sm[3].matched) {
-                    instructions.push_back({ sm[1], std::stoi(sm[2]), std::stoi(sm[3]) });
+            for (size_t i = 0; i < line.size(); i++) {
+                if (line[i] == 'm' && i < line.size() - 3 && line[i + 1] == 'u' && line[i + 2] == 'l' && line[i + 3] == '(') {
+                    i += 4;
+                    int v1 = 0;
+                    for (size_t j = 0; j < 3; j++) {
+                        if (line[i] >= '0' && line[i] <= '9') {
+                            v1 = v1 * 10 + line[i] - '0';
+                            i++;
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                    if (v1 == 0 || line[i] != ',') { continue; }
+                    i++;
+                    int v2 = 0;
+                    for (size_t j = 0; j < 3; j++) {
+                        if (line[i] >= '0' && line[i] <= '9') {
+                            v2 = v2 * 10 + line[i] - '0';
+                            i++;
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                    if (v2 == 0 || line[i] != ')') { continue; }
+                    instructions.push_back({ Instruction::MUL, v1, v2 });
                 }
-                else if (sm[1] != "mul" && !sm[2].matched && !sm[3].matched) {
-                    instructions.push_back({ sm[1], 0, 0 });
+                else if (i < line.size() - 3 && line[i] == 'd' && line[i + 1] == 'o') {
+                    if (line[i + 2] == '(' && line[i + 3] == ')') {
+                        instructions.push_back({ Instruction::DO, 0, 0 });
+                        i += 3;
+                    }
+                    else if (i < line.size() - 6 && line[i + 2] == 'n' && line[i + 3] == '\'' && line[i + 4] == 't' && line[i + 5] == '(' && line[i + 6] == ')') {
+                        instructions.push_back({ Instruction::DONT, 0, 0 });
+                        i += 6;
+                    }
                 }
-                searchStart = sm.suffix().first;
             }
         }
     }
@@ -35,9 +59,8 @@ namespace AoC2024 {
             instructions.begin(),
             instructions.end(),
             0ui64,
-            [](uint64_t acc, const std::tuple<std::string, int, int>& inst) {
-                if (std::get<0>(inst) != "mul") { return acc; }
-                return acc + std::get<1>(inst) * std::get<2>(inst);
+            [](uint64_t acc, const std::tuple<Instruction, int, int>& inst) {
+                return acc + (std::get<0>(inst) == Instruction::MUL ? std::get<1>(inst) * std::get<2>(inst) : 0);
             }
         );
 
@@ -50,13 +73,11 @@ namespace AoC2024 {
             instructions.begin(),
             instructions.end(),
             0ui64,
-            [&adding](uint64_t acc, const std::tuple<std::string, int, int>& inst) {
-                if (std::get<0>(inst) == "do") { adding = true; }
-                if (std::get<0>(inst) == "don't") { adding = false; }
-
-                if (std::get<0>(inst) != "mul" || !adding) { return acc; }
-
-                return acc + std::get<1>(inst) * std::get<2>(inst);
+            [&adding](uint64_t acc, const std::tuple<Instruction, int, int>& inst) {
+                if (std::get<0>(inst) == Instruction::DO) { adding = true; return acc; }
+                else if (std::get<0>(inst) == Instruction::DONT) { adding = false; return acc; }
+                // MUL
+                return acc + (adding ? std::get<1>(inst) * std::get<2>(inst) : 0);
             }
         );
     }

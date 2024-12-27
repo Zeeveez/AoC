@@ -2,12 +2,17 @@
 #include <vector>
 #include <string>
 #include <tuple>
-#include <cstdint>
 
 #include "../../AoC/Day/Day.h"
 
 namespace AoC2024 {
     class Day03 : public AoC::Day {
+    private:
+        enum class Instruction {
+            MUL,
+            DO,
+            DONT
+        };
     public:
         void Load() override;
         void Parse() override;
@@ -24,6 +29,6 @@ namespace AoC2024 {
 
     private:
         std::vector<std::string> input = {};
-        std::vector<std::tuple<std::string, int, int>> instructions = {};
+        std::vector<std::tuple<Instruction, int, int>> instructions = {};
     };
 }

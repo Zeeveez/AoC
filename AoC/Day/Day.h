@@ -1,5 +1,4 @@
 #pragma once
-
 #include <variant>
 #include <cstdint>
 #include <chrono>
