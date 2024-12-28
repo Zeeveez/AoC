@@ -63,6 +63,9 @@ namespace AoC2024 {
                         blockIdx += files[j].second;
                         toFill -= files[j].second;
                         files[j].first = std::numeric_limits<uint64_t>::min();
+                        if (toFill == 0) {
+                            break;
+                        }
                     }
                 }
                 blockIdx += toFill;
