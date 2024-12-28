@@ -1,4 +1,5 @@
 #include <sstream>
+#include <cstring>
 
 #include "Day19.h"
 
@@ -13,7 +14,7 @@ namespace AoC2024 {
         std::stringstream ss(input[0]);
         std::string towel;
         while (std::getline(ss, towel, ',')) {
-            patterns.push_back(Trim(towel));
+            patterns.push_back(AoC::Helpers::Trim(towel));
         }
 
         designs = std::vector<std::string>(input.begin() + 2, input.end());
@@ -22,7 +23,7 @@ namespace AoC2024 {
     void Day19::A() {
         uint64_t res = 0;
         for (auto& design : designs) {
-            if (IsValid(design)) {
+            if (IsValid(design, 0)) {
                 res++;
             }
         }
@@ -34,28 +35,21 @@ namespace AoC2024 {
         std::map<std::string, uint64_t> memory = {};
         uint64_t res = 0;
         for (auto& design : designs) {
-            res += CountValid(memory, design);
+            res += CountValid(memory, design, 0);
         }
 
         partBResult.first = res;
     }
 
-    std::string Day19::Trim(const std::string& str) {
-        size_t first = str.find_first_not_of(' ');
-        if (std::string::npos == first) { return str; }
-        size_t last = str.find_last_not_of(' ');
-        return str.substr(first, (last - first + 1));
-    }
-
-    bool Day19::IsValid(const std::string& design) {
+    bool Day19::IsValid(const std::string& design, size_t i) {
         for (auto& pattern : patterns) {
-            if (design.length() < pattern.length()) { continue; }
-            if (design == pattern) {
-                return true;
-            }
+            if (pattern.length() + i > design.length()) { continue; }
 
-            if (design.substr(0, pattern.length()) == pattern) {
-                if (IsValid(design.substr(pattern.length()))) {
+            if (std::memcmp(design.c_str() + i, pattern.c_str(), pattern.length()) == 0) {
+                if (pattern.length() + i == design.length()) {
+                    return true;
+                }
+                else if (IsValid(design, i + pattern.length())) {
                     return true;
                 }
             }
@@ -63,20 +57,24 @@ namespace AoC2024 {
         return false;
     }
 
-    uint64_t Day19::CountValid(std::map<std::string, uint64_t>& memory, const std::string& design) {
+    uint64_t Day19::CountValid(std::map<std::string, uint64_t>& memory, const std::string& design, size_t i) {
         uint64_t solutions = 0;
-        if (memory.contains(design)) { return memory[design]; }
-        for (auto& pattern : patterns) {
-            if (design.length() < pattern.length()) { continue; }
-            if (design == pattern) {
-                solutions += 1;
-            }
+        std::string cd = design.substr(i);
+        if (memory.contains(cd)) { return memory[cd]; }
 
-            if (design.substr(0, pattern.length()) == pattern) {
-                solutions += CountValid(memory, design.substr(pattern.length()));
+        for (auto& pattern : patterns) {
+            if (pattern.length() + i > design.length()) { continue; }
+
+            if (std::memcmp(design.c_str() + i, pattern.c_str(), pattern.length()) == 0) {
+                if (pattern.length() + i == design.length()) {
+                    solutions += 1;
+                }
+                else {
+                    solutions += CountValid(memory, design, i + pattern.length());
+                }
             }
         }
-        memory[design] = solutions;
+        memory[cd] = solutions;
         return solutions;
     }
 }

@@ -69,6 +69,7 @@ namespace AoC {
 
         std::vector<std::string> SplitString(std::string str, char sep);
         std::vector<int> ReadCommaDelimitedList(std::string path);
+        std::string Trim(const std::string& str);
     }
 }
 #endif

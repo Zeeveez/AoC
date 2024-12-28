@@ -27,8 +27,7 @@ namespace AoC2024 {
         std::vector<std::string> patterns = {};
         std::vector<std::string> designs = {};
 
-        std::string Trim(const std::string& str);
-        bool IsValid(const std::string& design);
-        uint64_t CountValid(std::map<std::string, uint64_t>& memory, const std::string& design);
+        bool IsValid(const std::string& design, size_t i);
+        uint64_t CountValid(std::map<std::string, uint64_t>& memory, const std::string& design, size_t i);
     };
 }
