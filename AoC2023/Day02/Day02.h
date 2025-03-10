@@ -1,24 +1,40 @@
-#ifndef DAY02_H
-#define DAY02_H
-
-#include <unordered_map>
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
+#include <string>
+#include <unordered_map>
 
-namespace AoC2023::Day02 {
-    enum class Color {
-        RED,
-        GREEN,
-        BLUE
+#include "../../AoC/Day/Day.h"
+
+namespace AoC2023 {
+    class Day02 : public AoC::Day {
+    private:
+        enum class Color {
+            RED,
+            GREEN,
+            BLUE
+        };
+
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day02() : Day() {
+            dayNo = 2;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::vector<std::vector<std::unordered_map<Color, int>>> games = {};
+
+        std::pair<Color, int> ParseDraw(const std::string& line, size_t& i);
+        std::unordered_map<Color, int> ParseRound(const std::string& line, size_t& i);
+        std::vector<std::unordered_map<Color, int>> ParseGame(const std::string& line);
+        std::vector<std::vector<std::unordered_map<Color, int>>> ParseInput(const std::vector<std::string>& input);
     };
-
-    std::pair<Color, int> ParseDraw(const std::string& line, size_t& i);
-    std::unordered_map<Color, int> ParseRound(const std::string& line, size_t& i);
-    std::vector<std::unordered_map<Color, int>> ParseGame(const std::string& line);
-    std::vector<std::vector<std::unordered_map<Color, int>>> ParseInput(const std::vector<std::string>& input);
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
 }
-#endif

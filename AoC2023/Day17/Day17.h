@@ -1,15 +1,27 @@
-#ifndef DAY17_H
-#define DAY17_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
 
-namespace AoC2023::Day17 {
-    std::vector<std::vector<int>> ParseInput(const std::vector<std::string>& input);
+#include "../../AoC/Day/Day.h"
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+namespace AoC2023 {
+    class Day17 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day17() : Day() {
+            dayNo = 17;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::vector<std::vector<int>> grid = {};
+    };
 }
-#endif

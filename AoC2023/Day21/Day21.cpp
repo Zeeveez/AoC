@@ -92,7 +92,7 @@ namespace AoC2023::Day21 {
         auto bottomRight = GetCounts(input, { 0, 0 }, input.size() + input[0].size());
 
 
-        int steps = 26501365;
+        int steps = 1000;
 
         uint64_t score = 0;
 

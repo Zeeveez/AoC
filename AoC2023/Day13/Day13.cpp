@@ -1,11 +1,14 @@
 #include "Day13.h"
 
-#include <iostream>
-#include <numeric>
+#include "../../Helpers/Helpers.h"
 
-namespace AoC2023::Day13 {
-    std::vector<std::vector<std::vector<bool>>> ParseInput(const std::vector<std::string>& input) {
-        std::vector<std::vector<std::vector<bool>>> grids = { { } };
+namespace AoC2023 {
+    void Day13::Load() {
+        input = AoC::Helpers::ReadLines("./Day13.txt");
+    }
+
+    void Day13::Parse() {
+        grids.push_back({});
         for (auto& line : input) {
             if (line == "") {
                 grids.push_back({});
@@ -16,10 +19,45 @@ namespace AoC2023::Day13 {
                 grids.back().back().push_back(c == '#');
             }
         }
-        return grids;
     }
 
-    bool VerifyHorizontalReflection(const std::vector<std::vector<bool>>& grid, int checkCol, int row) {
+    void Day13::A() {
+        uint64_t res = 0;
+
+        for (auto& grid : grids) {
+            auto horizReflect = GetHorizontalReflection(grid);
+            if (horizReflect != -1) {
+                res += horizReflect + 1;
+            }
+            else {
+                auto vertiReflec = GetVerticalReflection(grid);
+                res += 100 * (vertiReflec + 1);
+            }
+        }
+
+        partAResult.first = res;
+    }
+
+    void Day13::B() {
+        uint64_t res = 0;
+
+        for (auto& grid : grids) {
+            auto horizReflect = GetHorizontalReflectionB(grid);
+            if (horizReflect != -1) {
+                res += horizReflect + 1;
+            }
+            else {
+                auto vertiReflec = GetVerticalReflectionB(grid);
+                res += 100 * (vertiReflec + 1);
+            }
+        }
+
+        partBResult.first = res;
+    }
+
+
+
+    bool Day13::VerifyHorizontalReflection(const std::vector<std::vector<bool>>& grid, int checkCol, int row) {
         for (int i = 0; i >= -checkCol && checkCol - i + 1 < grid[row].size(); i--) {
             if (grid[row][checkCol + i] != grid[row][checkCol - i + 1]) {
                 return false;
@@ -28,7 +66,7 @@ namespace AoC2023::Day13 {
         return true;
     }
 
-    int GetHorizontalReflection(const std::vector<std::vector<bool>>& grid) {
+    int Day13::GetHorizontalReflection(const std::vector<std::vector<bool>>& grid) {
         for (int checkCol = 0; checkCol < grid[0].size() - 1; checkCol++) {
             for (size_t i = 0; i < grid.size(); i++) {
                 if (!VerifyHorizontalReflection(grid, checkCol, i)) {
@@ -42,7 +80,7 @@ namespace AoC2023::Day13 {
         return -1;
     }
 
-    int GetHorizontalReflectionB(std::vector<std::vector<bool>>& grid) {
+    int Day13::GetHorizontalReflectionB(std::vector<std::vector<bool>>& grid) {
         auto firstHorizReflection = GetHorizontalReflection(grid);
         for (int checkCol = 0; checkCol < grid[0].size() - 1; checkCol++) {
             if (checkCol == firstHorizReflection) { continue; }
@@ -65,7 +103,7 @@ namespace AoC2023::Day13 {
         return -1;
     }
 
-    bool VerifyVerticalReflection(const std::vector<std::vector<bool>>& grid, int checkRow, int col) {
+    bool Day13::VerifyVerticalReflection(const std::vector<std::vector<bool>>& grid, int checkRow, int col) {
         for (int i = 0; i >= -checkRow && checkRow - i + 1 < grid.size(); i--) {
             if (grid[checkRow + i][col] != grid[checkRow - i + 1][col]) {
                 return false;
@@ -74,7 +112,7 @@ namespace AoC2023::Day13 {
         return true;
     }
 
-    int GetVerticalReflection(const std::vector<std::vector<bool>>& grid) {
+    int Day13::GetVerticalReflection(const std::vector<std::vector<bool>>& grid) {
         for (int checkRow = 0; checkRow < grid.size() - 1; checkRow++) {
             for (size_t i = 0; i < grid[0].size(); i++) {
                 if (!VerifyVerticalReflection(grid, checkRow, i)) {
@@ -88,7 +126,7 @@ namespace AoC2023::Day13 {
         return -1;
     }
 
-    int GetVerticalReflectionB(std::vector<std::vector<bool>>& grid) {
+    int Day13::GetVerticalReflectionB(std::vector<std::vector<bool>>& grid) {
         auto firstVertiReflection = GetVerticalReflection(grid);
         for (int checkRow = 0; checkRow < grid.size() - 1; checkRow++) {
             if (checkRow == firstVertiReflection) { continue; }
@@ -110,54 +148,5 @@ namespace AoC2023::Day13 {
         checkNextRow:;
         }
         return -1;
-    }
-
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto grids = ParseInput(input);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t score = 0;
-
-        for (auto& grid : grids) {
-            auto horizReflect = GetHorizontalReflection(grid);
-            if (horizReflect != -1) {
-                score += horizReflect + 1;
-            }
-            else {
-                auto vertiReflec = GetVerticalReflection(grid);
-                score += 100 * (vertiReflec + 1);
-            }
-        }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto grids = ParseInput(input);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t score = 0;
-
-        for (auto& grid : grids) {
-            auto horizReflect = GetHorizontalReflectionB(grid);
-            if (horizReflect != -1) {
-                score += horizReflect + 1;
-            }
-            else {
-                auto vertiReflec = GetVerticalReflectionB(grid);
-                score += 100 * (vertiReflec + 1);
-            }
-        }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

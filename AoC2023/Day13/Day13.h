@@ -1,23 +1,35 @@
-#ifndef DAY13_H
-#define DAY13_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
 
-namespace AoC2023::Day13 {
-    std::vector<std::vector<std::vector<bool>>> ParseInput(const std::vector<std::string>& input);
+#include "../../AoC/Day/Day.h"
 
-    bool VerifyHorizontalReflection(const std::vector<std::vector<bool>>& grid, int checkCol, int row);
-    int GetHorizontalReflection(const std::vector<std::vector<bool>>& grid);
-    int GetHorizontalReflectionB(std::vector<std::vector<bool>>& grid);
+namespace AoC2023 {
+    class Day13 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
-    bool VerifyVerticalReflection(const std::vector<std::vector<bool>>& grid, int checkRow, int col);
-    int GetVerticalReflection(const std::vector<std::vector<bool>>& grid);
-    int GetVerticalReflectionB(std::vector<std::vector<bool>>& grid);
+        Day13() : Day() {
+            dayNo = 13;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+    private:
+        std::vector<std::string> input = {};
+        std::vector<std::vector<std::vector<bool>>> grids = {};
+
+        bool VerifyHorizontalReflection(const std::vector<std::vector<bool>>& grid, int checkCol, int row);
+        int GetHorizontalReflection(const std::vector<std::vector<bool>>& grid);
+        int GetHorizontalReflectionB(std::vector<std::vector<bool>>& grid);
+
+        bool VerifyVerticalReflection(const std::vector<std::vector<bool>>& grid, int checkRow, int col);
+        int GetVerticalReflection(const std::vector<std::vector<bool>>& grid);
+        int GetVerticalReflectionB(std::vector<std::vector<bool>>& grid);
+    };
 }
-#endif

@@ -1,15 +1,29 @@
-#ifndef DAY15_H
-#define DAY15_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
 
-namespace AoC2023::Day15 {
-    std::vector<std::string> ParseInput(const std::string& input);
+#include "../../AoC/Day/Day.h"
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+namespace AoC2023 {
+    class Day15 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day15() : Day() {
+            dayNo = 15;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::string input;
+        std::vector<std::string> strings = {};
+
+        size_t Hash(std::string str);
+    };
 }
-#endif

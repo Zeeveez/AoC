@@ -5,6 +5,7 @@ cmake_minimum_required (VERSION 3.8)
 
 # Add source to this project's executable.
 add_executable (AoC2023 "AoC2023.cpp" "AoC2023.h" "../Helpers/Helpers.cpp" "../Helpers/Helpers.h"
+    "../AoC/Day/Day.cpp" "../AoC/Day/Day.h"    
     "Day01/Day01.cpp" "Day01/Day01.h"
     "Day02/Day02.cpp" "Day02/Day02.h"
     "Day03/Day03.cpp" "Day03/Day03.h"
@@ -26,7 +27,10 @@ add_executable (AoC2023 "AoC2023.cpp" "AoC2023.h" "../Helpers/Helpers.cpp" "../H
     "Day19/Day19.cpp" "Day19/Day19.h"
     "Day20/Day20.cpp" "Day20/Day20.h"
     "Day21/Day21.cpp" "Day21/Day21.h"
-    "Day22/Day22.cpp" "Day22/Day22.h")
+    "Day22/Day22.cpp" "Day22/Day22.h"
+    "Day23/Day23.cpp" "Day23/Day23.h"
+    "Day24/Day24.cpp" "Day24/Day24.h"
+    "Day25/Day25.cpp" "Day25/Day25.h")
 
 set_property(TARGET AoC2023 PROPERTY CXX_STANDARD 23)
 set_property(TARGET AoC2023 PROPERTY CXX_STANDARD_REQUIRED ON)

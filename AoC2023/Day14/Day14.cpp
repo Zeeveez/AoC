@@ -1,11 +1,70 @@
-#include "Day14.h"
-
-#include <iostream>
 #include <numeric>
 #include <map>
 
-namespace AoC2023::Day14 {
-    std::vector<std::vector<Tile>> ParseInput(const std::vector<std::string>& input) {
+#include "Day14.h"
+
+#include "../../Helpers/Helpers.h"
+
+namespace AoC2023 {
+    void Day14::Load() {
+        input = AoC::Helpers::ReadLines("./Day14.txt");
+    }
+
+    void Day14::Parse() {
+        // No parsing required
+    }
+
+    void Day14::A() {
+        auto grid = MakeGrid();
+        Tilt(grid, { 0, -1 });
+
+        uint64_t res = 0;
+        for (size_t i = 0; i < grid.size(); i++) {
+            for (auto& cell : grid[i]) {
+                if (cell == Tile::ROUND) {
+                    res += grid.size() - i;
+                }
+            }
+        }
+        partAResult.first = res;
+    }
+
+    void Day14::B() {
+        auto grid = MakeGrid();
+        std::map<std::vector<std::vector<Tile>>, size_t> seen = {};
+
+        size_t cycleStart = 0;
+        size_t cycleEnd = 0;
+        for (size_t i = 0; i < 1000000000; i++) {
+            Cycle(grid);
+
+            if (seen.contains(grid)) {
+                cycleStart = seen[grid];
+                cycleEnd = i;
+                break;
+            }
+            else {
+                seen.insert({ grid, i });
+            }
+        }
+
+        size_t fixCycles = (1000000000 - cycleStart) % (cycleEnd - cycleStart) - 1;
+        for (size_t i = 0; i < fixCycles; i++) {
+            Cycle(grid);
+        }
+
+        uint64_t res = 0;
+        for (size_t i = 0; i < grid.size(); i++) {
+            for (auto& cell : grid[i]) {
+                if (cell == Tile::ROUND) {
+                    res += grid.size() - i;
+                }
+            }
+        }
+        partBResult.first = res;
+    }
+
+    std::vector<std::vector<Day14::Tile>> Day14::MakeGrid(){
         std::vector<std::vector<Tile>> grid = {};
         for (auto& line : input) {
             grid.push_back({});
@@ -26,7 +85,7 @@ namespace AoC2023::Day14 {
         return grid;
     }
 
-    void Tilt(std::vector<std::vector<Tile>>& grid, std::pair<int, int> dir) {
+    void Day14::Tilt(std::vector<std::vector<Tile>>& grid, std::pair<int, int> dir) {
         if (dir.first == 1) {
             for (size_t y = 0; y < grid.size(); y++) {
                 for (size_t x = grid[y].size() - 1; x != std::numeric_limits<size_t>::max(); x--) {
@@ -85,74 +144,10 @@ namespace AoC2023::Day14 {
         }
     }
 
-    void Cycle(std::vector<std::vector<Tile>>& grid) {
+    void Day14::Cycle(std::vector<std::vector<Tile>>& grid) {
         Tilt(grid, { 0, -1 });
         Tilt(grid, { -1, 0 });
         Tilt(grid, { 0, 1 });
         Tilt(grid, { 1, 0 });
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto grid = ParseInput(input);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        Tilt(grid, { 0, -1 });
-
-        uint64_t score = 0;
-        for (size_t i = 0; i < grid.size(); i++) {
-            for (auto& cell : grid[i]) {
-                if (cell == Tile::ROUND) {
-                    score += grid.size() - i;
-                }
-            }
-        }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto grid = ParseInput(input);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        std::map<std::vector<std::vector<Tile>>, size_t> seen = {};
-
-        size_t cycleStart = 0;
-        size_t cycleEnd = 0;
-        for (size_t i = 0; i < 1000000000; i++) {
-            Cycle(grid);
-
-            if (seen.contains(grid)) {
-                cycleStart = seen[grid];
-                cycleEnd = i;
-                break;
-            }
-            else {
-                seen.insert({ grid, i });
-            }
-        }
-
-        size_t fixCycles = (1000000000 - cycleStart) % (cycleEnd - cycleStart) - 1;
-        for (size_t i = 0; i < fixCycles; i++) {
-            Cycle(grid);
-        }
-
-        uint64_t score = 0;
-        for (size_t i = 0; i < grid.size(); i++) {
-            for (auto& cell : grid[i]) {
-                if (cell == Tile::ROUND) {
-                    score += grid.size() - i;
-                }
-            }
-        }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

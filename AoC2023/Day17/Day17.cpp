@@ -1,35 +1,31 @@
-#include "Day17.h"
-
-#include <iostream>
 #include <numeric>
 #include <queue>
-#include <set>
 #include <map>
 
-namespace AoC2023::Day17 {
-    std::vector<std::vector<int>> ParseInput(const std::vector<std::string>& input) {
-        std::vector<std::vector<int>> grid = {};
+#include "Day17.h"
+
+#include "../../Helpers/Helpers.h"
+
+namespace AoC2023 {
+    void Day17::Load() {
+        input = AoC::Helpers::ReadLines("./Day17.txt");
+    }
+
+    void Day17::Parse() {
         for (auto& line : input) {
             grid.push_back({});
             for (auto& c : line) {
                 grid.back().push_back(c - '0');
             }
         }
-        return grid;
     }
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto grid = ParseInput(input);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
+    void Day17::A() {
         std::map<std::pair<size_t, size_t>, std::vector<std::pair<int, int>>> DIRS = {
-            { { 1,  0 }, { /*{ 1,  0 },*/ { 0, 1 }, { 0, -1 } } },
-            { {-1,  0 }, { /*{-1,  0 },*/ { 0, 1 }, { 0, -1 } } },
-            { { 0,  1 }, { /*{ 0,  1 },*/ { 1, 0 }, {-1,  0 } } },
-            { { 0, -1 }, { /*{ 0, -1 },*/ { 1, 0 }, {-1,  0 } } }
+                    { { 1,  0 }, { /*{ 1,  0 },*/ { 0, 1 }, { 0, -1 } } },
+                    { {-1,  0 }, { /*{-1,  0 },*/ { 0, 1 }, { 0, -1 } } },
+                    { { 0,  1 }, { /*{ 0,  1 },*/ { 1, 0 }, {-1,  0 } } },
+                    { { 0, -1 }, { /*{ 0, -1 },*/ { 1, 0 }, {-1,  0 } } }
         };
 
         std::map<std::tuple<std::pair<size_t, size_t>, std::pair<int, int>, int>, int64_t> seen = {};
@@ -38,7 +34,7 @@ namespace AoC2023::Day17 {
         moves.push({ { 0, 0 }, { 1, 0 }, 0, -grid[0][0] });
         moves.push({ { 0, 0 }, { 0, 1 }, 0, -grid[0][0] });
 
-        int64_t score = std::numeric_limits<int64_t>::max();
+        int64_t res = std::numeric_limits<int64_t>::max();
 
         while (moves.size()) {
             auto [pos, dir, moveCount, totalCost] = moves.front(); moves.pop();
@@ -64,7 +60,7 @@ namespace AoC2023::Day17 {
             }
 
             if (pos.second == grid.size() - 1 && pos.first == grid[pos.second].size() - 1) {
-                score = std::min(score, totalCost);
+                res = std::min(res, totalCost);
                 continue;
             }
 
@@ -87,23 +83,15 @@ namespace AoC2023::Day17 {
                            });
             }
         }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
+        partAResult.first = res;
     }
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto grid = ParseInput(input);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
+    void Day17::B() {
         std::map<std::pair<size_t, size_t>, std::vector<std::pair<int, int>>> DIRS = {
-            { { 1,  0 }, { /*{ 1,  0 },*/ { 0, 1 }, { 0, -1 } } },
-            { {-1,  0 }, { /*{-1,  0 },*/ { 0, 1 }, { 0, -1 } } },
-            { { 0,  1 }, { /*{ 0,  1 },*/ { 1, 0 }, {-1,  0 } } },
-            { { 0, -1 }, { /*{ 0, -1 },*/ { 1, 0 }, {-1,  0 } } }
+                    { { 1,  0 }, { /*{ 1,  0 },*/ { 0, 1 }, { 0, -1 } } },
+                    { {-1,  0 }, { /*{-1,  0 },*/ { 0, 1 }, { 0, -1 } } },
+                    { { 0,  1 }, { /*{ 0,  1 },*/ { 1, 0 }, {-1,  0 } } },
+                    { { 0, -1 }, { /*{ 0, -1 },*/ { 1, 0 }, {-1,  0 } } }
         };
 
         std::map<std::tuple<std::pair<size_t, size_t>, std::pair<int, int>, int>, int64_t> seen = {};
@@ -112,7 +100,7 @@ namespace AoC2023::Day17 {
         moves.push({ { 0, 0 }, { 1, 0 }, 0, -grid[0][0] });
         moves.push({ { 0, 0 }, { 0, 1 }, 0, -grid[0][0] });
 
-        int64_t score = std::numeric_limits<int64_t>::max();
+        int64_t res = std::numeric_limits<int64_t>::max();
 
         while (moves.size()) {
             auto [pos, dir, moveCount, totalCost] = moves.front(); moves.pop();
@@ -127,12 +115,13 @@ namespace AoC2023::Day17 {
                 else {
                     seen[{ pos, dir, moveCount }] = totalCost;
                 }
-            }else{
+            }
+            else {
                 seen[{ pos, dir, moveCount }] = totalCost;
             }
 
             if (pos.second == grid.size() - 1 && pos.first == grid[pos.second].size() - 1 && moveCount > 3) {
-                score = std::min(score, totalCost);
+                res = std::min(res, totalCost);
                 continue;
             }
 
@@ -157,8 +146,6 @@ namespace AoC2023::Day17 {
                            });
             }
         }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
+        partBResult.first = res;
     }
 }

@@ -1,29 +1,43 @@
-#ifndef DAY12_H
-#define DAY12_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
-#include <vector>
+#include <cstdint>
 
-namespace AoC2023::Day12 {
-    class SpringRow {
+#include "../../AoC/Day/Day.h"
+
+namespace AoC2023 {
+    class Day12 : public AoC::Day {
+    private:
+        class SpringRow {
+        public:
+            std::vector<size_t> cache;
+            std::string springs;
+            std::vector<int> damagedSpringGroups;
+
+            SpringRow() = default;
+            SpringRow(const std::string& input, bool partB = false);
+
+            size_t CountPossibilities(size_t pos, size_t currentGroupIdx, size_t toFit);
+            size_t CountPossibilities();
+        };
+
     public:
-        std::vector<size_t> cache;
-        std::string springs;
-        std::vector<int> damagedSpringGroups;
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
-        SpringRow() = default;
-        SpringRow(const std::string& input, bool partB = false);
+        Day12() : Day() {
+            dayNo = 12;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
 
-        size_t CountPossibilities(size_t pos, size_t currentGroupIdx, size_t toFit);
-        size_t CountPossibilities();
+    private:
+        std::vector<std::string> input = {};
+
+        uint64_t Solve(bool partB = false);
     };
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, bool partB = false);
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
 }
-#endif

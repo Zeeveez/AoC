@@ -1,20 +1,37 @@
-#ifndef DAY14_H
-#define DAY14_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
 
-namespace AoC2023::Day14 {
-    enum Tile {
-        ROUND,
-        CUBE,
-        EMPTY
-    };
-    std::vector<std::vector<Tile>> ParseInput(const std::vector<std::string>& input);
+#include "../../AoC/Day/Day.h"
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+namespace AoC2023 {
+    class Day14 : public AoC::Day {
+    private:
+        enum Tile {
+            ROUND,
+            CUBE,
+            EMPTY
+        };
+
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day14() : Day() {
+            dayNo = 14;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+
+        std::vector<std::vector<Tile>> MakeGrid();
+        void Tilt(std::vector<std::vector<Tile>>& grid, std::pair<int, int> dir);
+        void Cycle(std::vector<std::vector<Tile>>& grid);
+    };
 }
-#endif

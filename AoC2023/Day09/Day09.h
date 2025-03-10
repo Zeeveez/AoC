@@ -1,23 +1,38 @@
-#ifndef DAY09_H
-#define DAY09_H
-
+#pragma once
+#include <functional>
 #include <cstdint>
 #include <vector>
-#include <chrono>
 #include <string>
-#include <unordered_map>
-#include <functional>
 
-namespace AoC2023::Day09 {
-    typedef std::function<int64_t(const std::vector<int64_t>& data, const std::vector<int64_t>& newData, bool all0s)> ExtrapolationFunction;
+#include "../../AoC/Day/Day.h"
 
-    std::vector<int64_t> ParseLine(const std::string& input);
-    int64_t Process(const std::vector<int64_t>& data, const ExtrapolationFunction& extrapFunc);
-    int64_t ExtrapolateA(const std::vector<int64_t>& data, const std::vector<int64_t>& newData, bool all0s);
-    int64_t ExtrapolateB(const std::vector<int64_t>& data, const std::vector<int64_t>& newData, bool all0s);
+namespace AoC2023 {
+    class Day09 : public AoC::Day {
+    private:
+        typedef std::function<int64_t(const std::vector<int64_t>& data, const std::vector<int64_t>& newData, bool all0s)> ExtrapolationFunction;
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, const ExtrapolationFunction& extrapFunc);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day09() : Day() {
+            dayNo = 9;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::vector<std::vector<int64_t>> data = {};
+
+        uint64_t Solve(const ExtrapolationFunction& extrapFunc);
+
+        static int64_t Process(const std::vector<int64_t>& data, const ExtrapolationFunction& extrapFunc);
+        static int64_t ExtrapolateA(const std::vector<int64_t>& data, const std::vector<int64_t>& newData, bool all0s);
+        static int64_t ExtrapolateB(const std::vector<int64_t>& data, const std::vector<int64_t>& newData, bool all0s);
+    };
 }
-#endif

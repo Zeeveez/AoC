@@ -1,61 +1,58 @@
+#include <cstring>
+
 #include "Day01.h"
 
-#include <algorithm>
+#include "../../Helpers/Helpers.h"
 
-namespace AoC2023::Day01 {
-    std::vector<uint64_t> GetDigits(const std::string& input, bool includeWords) {
+namespace AoC2023 {
+    void Day01::Load() {
+        input = AoC::Helpers::ReadLines("./Day01.txt");
+    }
+
+    void Day01::Parse() {
+        // No parsing required
+    }
+
+    void Day01::A() {
+        uint64_t res = 0;
+        for (auto& l : input) {
+            auto digits = GetDigits(l);
+            res += digits[0] * 10 + digits[digits.size() - 1];
+        }
+        partAResult.first = res;
+    }
+
+    void Day01::B() {
+        uint64_t res = 0;
+        for (auto& l : input) {
+            auto digits = GetDigits(l, true);
+            res += digits[0] * 10 + digits[digits.size() - 1];
+        }
+        partBResult.first = res;
+    }
+
+    std::vector<uint64_t> Day01::GetDigits(const std::string& input, bool includeWords) {
         std::vector<uint64_t> digits = {};
 
         for (size_t i = 0; i < input.length(); i++) {
             if (input[i] >= '0' && input[i] <= '9') {
                 digits.push_back(input[i] - '0');
+                continue;
             }
 
             if (includeWords) {
-                if (input.substr(i, 3) == "one") { digits.push_back(1); }
-                else if (input.substr(i, 3) == "two") { digits.push_back(2); }
-                else if (input.substr(i, 5) == "three") { digits.push_back(3); }
-                else if (input.substr(i, 4) == "four") { digits.push_back(4); }
-                else if (input.substr(i, 4) == "five") { digits.push_back(5); }
-                else if (input.substr(i, 3) == "six") { digits.push_back(6); }
-                else if (input.substr(i, 5) == "seven") { digits.push_back(7); }
-                else if (input.substr(i, 5) == "eight") { digits.push_back(8); }
-                else if (input.substr(i, 4) == "nine") { digits.push_back(9); }
+                if (i < input.length() - 2 && std::memcmp(input.c_str() + i, "one", 3) == 0) { digits.push_back(1); }
+                else if (i < input.length() - 2 && std::memcmp(input.c_str() + i, "two", 3) == 0) { digits.push_back(2);  }
+                else if (i < input.length() - 4 && std::memcmp(input.c_str() + i, "three", 5) == 0) { digits.push_back(3);  }
+                else if (i < input.length() - 3 && std::memcmp(input.c_str() + i, "four", 4) == 0) { digits.push_back(4);  }
+                else if (i < input.length() - 3 && std::memcmp(input.c_str() + i, "five", 4) == 0) { digits.push_back(5);  }
+                else if (i < input.length() - 2 && std::memcmp(input.c_str() + i, "six", 3) == 0) { digits.push_back(6);  }
+                else if (i < input.length() - 4 && std::memcmp(input.c_str() + i, "seven", 5) == 0) { digits.push_back(7);  }
+                else if (i < input.length() - 4 && std::memcmp(input.c_str() + i, "eight", 5) == 0) { digits.push_back(8);  }
+                else if (i < input.length() - 3 && std::memcmp(input.c_str() + i, "nine", 4) == 0) { digits.push_back(9);  }
             }
         }
 
         return digits;
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t score = 0;
-        for (auto& l : input) {
-            auto digits = GetDigits(l);
-            score += digits[0] * 10 + digits[digits.size() - 1];
-        }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t score = 0;
-        for (auto& l : input) {
-            auto digits = GetDigits(l, true);
-            score += digits[0] * 10 + digits[digits.size() - 1];
-        }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

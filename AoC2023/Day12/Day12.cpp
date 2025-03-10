@@ -1,11 +1,43 @@
-#include "Day12.h"
-
-#include <iostream>
 #include <numeric>
 #include <algorithm>
 
-namespace AoC2023::Day12 {
-    SpringRow::SpringRow(const std::string& input, bool partB) {
+#include "Day12.h"
+
+#include "../../Helpers/Helpers.h"
+
+namespace AoC2023 {
+    void Day12::Load() {
+        input = AoC::Helpers::ReadLines("./Day12.txt");
+    }
+
+    void Day12::Parse() {
+        // No parsing required
+    }
+
+    void Day12::A() {
+        partAResult.first = Solve();
+    }
+
+    void Day12::B() {
+        partBResult.first = Solve(true);
+    }
+
+    uint64_t Day12::Solve(bool partB) {
+        std::vector<SpringRow> springs;
+        springs.reserve(input.size());
+        std::transform(input.begin(), input.end(), std::back_inserter(springs), [partB](const std::string& line) { return SpringRow(line, partB); });
+
+        return std::accumulate(
+            springs.begin(),
+            springs.end(),
+            (uint64_t)0,
+            [](uint64_t acc, SpringRow& s) {
+                return acc + s.CountPossibilities();
+            }
+        );
+    }
+
+    Day12::SpringRow::SpringRow(const std::string& input, bool partB) {
         auto baseSprings = input.substr(0, input.find(' '));
         auto baseCounts = input.substr(input.find(' ') + 1);
 
@@ -42,7 +74,7 @@ namespace AoC2023::Day12 {
         std::ranges::fill(cache, std::numeric_limits<size_t>::max());
     }
 
-    size_t SpringRow::CountPossibilities(size_t pos, size_t currentGroupIdx, size_t toFit) {
+    size_t Day12::SpringRow::CountPossibilities(size_t pos, size_t currentGroupIdx, size_t toFit) {
         // Memoization
         size_t idx = pos * (damagedSpringGroups.size() + 1) + currentGroupIdx;
         if (cache[idx] != std::numeric_limits<size_t>::max()) {
@@ -119,31 +151,8 @@ namespace AoC2023::Day12 {
         return cache[idx];
     }
 
-    size_t SpringRow::CountPossibilities() {
+    size_t Day12::SpringRow::CountPossibilities() {
         size_t toFit = std::accumulate(damagedSpringGroups.begin(), damagedSpringGroups.end(), 0) + damagedSpringGroups.size() - 1;
         return CountPossibilities(0, 0, toFit);
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, bool partB) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        std::vector<SpringRow> springs;
-        springs.reserve(input.size());
-        std::transform(input.begin(), input.end(), std::back_inserter(springs), [partB](const std::string& line) { return SpringRow(line, partB); });
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t score = std::accumulate(springs.begin(), springs.end(), (uint64_t)0, [](uint64_t acc, SpringRow& s) { return acc + s.CountPossibilities(); });
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        return Solve(input);
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        return Solve(input, true);
     }
 }

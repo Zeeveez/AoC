@@ -1,20 +1,33 @@
-#ifndef DAY11_H
-#define DAY11_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
 #include <unordered_map>
 #include <set>
+#include <cstdint>
 
-namespace AoC2023::Day11 {
-    std::unordered_map<int64_t, std::set<int64_t>> LoadUniverse(const std::vector<std::string>& input);
+#include "../../AoC/Day/Day.h"
 
-    std::pair<std::vector<int64_t>, std::vector<int64_t>> GetExpansionsPerDimension(const std::unordered_map<int64_t, std::set<int64_t>>& universe, int64_t width, int64_t height);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> Solve(const std::vector<std::string>& input, int64_t expansionAmount);
+namespace AoC2023 {
+    class Day11 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+        Day11() : Day() {
+            dayNo = 11;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::unordered_map<int64_t, std::set<int64_t>> universe = {};
+
+        uint64_t Solve(int64_t expansionAmount);
+        std::pair<std::vector<int64_t>, std::vector<int64_t>> GetExpansionsPerDimension(int64_t width, int64_t height);
+    };
 }
-#endif

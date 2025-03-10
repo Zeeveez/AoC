@@ -1,16 +1,29 @@
-#ifndef DAY08_H
-#define DAY08_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
 #include <unordered_map>
 
-namespace AoC2023::Day08 {
-    std::unordered_map<int, std::pair<int, int>> LoadPaths(const std::vector<std::string>& input);
+#include "../../AoC/Day/Day.h"
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+namespace AoC2023 {
+    class Day08 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day08() : Day() {
+            dayNo = 8;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::string instructions;
+        std::unordered_map<int, std::pair<int, int>> paths = {};
+    };
 }
-#endif

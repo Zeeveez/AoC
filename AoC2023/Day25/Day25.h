@@ -1,19 +1,16 @@
 #pragma once
-#include <vector>
-#include <string>
-
 #include "../../AoC/Day/Day.h"
 
 namespace AoC2023 {
-    class Day16 : public AoC::Day {
+    class Day25 : public AoC::Day {
     public:
         void Load() override;
         void Parse() override;
         void A() override;
         void B() override;
 
-        Day16() : Day() {
-            dayNo = 16;
+        Day25() : Day() {
+            dayNo = 25;
             Load();
             parseResult.second = TimeFunc([&]() { Parse(); });
             partAResult.second = TimeFunc([&]() { A(); });
@@ -22,7 +19,5 @@ namespace AoC2023 {
 
     private:
         std::vector<std::string> input = {};
-
-        size_t Run(std::pair<std::pair<int, int>, std::pair<int, int>> startBeam);
     };
 }

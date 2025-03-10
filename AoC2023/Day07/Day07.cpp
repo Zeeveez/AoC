@@ -1,10 +1,44 @@
-#include "Day07.h"
-
-#include <iostream>
 #include <numeric>
 #include <algorithm>
 
-namespace AoC2023::Day07 {
+#include "Day07.h"
+
+#include "../../Helpers/Helpers.h"
+
+namespace AoC2023 {
+    void Day07::Load() {
+        input = AoC::Helpers::ReadLines("./Day07.txt");
+    }
+
+    void Day07::Parse() {
+        // No parsing required
+    }
+
+    void Day07::A() {
+        auto hands = ParseInput(input);
+        auto res = ScoreHands(hands);
+        partAResult.first = res;
+    }
+
+    void Day07::B() {
+        auto hands = ParseInput(input, true);
+        auto res = ScoreHands(hands);
+        partBResult.first = res;
+    }
+
+    uint64_t Day07::ScoreHands(std::vector<Day07::Hand>& hands) {
+        std::sort(hands.begin(), hands.end());
+        size_t hIdx = 1;
+        return std::accumulate(
+            hands.begin(),
+            hands.end(),
+            (uint64_t)0,
+            [&hIdx](const uint64_t& acc, const Hand& h) {
+                return acc + hIdx++ * h.bid;
+            }
+        );
+    }
+
     const std::unordered_map<char, int> cardToValueMap = {
             { 'A', 14 },
             { 'K', 13 },
@@ -21,7 +55,7 @@ namespace AoC2023::Day07 {
             { '2', 2 }
     };
 
-    Hand::Hand(const std::string& input, bool partB) {
+    Day07::Hand::Hand(const std::string& input, bool partB) {
         std::istringstream iss(input);
         std::string cardsString;
         iss >> cardsString;
@@ -33,21 +67,21 @@ namespace AoC2023::Day07 {
         LoadType(partB);
     }
 
-    void Hand::LoadValue(bool partB) {
+    void Day07::Hand::LoadValue(bool partB) {
         value = 0;
         for (auto& c : cards) {
-            value = value * 128 + cardToValueMap.at(c) + (partB && c == 'J' ? -10 : 0);
+            value = value * 128 + cardToValueMap.at(c) + (partB && c == 'J') * -10;
         }
         this->value = value;
     }
 
-    void Hand::LoadUniqueCards(bool partB) {
+    void Day07::Hand::LoadUniqueCards(bool partB) {
         for (auto& c : cards) {
             uniqueCards.insert(c);
         }
     }
 
-    void Hand::LoadCardCounts(bool partB) {
+    void Day07::Hand::LoadCardCounts(bool partB) {
         for (auto& c : uniqueCards) {
             cardCounts[c] = 0;
         }
@@ -56,7 +90,7 @@ namespace AoC2023::Day07 {
         }
     }
 
-    void Hand::LoadType(bool partB) {
+    void Day07::Hand::LoadType(bool partB) {
         if (FiveOfAKind(partB)) { type = 6; }
         else if (FourOfAKind(partB)) { type = 5; }
         else if (FullHouse(partB)) { type = 4; }
@@ -66,12 +100,8 @@ namespace AoC2023::Day07 {
         else { type = 0; }
     }
 
-    bool Hand::FiveOfAKind(bool partB) {
-        for (auto& c : uniqueCards) {
-            if (cardCounts[c] == 5) {
-                return true;
-            }
-        }
+    bool Day07::Hand::FiveOfAKind(bool partB) {
+        if (uniqueCards.size() == 1) { return true; }
 
         if (partB && cardCounts.contains('J')) {
             return uniqueCards.size() == 2;
@@ -80,7 +110,7 @@ namespace AoC2023::Day07 {
         return false;
     }
 
-    bool Hand::FourOfAKind(bool partB) {
+    bool Day07::Hand::FourOfAKind(bool partB) {
         for (auto& c : uniqueCards) {
             if (cardCounts[c] == 4) {
                 return true;
@@ -94,7 +124,7 @@ namespace AoC2023::Day07 {
         return false;
     }
 
-    bool Hand::FullHouse(bool partB) {
+    bool Day07::Hand::FullHouse(bool partB) {
         if (uniqueCards.size() == 2) {
             for (auto& c : uniqueCards) {
                 if (cardCounts[c] == 3) {
@@ -111,7 +141,7 @@ namespace AoC2023::Day07 {
         return false;
     }
 
-    bool Hand::ThreeOfAKind(bool partB) {
+    bool Day07::Hand::ThreeOfAKind(bool partB) {
         for (auto& c : uniqueCards) {
             if (cardCounts[c] == 3) {
                 return true;
@@ -125,7 +155,7 @@ namespace AoC2023::Day07 {
         return false;
     }
 
-    bool Hand::TwoPair(bool partB) {
+    bool Day07::Hand::TwoPair(bool partB) {
         bool firstPairFound = false;
         for (auto& c : uniqueCards) {
             if (cardCounts[c] == 2) {
@@ -144,7 +174,7 @@ namespace AoC2023::Day07 {
         return false;
     }
 
-    bool Hand::OnePair(bool partB) {
+    bool Day07::Hand::OnePair(bool partB) {
         for (auto& c : uniqueCards) {
             if (cardCounts[c] == 2) {
                 return true;
@@ -153,80 +183,11 @@ namespace AoC2023::Day07 {
         return partB && uniqueCards.contains('J');
     }
 
-    bool operator<(const Hand& lhs, const Hand& rhs) {
-        if (lhs.type < rhs.type) {
-            return true;
-        }
-        if (lhs.type > rhs.type) {
-            return false;
-        }
-        return lhs.value < rhs.value;
-    }
-
-    bool operator>(const Hand& lhs, const Hand& rhs) {
-        return rhs < lhs;
-    }
-
-    bool operator<=(const Hand& lhs, const Hand& rhs) {
-        return !(lhs > rhs);
-    }
-
-    bool operator>=(const Hand& lhs, const Hand& rhs) {
-        return !(lhs < rhs);
-    }
-
-    bool operator==(const Hand& lhs, const Hand& rhs) {
-        return lhs.value == rhs.value;
-    }
-
-    bool operator!=(const Hand& lhs, const Hand& rhs) {
-        return !(lhs == rhs);
-    }
-
-    std::vector<Hand> ParseInput(const std::vector<std::string>& input, bool partB) {
+    std::vector<Day07::Hand> Day07::ParseInput(const std::vector<std::string>& input, bool partB) {
         std::vector<Hand> hands = {};
         for (auto& line : input) {
             hands.push_back(Hand(line, partB));
         }
         return hands;
-    }
-
-    uint64_t ScoreHands(std::vector<Hand>& hands) {
-        std::sort(hands.begin(), hands.end());
-        size_t hIdx = 1;
-        return std::accumulate(
-            hands.begin(),
-            hands.end(),
-            (uint64_t)0,
-            [&hIdx](const uint64_t& acc, const Hand& h) {
-                return acc + hIdx++ * h.bid;
-            }
-        );
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto hands = ParseInput(input);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        auto score = ScoreHands(hands);
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto hands = ParseInput(input, true);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        auto score = ScoreHands(hands);
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

@@ -1,14 +1,29 @@
-#ifndef DAY01_H
-#define DAY01_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
+#include <cstdint>
 
-namespace AoC2023::Day01 {
-    std::vector<uint64_t> GetDigits(const std::string& input, bool includeWords = false);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+#include "../../AoC/Day/Day.h"
+
+namespace AoC2023 {
+    class Day01 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day01() : Day() {
+            dayNo = 1;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+
+        std::vector<uint64_t> GetDigits(const std::string& input, bool includeWords = false);
+    };
 }
-#endif

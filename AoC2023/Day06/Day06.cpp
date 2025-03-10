@@ -1,9 +1,32 @@
 #include "Day06.h"
 
-#include <iostream>
+#include "../../Helpers/Helpers.h"
 
-namespace AoC2023::Day06 {
-    std::vector<uint64_t> ParseLine(const std::string& input, bool partB) {
+namespace AoC2023 {
+    void Day06::Load() {
+        input = AoC::Helpers::ReadLines("./Day06.txt");
+    }
+
+    void Day06::Parse() {
+        // No parsing required
+    }
+
+    void Day06::A() {
+        auto races = ParseInput(input);
+        size_t res = 1;
+        for (auto& race : races) {
+            res *= CountWins(race.first, race.second);
+        }
+        partAResult.first = res;
+    }
+
+    void Day06::B() {
+        auto races = ParseInput(input, true);
+        size_t res = CountWins(races[0].first, races[0].second);
+        partBResult.first = res;
+    }
+
+    std::vector<uint64_t> Day06::ParseLine(const std::string& input, bool partB) {
         std::istringstream iss(input);
         std::string temp;
         iss >> temp; // Discard label
@@ -26,7 +49,7 @@ namespace AoC2023::Day06 {
         return values;
     }
 
-    std::vector<std::pair<uint64_t, uint64_t>> ParseInput(const std::vector<std::string>& input, bool partB) {
+    std::vector<std::pair<uint64_t, uint64_t>> Day06::ParseInput(const std::vector<std::string>& input, bool partB) {
         auto times = ParseLine(input[0], partB);
         auto distances = ParseLine(input[1], partB);
 
@@ -39,7 +62,7 @@ namespace AoC2023::Day06 {
         return races;
     }
 
-    uint64_t CountWins(uint64_t time, uint64_t record) {
+    uint64_t Day06::CountWins(uint64_t time, uint64_t record) {
         // Brute force
         //size_t count = 0;
         //for (size_t i = 1; i < time; i++) {
@@ -52,34 +75,5 @@ namespace AoC2023::Day06 {
         uint64_t minWait = std::ceil(requiredWait);
         uint64_t maxWait = time - minWait;
         return maxWait - minWait + 1;
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto races = ParseInput(input);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        size_t score = 1;
-        for (auto& race : races) {
-            score *= CountWins(race.first, race.second);
-        }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto races = ParseInput(input, true);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        size_t score = CountWins(races[0].first, races[0].second);
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

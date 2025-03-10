@@ -1,20 +1,20 @@
-#include "Day22.h"
+#include "Day24.h"
 #include "../../Helpers/Helpers.h"
 
 namespace AoC2023 {
-    void Day22::Load() {
-        input = AoC::Helpers::ReadLines("./Day22.txt");
+    void Day24::Load() {
+        input = AoC::Helpers::ReadLines("./Day24.txt");
     }
 
-    void Day22::Parse() {
+    void Day24::Parse() {
         // No parsing required
     }
 
-    void Day22::A() {
+    void Day24::A() {
         partAResult.first = "TODO";
     }
 
-    void Day22::B() {
+    void Day24::B() {
         partBResult.first = "TODO";
     }
 }

@@ -1,55 +1,33 @@
-#include "Day15.h"
-
-#include <iostream>
-#include <numeric>
+#include <sstream>
 #include <map>
 
-namespace AoC2023::Day15 {
-    std::vector<std::string> ParseInput(const std::string& input) {
-        std::vector<std::string> strings = {};
+#include "Day15.h"
+
+#include "../../Helpers/Helpers.h"
+
+namespace AoC2023 {
+    void Day15::Load() {
+        input = AoC::Helpers::ReadToken<std::string>("./Day15.txt");
+    }
+
+    void Day15::Parse() {
         std::istringstream iss(input);
         std::string s;
 
         while (std::getline(iss, s, ',')) {
             strings.push_back(s);
         }
-
-        return strings;
     }
 
-    size_t Hash(std::string str) {
-        size_t v = 0;
-        for (auto& c : str) {
-            v += c;
-            v *= 17;
-            v %= 256;
-        }
-        return v;
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto strings = ParseInput(input[0]);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t score = 0;
+    void Day15::A() {
+        uint64_t res = 0;
         for (auto& str : strings) {
-            score += Hash(str);
+            res += Hash(str);
         }
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
+        partAResult.first = res;
     }
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto strings = ParseInput(input[0]);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
+    void Day15::B() {
         std::map<size_t, std::map<std::string, std::pair<size_t, size_t>>> boxes = {};
         for (auto& str : strings) {
             bool isAssign = str.find('=') != std::string::npos;
@@ -67,7 +45,7 @@ namespace AoC2023::Day15 {
                     boxes[box][label] = { val, boxes[box][label].second };
                 }
                 else {
-                    boxes[box][label] = { val, boxes[box].size() + 1};
+                    boxes[box][label] = { val, boxes[box].size() + 1 };
                 }
             }
             else {
@@ -75,7 +53,7 @@ namespace AoC2023::Day15 {
                     size_t pos = boxes[box][label].second;
                     boxes[box].erase(label);
                     for (auto& [otherLabel, otherBox] : boxes[box]) {
-                        if(otherBox.second > pos){
+                        if (otherBox.second > pos) {
                             otherBox.second--;
                         }
                     }
@@ -83,14 +61,22 @@ namespace AoC2023::Day15 {
             }
         }
 
-        uint64_t score = 0;
+        uint64_t res = 0;
         for (auto& [boxNo, boxContents] : boxes) {
             for (auto& [label, lens] : boxContents) {
-                score += (boxNo + 1) * lens.second * lens.first;
+                res += (boxNo + 1) * lens.second * lens.first;
             }
         }
+        partBResult.first = res;
+    }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
+    size_t Day15::Hash(std::string str) {
+        size_t v = 0;
+        for (auto& c : str) {
+            v += c;
+            v *= 17;
+            v %= 256;
+        }
+        return v;
     }
 }

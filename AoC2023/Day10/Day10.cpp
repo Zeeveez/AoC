@@ -1,52 +1,62 @@
-#include "Day10.h"
-
-#include <iostream>
-#include <numeric>
 #include <queue>
 
-namespace AoC2023::Day10 {
-    std::vector<Pipe> ParseLine(const std::string& input) {
-        std::vector<Pipe> output = {};
-        for (auto& c : input) {
-            switch (c) {
-            case '|':
-                output.push_back(Pipe::UP_DOWN);
-                break;
-            case '-':
-                output.push_back(Pipe::LEFT_RIGHT);
-                break;
-            case 'L':
-                output.push_back(Pipe::UP_RIGHT);
-                break;
-            case 'J':
-                output.push_back(Pipe::UP_LEFT);
-                break;
-            case '7':
-                output.push_back(Pipe::DOWN_LEFT);
-                break;
-            case 'F':
-                output.push_back(Pipe::DOWN_RIGHT);
-                break;
-            case '.':
-                output.push_back(Pipe::GROUND);
-                break;
-            case 'S':
-                output.push_back(Pipe::START);
-                break;
-            }
-        }
-        return output;
+#include "Day10.h"
+
+#include "../../Helpers/Helpers.h"
+
+namespace AoC2023 {
+    void Day10::Load() {
+        input = AoC::Helpers::ReadLines("./Day10.txt");
     }
 
-    std::vector<std::vector<Pipe>> ParseGrid(const std::vector<std::string>& input) {
-        std::vector<std::vector<Pipe>> output = {};
+    void Day10::Parse() {
         for (auto& line : input) {
-            output.push_back(ParseLine(line));
+            std::vector<Pipe> row = {};
+            for (auto& c : line) {
+                switch (c) {
+                case '|':
+                    row.push_back(Pipe::UP_DOWN);
+                    break;
+                case '-':
+                    row.push_back(Pipe::LEFT_RIGHT);
+                    break;
+                case 'L':
+                    row.push_back(Pipe::UP_RIGHT);
+                    break;
+                case 'J':
+                    row.push_back(Pipe::UP_LEFT);
+                    break;
+                case '7':
+                    row.push_back(Pipe::DOWN_LEFT);
+                    break;
+                case 'F':
+                    row.push_back(Pipe::DOWN_RIGHT);
+                    break;
+                case '.':
+                    row.push_back(Pipe::GROUND);
+                    break;
+                case 'S':
+                    row.push_back(Pipe::START);
+                    break;
+                }
+            }
+            grid.push_back(row);
         }
-        return output;
+        // No parsing required
     }
 
-    size_t InflateAndFillGrid(const std::vector<std::vector<Pipe>>& grid) {
+    void Day10::A() {
+        auto start = FindStart();
+        auto path = FindPath(start);
+        auto res = path.size() / 2;   // Furthest difference through a loop is half its size
+        partAResult.first = res;
+    }
+
+    void Day10::B() {
+        partBResult.first = InflateAndFillGrid();
+    }
+
+    size_t Day10::InflateAndFillGrid() {
         std::vector<std::vector<int>> output = {};
         output.push_back({ 0,0,0,0,0,0 });
         output.push_back({ 0,0,0,0,0,0 });
@@ -143,7 +153,7 @@ namespace AoC2023::Day10 {
         for (size_t y = 4; y < output.size() - 3; y += 3) {
             for (size_t x = 4; x < output[y].size() - 3; x += 3) {
                 size_t c = 0;
-                for (int dx = -1; dx < 2; dx++ ) {
+                for (int dx = -1; dx < 2; dx++) {
                     for (int dy = -1; dy < 2; dy++) {
                         c += output[(int)y + dy][(int)x + dx];
                     }
@@ -156,7 +166,7 @@ namespace AoC2023::Day10 {
         return result;
     }
 
-    std::pair<size_t, size_t> FindStart(const std::vector<std::vector<Pipe>>& grid) {
+    std::pair<size_t, size_t> Day10::FindStart() {
         for (size_t y = 0; y < grid.size(); y++) {
             for (size_t x = 0; x < grid[y].size(); x++) {
                 if (grid[y][x] == Pipe::START) {
@@ -167,7 +177,7 @@ namespace AoC2023::Day10 {
         return { 0, 0 };
     }
 
-    std::vector<std::pair<size_t, size_t>> GetPathNeighbours(const std::vector<std::vector<Pipe>>& grid, const std::pair<size_t, size_t>& pos) {
+    std::vector<std::pair<size_t, size_t>> Day10::GetPathNeighbours(const std::pair<size_t, size_t>& pos) {
         std::vector<std::pair<size_t, size_t>> neighbours = {};
         auto pipe = grid[pos.second][pos.first];
 
@@ -193,7 +203,7 @@ namespace AoC2023::Day10 {
         return neighbours;
     }
 
-    std::vector<std::pair<size_t, size_t>> GetAllNeighbours(const std::vector<std::vector<int>>& grid, const std::pair<size_t, size_t>& pos) {
+    std::vector<std::pair<size_t, size_t>> Day10::GetAllNeighbours(const std::vector<std::vector<int>>& grid, const std::pair<size_t, size_t>& pos) {
         std::vector<std::pair<size_t, size_t>> neighbours = {};
 
         for (int dy = -1; dy < 2; dy++) {
@@ -212,7 +222,7 @@ namespace AoC2023::Day10 {
         return neighbours;
     }
 
-    std::set<std::pair<size_t, size_t>> FindPath(const std::vector<std::vector<Pipe>>& grid, const std::pair<size_t, size_t>& pos) {
+    std::set<std::pair<size_t, size_t>> Day10::FindPath(const std::pair<size_t, size_t>& pos) {
         std::set<std::pair<size_t, size_t>> visited = {};
         std::queue<std::pair<size_t, size_t>> queue = {};
 
@@ -224,7 +234,7 @@ namespace AoC2023::Day10 {
             auto currentPos = queue.front(); queue.pop();
             size++;
 
-            for (auto& neighbour : GetPathNeighbours(grid, currentPos)) {
+            for (auto& neighbour : GetPathNeighbours(currentPos)) {
                 if (!visited.contains(neighbour)) {
                     visited.insert(neighbour);
                     queue.push(neighbour);
@@ -233,33 +243,5 @@ namespace AoC2023::Day10 {
         }
 
         return visited;
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto grid = ParseGrid(input);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        auto start = FindStart(grid);
-        auto path = FindPath(grid, start);
-        auto score = path.size() / 2;   // Furthest difference through a loop is half its size
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
-    }
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input) {
-        auto parseStart = std::chrono::high_resolution_clock::now();
-        auto grid = ParseGrid(input);
-        auto parseEnd = std::chrono::high_resolution_clock::now();
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        uint64_t score = InflateAndFillGrid(grid);
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        return { score, parseEnd - parseStart, endTime - startTime };
     }
 }

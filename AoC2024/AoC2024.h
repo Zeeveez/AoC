@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <iostream>
+#include <format>
 
 #include "Day01/Day01.h"
 #include "Day02/Day02.h"

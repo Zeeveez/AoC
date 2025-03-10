@@ -1,23 +1,50 @@
-﻿// AoC2015.cpp : Defines the entry point for the application.
-//
-
-#include "AoC2023.h"
-
-void Output(int day, char part, std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> res) {
-    std::cout
-        << std::format("Day {:02} - {}: ({:10.4f}ms + {:10.4f}ms): ",
-                       day,
-                       part,
-                       std::get<1>(res).count(),
-                       std::get<2>(res).count())
-        << std::get<0>(res) << "\n";
-
-}
+﻿#include "AoC2023.h"
 
 int main()
 {
-    auto D12P1 = AoC2023::Day12::A(AoC::Helpers::ReadLines("./Day12.txt"));
-    Output(12, 'A', D12P1);
-    auto D12P2 = AoC2023::Day12::B(AoC::Helpers::ReadLines("./Day12.txt"));
-    Output(12, 'B', D12P2);
+    std::vector<AoC::Day> days = {
+        AoC2023::Day01(),
+        AoC2023::Day02(),
+        AoC2023::Day03(),
+        AoC2023::Day04(),
+        AoC2023::Day05(),
+        AoC2023::Day06(),
+        AoC2023::Day07(),
+        AoC2023::Day08(),
+        AoC2023::Day09(),
+        AoC2023::Day10(),
+        AoC2023::Day11(),
+        AoC2023::Day12(),
+        AoC2023::Day13(),
+        AoC2023::Day14(),
+        AoC2023::Day15(),
+        //AoC2023::Day16(), // SLOW
+        //AoC2023::Day17(), // VERY SLOW
+        //AoC2023::Day18(),
+        //AoC2023::Day19(),
+        //AoC2023::Day20(),
+        //AoC2023::Day21(),
+        AoC2023::Day22(),
+        AoC2023::Day23(),
+        AoC2023::Day24(),
+        AoC2023::Day25(),
+    };
+
+    std::chrono::duration<double, std::milli> totalATime = std::chrono::duration<double, std::milli>(0);
+    std::chrono::duration<double, std::milli> totalBTime = std::chrono::duration<double, std::milli>(0);
+    std::chrono::duration<double, std::milli> totalParseTime = std::chrono::duration<double, std::milli>(0);
+    for (auto& day : days) {
+        std::cout << day;
+        totalParseTime += day.parseResult.second;
+        totalATime += day.partAResult.second;
+        totalBTime += day.partBResult.second;
+    }
+
+    std::cout << "\n";
+    std::cout << "   Total A:  " << std::format("{:10.4f}", (totalATime + totalParseTime).count()) << "ms\n";
+    std::cout << "   Total B:  " << std::format("{:10.4f}", (totalBTime + totalParseTime).count()) << "ms\n";
+    std::cout << "     Total:  " << std::format("{:10.4f}", (totalATime + totalBTime + totalParseTime).count()) << "ms\n";
 }
+
+/*
+*/

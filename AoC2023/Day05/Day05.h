@@ -1,56 +1,69 @@
-#ifndef DAY05_H
-#define DAY05_H
-
-#include <cstdint>
-#include <vector>
-#include <chrono>
+#pragma once
 #include <string>
+#include <vector>
 #include <map>
-#include <optional>
+#include <cstdint>
 
-namespace AoC2023::Day05 {
-    class RangeMap {
+#include "../../AoC/Day/Day.h"
+
+namespace AoC2023 {
+    class Day05 : public AoC::Day {
+    private:
+        class RangeMap {
+        public:
+            size_t destinationStart;
+            size_t sourceStart;
+            size_t size;
+
+            RangeMap() = default;
+            RangeMap(const std::string& input);
+            RangeMap(size_t destinationStart, size_t sourceStart, size_t size);
+
+            bool Contains(size_t v);
+            size_t Map(size_t v);
+            static std::tuple<std::vector<RangeMap>, std::vector<RangeMap>, std::vector<RangeMap>> ReMap(RangeMap a, RangeMap b);
+        };
+
+        class SourceMap {
+        public:
+            std::string source;
+            std::string destination;
+            std::vector<RangeMap> maps;
+
+            SourceMap() = default;
+            SourceMap(const std::vector<std::string>& input, size_t& i);
+
+            size_t Map(size_t v);
+            void MergeIn(const SourceMap& other);
+        };
+
+        class Almanac {
+        public:
+            std::map<std::string, SourceMap> sourceMaps;
+
+            Almanac() = default;
+            Almanac(const std::vector<std::string>& input);
+            size_t Traverse(std::string source, std::string destination, size_t value);
+            void Flatten(const std::string& start);
+        };
+
     public:
-        size_t destinationStart;
-        size_t sourceStart;
-        size_t size;
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
-        RangeMap() = default;
-        RangeMap(const std::string& input);
-        RangeMap(size_t destinationStart, size_t sourceStart, size_t size);
+        Day05() : Day() {
+            dayNo = 5;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
 
-        bool Contains(size_t v);
-        size_t Map(size_t v);
+    private:
+        std::vector<std::string> input = {};
+        std::vector<size_t> seeds = {};
+        Almanac almanac;
     };
-
-    std::tuple<std::vector<RangeMap>, std::vector<RangeMap>, std::vector<RangeMap>> ReMap(RangeMap a, RangeMap b);
-
-
-    class SourceMap {
-    public:
-        std::string source;
-        std::string destination;
-        std::vector<RangeMap> maps;
-
-        SourceMap() = default;
-        SourceMap(const std::vector<std::string>& input, size_t& i);
-
-        size_t Map(size_t v);
-        void MergeIn(const SourceMap& other);
-    };
-
-    class Almanac {
-    public:
-        std::map<std::string, SourceMap> sourceMaps;
-
-        Almanac(const std::vector<std::string>& input);
-        size_t Traverse(std::string source, std::string destination, size_t value);
-        void Flatten(const std::string& start);
-    };
-
-    std::pair<std::vector<size_t>, Almanac> ParseInput(const std::vector<std::string>& input);
-
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
 }
-#endif

@@ -1,18 +1,32 @@
-#ifndef DAY04_H
-#define DAY04_H
-
-#include <cstdint>
+#pragma once
 #include <vector>
-#include <chrono>
 #include <string>
 #include <set>
 
-namespace AoC2023::Day04 {
-    std::pair<std::set<int>, std::set<int>> ParseCard(const std::string& card);
-    std::vector<std::pair<std::set<int>, std::set<int>>> ParseInput(const std::vector<std::string>& input);
-    size_t GetWins(const std::pair<std::set<int>, std::set<int>>& card);
+#include "../../AoC/Day/Day.h"
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+namespace AoC2023 {
+    class Day04 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
+
+        Day04() : Day() {
+            dayNo = 4;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
+
+    private:
+        std::vector<std::string> input = {};
+        std::vector<std::pair<std::set<int>, std::set<int>>> cards = {};
+
+        size_t GetWins(const std::pair<std::set<int>, std::set<int>>& card);
+        std::pair<std::set<int>, std::set<int>> ParseCard(const std::string& card);
+        std::vector<std::pair<std::set<int>, std::set<int>>> ParseInput(const std::vector<std::string>& input);
+    };
 }
-#endif

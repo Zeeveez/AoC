@@ -1,17 +1,23 @@
-#ifndef DAY22_H
-#define DAY22_H
+#pragma once
+#include "../../AoC/Day/Day.h"
 
-#include <cstdint>
-#include <vector>
-#include <chrono>
-#include <string>
-#include <set>
+namespace AoC2023 {
+    class Day22 : public AoC::Day {
+    public:
+        void Load() override;
+        void Parse() override;
+        void A() override;
+        void B() override;
 
-namespace AoC2023::Day22 {
-    std::pair<int, int> FindStart(const std::vector<std::string>& input);
-    std::set<std::pair<int, int>> GetNewPositions(const std::vector<std::string>& input, const std::set<std::pair<int, int>>& currentPositions);
+        Day22() : Day() {
+            dayNo = 22;
+            Load();
+            parseResult.second = TimeFunc([&]() { Parse(); });
+            partAResult.second = TimeFunc([&]() { A(); });
+            partBResult.second = TimeFunc([&]() { B(); });
+        }
 
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> A(const std::vector<std::string>& input);
-    std::tuple<uint64_t, std::chrono::duration<double, std::milli>, std::chrono::duration<double, std::milli>> B(const std::vector<std::string>& input);
+    private:
+        std::vector<std::string> input = {};
+    };
 }
-#endif

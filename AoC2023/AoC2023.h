@@ -1,10 +1,7 @@
-﻿#ifndef AOC2023_H
-#define AOC2023_H
+﻿#pragma once
 
 #include <iostream>
 #include <format>
-
-#include "../Helpers/Helpers.h"
 
 #include "Day01/Day01.h"
 #include "Day02/Day02.h"
@@ -28,5 +25,6 @@
 #include "Day20/Day20.h"
 #include "Day21/Day21.h"
 #include "Day22/Day22.h"
-
-#endif
+#include "Day23/Day23.h"
+#include "Day24/Day24.h"
+#include "Day25/Day25.h"
