@@ -33,7 +33,7 @@ add_executable (AoC2024 "AoC2024.cpp" "AoC2024.h"
     "Day24/Day24.cpp" "Day24/Day24.h" 
     "Day25/Day25.cpp" "Day25/Day25.h"  )
 
-set_property(TARGET AoC2024 PROPERTY CXX_STANDARD 20)
+set_property(TARGET AoC2024 PROPERTY CXX_STANDARD 23)
 set_property(TARGET AoC2024 PROPERTY CXX_STANDARD_REQUIRED ON)
 
 # TODO: Add tests and install targets if needed.

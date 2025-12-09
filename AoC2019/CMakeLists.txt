@@ -26,7 +26,7 @@ add_executable (AoC2019 "AoC2019.cpp" "AoC2019.h"
     "Day16/Day16.cpp" "Day16/Day16.h"
     "Day17/Day17.cpp" "Day17/Day17.h")
 
-set_property(TARGET AoC2019 PROPERTY CXX_STANDARD 20)
+set_property(TARGET AoC2019 PROPERTY CXX_STANDARD 23)
 set_property(TARGET AoC2019 PROPERTY CXX_STANDARD_REQUIRED ON)
 
 # TODO: Add tests and install targets if needed.

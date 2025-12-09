@@ -31,7 +31,7 @@ add_executable (AoC2022 "AoC2022.cpp" "AoC2022.h" "../Helpers/Helpers.cpp" "../H
     "Day24/Day24.cpp" "Day24/Day24.h"
     "Day25/Day25.cpp" "Day25/Day25.h")
 
-set_property(TARGET AoC2022 PROPERTY CXX_STANDARD 20)
+set_property(TARGET AoC2022 PROPERTY CXX_STANDARD 23)
 set_property(TARGET AoC2022 PROPERTY CXX_STANDARD_REQUIRED ON)
 
 # TODO: Add tests and install targets if needed.

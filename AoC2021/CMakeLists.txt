@@ -31,7 +31,7 @@ add_executable (AoC2021 "AoC2021.cpp" "AoC2021.h" "../Helpers/Helpers.cpp" "../H
     "Day23/Day23.cpp" "Day23/Day23.h"
     "Day25/Day25.cpp" "Day25/Day25.h")
 
-set_property(TARGET AoC2021 PROPERTY CXX_STANDARD 20)
+set_property(TARGET AoC2021 PROPERTY CXX_STANDARD 23)
 set_property(TARGET AoC2021 PROPERTY CXX_STANDARD_REQUIRED ON)
 
 # TODO: Add tests and install targets if needed.

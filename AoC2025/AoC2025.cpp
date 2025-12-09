@@ -11,5 +11,6 @@ int main()
     year.days.push_back(AoC2025::Day06().Run());
     year.days.push_back(AoC2025::Day07().Run());
     year.days.push_back(AoC2025::Day08().Run());
+    year.days.push_back(AoC2025::Day09().Run());
     std::cout << year;
 }
