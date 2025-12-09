@@ -49,9 +49,9 @@ namespace AoC2025 {
                     auto p1 = points[k];
                     auto p2 = points[(k + 1) % points.size()];
 
+                    if (LineIntersectsRect(q1, q2, p1, p2)) { good = false; break; }
                     if (PointInsideRect(q1, q2, p1)) { good = false; break; }
                     if (PointInsideRect(q1, q2, p2)) { good = false; break; }
-                    if (LineIntersectsRect(q1, q2, p1, p2)) { good = false; break; }
                 }
 
                 if (good) {
