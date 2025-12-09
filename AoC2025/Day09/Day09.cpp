@@ -85,6 +85,7 @@ namespace AoC2025 {
             auto lineBottom = std::min(lineP1.second, lineP2.second);
             if (lineTop > top && lineBottom < top) { return true; }
             if (lineTop > bottom && lineBottom < bottom) { return true; }
+            if (lineTop == top && lineBottom == bottom) { return true; }
         }
         else {
             // Horizontal line
@@ -94,6 +95,7 @@ namespace AoC2025 {
             auto lineRight = std::max(lineP1.first, lineP2.first);
             if (lineLeft < left && lineRight > left) { return true; }
             if (lineLeft < right && lineRight > right) { return true; }
+            if (lineLeft == left && lineRight == right) { return true; }
         }
         return false;
     }
