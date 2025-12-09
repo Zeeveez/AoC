@@ -43,22 +43,21 @@ namespace AoC2025 {
             for (int j = i; j < points.size(); j++) {
                 auto q1 = points[i];
                 auto q2 = points[j];
+                auto width = (std::llabs(q1.first - q2.first) + 1);
+                auto height = (std::llabs(q1.second - q2.second) + 1);
+                if (width * height < res) { continue; }
 
-                bool good = true;
                 for (int k = 0; k < points.size(); k++) {
                     auto p1 = points[k];
                     auto p2 = points[(k + 1) % points.size()];
 
-                    if (LineIntersectsRect(q1, q2, p1, p2)) { good = false; break; }
-                    if (PointInsideRect(q1, q2, p1)) { good = false; break; }
-                    if (PointInsideRect(q1, q2, p2)) { good = false; break; }
+                    if (LineIntersectsRect(q1, q2, p1, p2)) { goto next_rectangle; }
+                    if (PointInsideRect(q1, q2, p1)) { goto next_rectangle; }
+                    if (PointInsideRect(q1, q2, p2)) { goto next_rectangle; }
                 }
 
-                if (good) {
-                    auto width = (std::llabs(q1.first - q2.first) + 1);
-                    auto height = (std::llabs(q1.second - q2.second) + 1);
-                    res = std::max(width * height, res);
-                }
+                res = width * height;
+            next_rectangle:;
             }
         }
         return res;
