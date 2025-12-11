@@ -7,6 +7,7 @@ cmake_minimum_required (VERSION 3.8)
 add_executable (AoC2025 "AoC2025.cpp" "AoC2025.h"
     "../Shared/Year/Year.h" "../Shared/Day/Day.h" "../Shared/Day/DayResult.h"
     "../Helpers/Helpers.cpp" "../Helpers/Helpers.h"
+    "../Helpers/GaussianElimination.cpp" "../Helpers/GaussianElimination.h"
     "Day01/Day01.cpp" "Day01/Day01.h"
     "Day02/Day02.cpp" "Day02/Day02.h" 
     "Day03/Day03.cpp" "Day03/Day03.h" 
@@ -15,7 +16,8 @@ add_executable (AoC2025 "AoC2025.cpp" "AoC2025.h"
     "Day06/Day06.cpp" "Day06/Day06.h"   
     "Day07/Day07.cpp" "Day07/Day07.h"
     "Day08/Day08.cpp" "Day08/Day08.h"
-    "Day09/Day09.cpp" "Day09/Day09.h")
+    "Day09/Day09.cpp" "Day09/Day09.h"
+    "Day10/Day10.cpp" "Day10/Day10.h")
 
 set_property(TARGET AoC2025 PROPERTY CXX_STANDARD 23)
 set_property(TARGET AoC2025 PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -31,3 +33,4 @@ configure_file("Day06/Day06.txt" "./2025/Day06.txt" COPYONLY)
 configure_file("Day07/Day07.txt" "./2025/Day07.txt" COPYONLY)
 configure_file("Day08/Day08.txt" "./2025/Day08.txt" COPYONLY)
 configure_file("Day09/Day09.txt" "./2025/Day09.txt" COPYONLY)
+configure_file("Day10/Day10.txt" "./2025/Day10.txt" COPYONLY)
