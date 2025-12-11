@@ -50,17 +50,17 @@ namespace AoC2025 {
 
     std::uint64_t Day11::CountRoutes(int from, int to) {
         std::unordered_map<int, int> scores = {};
-        CountRoutes(scores, from, to, from);
+        CountRoutes(scores, from, to);
         return scores[from];
     }
 
-    std::uint64_t Day11::CountRoutes(std::unordered_map<int, int>& scores, int from, int to, int current) {
+    std::uint64_t Day11::CountRoutes(std::unordered_map<int, int>& scores, int from, int to) {
         if (scores.contains(from)) { return scores[from]; }
-        if (current == to) { return 1; }
+        if (from == to) { return 1; }
 
         std::uint64_t res = 0;
-        for (auto& next : map[current]) {
-            res += CountRoutes(scores, next, to, next);
+        for (auto& next : map[from]) {
+            res += CountRoutes(scores, next, to);
         }
         scores[from] = res;
         return res;
