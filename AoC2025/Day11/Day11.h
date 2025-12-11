@@ -24,7 +24,6 @@ namespace AoC2025 {
         int fft;
 
         std::uint64_t CountRoutes(int from, int to);
-        std::unordered_set<int> NodesReachableFrom(int from);
-        void CollapseMap(int from, int newFromLabel);
+        std::uint64_t CountRoutes(std::unordered_map<int, int>& scores, int from, int to, int current);
     };
 }
