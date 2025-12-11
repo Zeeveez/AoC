@@ -161,10 +161,12 @@ namespace AoC2025 {
                         }
 
                         if (!bad) {
-                            // offset between presses, press the higher button by required offset
-                            presses += equation.result;
-                            for (auto& voltageIdx : buttonMappings[one]) {
-                                voltages[voltageIdx] -= equation.result;
+                            if (equation.result > 0) {
+                                // offset between presses, press the higher button by required offset
+                                presses += equation.result;
+                                for (auto& voltageIdx : buttonMappings[one]) {
+                                    voltages[voltageIdx] -= equation.result;
+                                }
                             }
                         }
                     }
