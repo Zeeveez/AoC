@@ -32,14 +32,12 @@ namespace AoC2025 {
     }
 
     std::uint64_t Day11::CountRoutes(std::unordered_map<int, int>& scores, int from, int to) {
-        if (scores.contains(from)) { return scores[from]; }
         if (from == to) { return 1; }
-
-        std::uint64_t res = 0;
-        for (auto& next : map[from]) {
-            res += CountRoutes(scores, next, to);
+        if (!scores.contains(from)) {
+            for (auto& next : map[from]) {
+                scores[from] += CountRoutes(scores, next, to);
+            }
         }
-        scores[from] = res;
-        return res;
+        return scores[from];
     }
 }
