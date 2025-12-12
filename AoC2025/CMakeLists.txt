@@ -17,7 +17,9 @@ add_executable (AoC2025 "AoC2025.cpp" "AoC2025.h"
     "Day07/Day07.cpp" "Day07/Day07.h"
     "Day08/Day08.cpp" "Day08/Day08.h"
     "Day09/Day09.cpp" "Day09/Day09.h"
-    "Day10/Day10.cpp" "Day10/Day10.h")
+    "Day10/Day10.cpp" "Day10/Day10.h"
+    "Day11/Day11.cpp" "Day11/Day11.h"
+    "Day12/Day12.cpp" "Day12/Day12.h")
 
 set_property(TARGET AoC2025 PROPERTY CXX_STANDARD 23)
 set_property(TARGET AoC2025 PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -34,3 +36,5 @@ configure_file("Day07/Day07.txt" "./2025/Day07.txt" COPYONLY)
 configure_file("Day08/Day08.txt" "./2025/Day08.txt" COPYONLY)
 configure_file("Day09/Day09.txt" "./2025/Day09.txt" COPYONLY)
 configure_file("Day10/Day10.txt" "./2025/Day10.txt" COPYONLY)
+configure_file("Day11/Day11.txt" "./2025/Day11.txt" COPYONLY)
+configure_file("Day12/Day12.txt" "./2025/Day12.txt" COPYONLY)
