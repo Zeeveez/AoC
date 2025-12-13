@@ -22,10 +22,11 @@ namespace AoC2025 {
             void ParseButtons(std::string& line, int& i);
             void ParseVoltages(std::string& line, int& i);
 
+            void Press(int buttonIdx, int noTimes);
+
             int CountRequiredLightButtons();
-            void CountRequiredLightButtons(std::uint64_t currentLights, int& best, int runningTotal = 0, int index = 0);
+            void CountRequiredLightButtons(std::uint64_t requiredLights, std::uint64_t currentLights, int& best, int runningTotal = 0, int index = 0);
             int CountRequiredVoltageButtons();
-            void CountRequiredVoltageButtons(std::vector<int>& currentVoltages, int& best, int runningTotal, int index);
         };
 
         void Parse() override;

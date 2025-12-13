@@ -13,7 +13,9 @@ namespace Gauss {
         Equation(std::vector<std::int64_t> coefficients, std::int64_t result) : coefficients(coefficients), result(result) {}
 
         bool IsSolved();
-        void Normalise();
+        std::vector<std::vector<std::int64_t>> GetPossibleSolutions(std::vector<std::int64_t>& maximums);
+        void GetPossibleSolutions(std::vector<std::int64_t>& inputsSoFar, std::vector<std::int64_t>& maximums, std::vector<std::vector<std::int64_t>>& solutions);
+        bool TestSolution(std::vector<std::int64_t>& inputs);
 
         friend const Equation operator-(const Equation& first, const Equation& second) {
             Equation output{};
@@ -51,10 +53,11 @@ namespace Gauss {
         std::vector<Equation> equations;
         System(std::vector<Equation> equations) : equations(equations) {}
 
-        bool Solve();
-        void SolveColumn(int i);
-        void TryResolveRows();
-        void PropogateRowSolution(int i);
+        bool Reduce();
+        void ReduceByColumn(int i);
+        void ReduceRows();
+        void PropogateRowReduction(int i);
+        std::vector<std::vector<std::int64_t>> GetPossibleSolutions(std::vector<std::int64_t>& maximums);
 
         friend std::ostream& operator<<(std::ostream& stream, const System& system) {
             for (auto& equation : system.equations) {
